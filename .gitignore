@@ -1,2 +1,9 @@
 **/bin/
 **/target/
+**/deploy/
+**/.settings/
+**/.recommenders/
+**/.metadata/
+
+*.jar
+*.class
