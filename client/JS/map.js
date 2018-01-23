@@ -17,16 +17,25 @@ window.onload = function(){
 	}).addTo(map);
 	
 	/*Event listeners for the map*/
-	var popup = L.popup();
-
+	var startMarker = L.marker([],{draggable: true});
+	var endMarker = L.marker([],{draggable: true});
+	
+	
 	function onMapClick(e) {
-		popup
+		endMarker
 			.setLatLng(e.latlng)
-			.setContent("You clicked the map at " + e.latlng.toString())
-			.openOn(map);
+			.addTo(map);
+		endMarker.bindPopup(JSON.stringify(endMarker.getLatLng()));
 	}
-
 	map.on('click', onMapClick);
+	
+	function onMapRightClick(e) {
+		startMarker
+			.setLatLng(e.latlng)
+			.addTo(map);
+		startMarker.bindPopup(JSON.stringify(startMarker.getLatLng()));
+	}
+	map.on('contextmenu', onMapRightClick);
 }
 
 
