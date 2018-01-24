@@ -8,3 +8,5 @@
 *.jar
 *.class
 *.temp
+*.classpath
+
