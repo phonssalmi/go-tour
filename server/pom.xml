@@ -22,6 +22,12 @@
 			<artifactId>otp</artifactId>
 			<version>1.2.0</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.openstreetmap.osmosis</groupId>
+			<artifactId>osmosis-core</artifactId>
+			<version>0.46</version>
+		</dependency>
 	</dependencies>
 
 	<build>
