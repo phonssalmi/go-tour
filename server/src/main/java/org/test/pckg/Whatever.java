@@ -16,6 +16,9 @@ public class Whatever {
 		CommandLineParameters conf = new CommandLineParameters();
 		conf.build = new File(DATA_DIR);
 		conf.inMemory = true;
+		conf.server = true;
+		conf.port = 8080;
+		conf.securePort = 8443;
 		otp = new OTPMain(conf);
 		
 	}
