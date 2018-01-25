@@ -5,10 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
+
+import org.data.utils.StreamIO;
 
 public class GTFSFileLoader {
 	private String baseUrl;
@@ -33,7 +34,7 @@ public class GTFSFileLoader {
 		} else {
 			try(FileInputStream fis = new FileInputStream(tempLoadedFile);
 					FileOutputStream fos = new FileOutputStream(f)) {
-				move(fis, fos);
+				StreamIO.move(fis, fos);
 			}
 			
 		}
@@ -64,15 +65,7 @@ public class GTFSFileLoader {
 		try(GZIPInputStream gzis = new GZIPInputStream(new FileInputStream(in));
 				FileOutputStream fos = new FileOutputStream(out)) {
 			
-			move(gzis, fos);
-		}
-	}
-	
-	public static void move(InputStream in, OutputStream out) throws IOException {
-		byte[] data = new byte[4096];
-		int bytesRead = -1;
-		while((bytesRead = in.read(data)) != -1) {
-			out.write(data, 0, bytesRead);
+			StreamIO.move(gzis, fos);
 		}
 	}
 	
