@@ -21,21 +21,37 @@ window.onload = function(){
 	var endMarker = L.marker([],{draggable: true});
 	
 	
-	function onMapClick(e) {
+	function onMapRightClick(e) {
+		/*Place marker*/
 		endMarker
 			.setLatLng(e.latlng)
 			.addTo(map);
 		endMarker.bindPopup(JSON.stringify(endMarker.getLatLng()));
+		/*Change form value for the end marker*/
+		document.getElementById("routeForm").elements["routeEnd"].value = JSON.stringify(e.latlng);
 	}
-	map.on('click', onMapClick);
+	map.on('contextmenu', onMapRightClick);
 	
-	function onMapRightClick(e) {
+	function onMapClick(e) {
+		/*Place marker*/
 		startMarker
 			.setLatLng(e.latlng)
 			.addTo(map);
 		startMarker.bindPopup(JSON.stringify(startMarker.getLatLng()));
+		/*Change form value for the start marker*/
+		document.getElementById("routeForm").elements["routeStart"].value = JSON.stringify(e.latlng);
 	}
-	map.on('contextmenu', onMapRightClick);
+	map.on('click', onMapClick);
+	
+	function startMarkerDrag(e) {
+		document.getElementById("routeForm").elements["routeStart"].value = JSON.stringify(e.latlng)
+	}
+	startMarker.on('move', startMarkerDrag);
+	
+	function endMarkerDrag(e) {
+		document.getElementById("routeForm").elements["routeEnd"].value = JSON.stringify(e.latlng)
+	}
+	endMarker.on('move', endMarkerDrag);
 }
 
 
