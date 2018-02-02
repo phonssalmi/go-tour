@@ -59,18 +59,26 @@ window.onload = function () {
 
 	function startMarkerDrag(e) {
 		document.getElementById("routeForm").elements["routeStart"].value = JSON.stringify(e.latlng)
+		startlng = e.latlng.lng;
+		startlat = e.latlng.lat;
 	}
 	startMarker.on('move', startMarkerDrag);
 
 	function endMarkerDrag(e) {
 		document.getElementById("routeForm").elements["routeEnd"].value = JSON.stringify(e.latlng)
+		endlng = e.latlng.lng;
+		endlat = e.latlng.lat;
 	}
 	endMarker.on('move', endMarkerDrag);
+
+	startMarker.on('dragend', getRoute);
+	endMarker.on('dragend', getRoute);
 }
 function getRoute() {
+	var transportType = document.getElementById("transportType").value;
 	var request = new XMLHttpRequest();
 	var requestURI = 'https://api.openrouteservice.org/directions?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&coordinates='
-	+ startlng + '%2C' + startlat + '%7C' + endlng + '%2C' + endlat + '&profile=' + getTransportType();
+		+ startlng + '%2C' + startlat + '%7C' + endlng + '%2C' + endlat + '&profile=' + transportType;
 	request.open('GET', requestURI);
 	request.setRequestHeader('Accept', 'text/json; charset=utf-8');
 
@@ -87,8 +95,4 @@ function getRoute() {
 	};
 
 	request.send();
-}
-function getTransportType() {
-    var x = document.getElementById("transportType").value;
-	return x;
 }
