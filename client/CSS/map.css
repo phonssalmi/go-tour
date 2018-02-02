@@ -14,3 +14,8 @@ body {
 	position: absolute;
 	top: 0px;
 }
+#Isochrones{
+	z-index: 100;
+	position: absolute;
+	top: 100px;
+}

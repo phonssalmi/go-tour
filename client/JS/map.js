@@ -3,6 +3,7 @@ var startlat = 0;
 var endlng = 0;
 var endlat = 0;
 var polyline = null;
+var geoJSON = null;
 var map;
 window.onload = function () {
 	/*Map creation*/
@@ -24,7 +25,6 @@ window.onload = function () {
 	/*Event listeners for the map*/
 	var startMarker = L.marker([], { draggable: true });
 	var endMarker = L.marker([], { draggable: true });
-
 	function onMapRightClick(e) {
 		/*Place marker*/
 		endMarker
@@ -35,9 +35,7 @@ window.onload = function () {
 		endlat = e.latlng.lat;
 		/*Change form value for the end marker*/
 		document.getElementById("routeForm").elements["routeEnd"].value = JSON.stringify(e.latlng);
-		if (startlng != 0 && startlat != 0) {
-			getRoute();
-		}
+		getRoute();
 	}
 	map.on('contextmenu', onMapRightClick);
 
@@ -49,9 +47,8 @@ window.onload = function () {
 		startMarker.bindPopup(JSON.stringify(startMarker.getLatLng()));
 		startlng = e.latlng.lng;
 		startlat = e.latlng.lat;
-		if (endlng != 0 && endlat != 0) {
-			getRoute();
-		}
+		getRoute();
+
 		/*Change form value for the start marker*/
 		document.getElementById("routeForm").elements["routeStart"].value = JSON.stringify(e.latlng);
 	}
@@ -70,11 +67,12 @@ window.onload = function () {
 		endlat = e.latlng.lat;
 	}
 	endMarker.on('move', endMarkerDrag);
-
 	startMarker.on('dragend', getRoute);
 	endMarker.on('dragend', getRoute);
 }
 function getRoute() {
+	if (startlat == 0 || startlng == 0 || endlat == 0 || endlng == 0)
+		return;
 	var transportType = document.getElementById("transportType").value;
 	var request = new XMLHttpRequest();
 	var requestURI = 'https://api.openrouteservice.org/directions?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&coordinates='
@@ -85,14 +83,39 @@ function getRoute() {
 	request.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			var encoded = JSON.parse(this.response).routes[0].geometry;
-			console.log(this.responseText);
 			if (polyline != null) {
 				map.removeLayer(polyline);
 			}
 			polyline = L.Polyline.fromEncoded(encoded).addTo(map);
+		}
+	};
+	request.send();
+}
+function getIsochrones() {
+	if (startlat == 0 || startlng == 0) {
+		alert("Please put a marker first");
+		return;
+	}
+	var transportType = document.getElementById("transportType").value;
+	var request = new XMLHttpRequest();
+
+	request.open('GET', 'https://api.openrouteservice.org/isochrones?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&locations='
+		+ startlng + '%2C' + startlat + '&profile=' + transportType + '&range_type=time&range=300&interval=60');
+
+	request.setRequestHeader('Accept', 'text/json; charset=utf-8');
+
+	request.onreadystatechange = function () {
+		if (this.readyState === 4) {
+			var polygons = JSON.parse(this.response).features;
+			if (geoJSON != null) {
+				geoJSON.remove();
+			}
+			geoJSON = L.geoJSON().addTo(map);
+			geoJSON.addData(polygons);
 
 		}
 	};
 
 	request.send();
+
 }
