@@ -10,9 +10,11 @@ import java.util.Properties;
 import org.glassfish.grizzly.http.CompressionConfig;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.grizzly.ssl.SSLContextConfigurator;
 import org.glassfish.grizzly.threadpool.ThreadPoolConfig;
 import org.glassfish.jersey.server.ContainerFactory;
+import org.http.handler.StaticWithDefaultHandler;
 import org.opentripplanner.standalone.CommandLineParameters;
 import org.opentripplanner.standalone.OTPApplication;
 import org.opentripplanner.standalone.OTPServer;
@@ -26,6 +28,7 @@ public class OtpServerMain {
 	private static final String OPTS_KEYSTORE_PASS		= "otp.ssl.keystore.pass";
 	private static final String OPTS_GRAPH_DIR			= "otp.server.graph.dir";
 	private static final String OPTS_OTP_DATA_DIR		= "otp.server.data.dir";
+	private static final String OPTS_CLIENT_DIR			= "otp.server.client.dir";
 
 	private ThreadPoolConfig defaultThreadPooling = ThreadPoolConfig.defaultConfig().setCorePoolSize(1).setMaxPoolSize(Runtime.getRuntime().availableProcessors());
 	
@@ -41,10 +44,13 @@ public class OtpServerMain {
 
 	public void start() {
 		logg.info("Starting server..");
-		
 		httpServer = new HttpServer();
 		
 		int port = Integer.parseInt(opts.getProperty(OPTS_PORT));
+		
+		File clientRootDir = new File(opts.getProperty(OPTS_CLIENT_DIR));
+		if(!clientRootDir.exists() || !clientRootDir.isDirectory())
+			throw new IllegalArgumentException("Property client dir must denote to an existing directory.");
 		
 		OtpHttpListener httpListener = new OtpHttpListener(opts.getProperty(OPTS_ADDRESS), port)
 				.withThreadPooling(defaultThreadPooling);
@@ -59,7 +65,6 @@ public class OtpServerMain {
 			
 			httpListener.withSSL(sslConfig);
 			ssl = true;
-			
 		}
 		
 		//unsure if these are needed, but let's keep them..
@@ -78,6 +83,10 @@ public class OtpServerMain {
 		
 		httpServer.getServerConfiguration().addHttpHandler(
 				ContainerFactory.createContainer(HttpHandler.class, otpAppWrapper), "/otp/");	//maybe change to /api/
+		
+		StaticHttpHandler staticHandler = new StaticWithDefaultHandler("/Map.html");
+		staticHandler.addDocRoot(clientRootDir);
+		httpServer.getServerConfiguration().addHttpHandler(staticHandler, "/");
 		
 		//TODO static handler for our client
 		
