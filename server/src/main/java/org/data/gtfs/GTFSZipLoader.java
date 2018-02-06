@@ -45,7 +45,7 @@ public class GTFSZipLoader {
 	
 	private static final String GTFS_MAIN_URL = "http://data.foli.fi/gtfs/gtfs.zip";
 	public static void main(String[] args) {
-		GTFSZipLoader test = new GTFSZipLoader(new File("../../gtfs-data/"));
+		GTFSZipLoader test = new GTFSZipLoader(new File("../../otp-data/"));
 		try {
 			test.load(GTFS_MAIN_URL);
 			test.uncompress(new File(test.baseDir, "gtfs-data.zip"));
