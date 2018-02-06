@@ -36,7 +36,28 @@
 		</br>
 		<input type="submit" value="Send">
 	</form>
-	<button id="Isochrones" value="isochrones" onclick="getIsochrones()">Isochrones</button>
+	<div id="Isochrones">
+		<button value="isochrones" onclick="getIsochrones()">Generate Isochrones</button>
+		</br>
+		Isochrones range:
+		</br>
+		<input type="range" min="5" max="200" step="5" value="30" id="isochrones_range" oninput="onRangeChange()">
+		<span id="rangeCurrent">30</span>
+		</br>
+		<span id="rangeMin">Min: 5</span>
+		<span id="rangeMax">Max: 200</span>
+		</br>
+		</br>
+		Isochrones interval:
+		</br>
+		<input type="range" min="1" max="60" step="1" value="5" id="isochrones_interval" oninput="onIntervalChange()">
+		<span id="intervalCurrent">5</span>
+		</br>
+		<span id="intervalMin">Min: 1</span>
+		<span id="intervalMax">Max: 60</span>
+
+
+	</div>
 
 </body>
 
