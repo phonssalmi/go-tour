@@ -12,13 +12,18 @@ public class Whatever {
 	
 	private OTPMain otp;
 	
+	//URL to request routes:
+	//http://localhost:8080/otp/routers/default/plan?fromPlace=60.442529151721295,22.288427352905273&toPlace=60.451123027562986,22.267313003540036&time=11:15am&date=01-26-2018&mode=TRANSIT,WALK&maxWalkDistance=804.672&arriveBy=false&wheelchair=false&locale=en
+	
 	public Whatever() {
 		CommandLineParameters conf = new CommandLineParameters();
 		conf.build = new File(DATA_DIR);
 		conf.inMemory = true;
+		conf.preFlight = true;
 		conf.server = true;
 		conf.port = 8080;
 		conf.securePort = 8443;
+		conf.graphDirectory = new File(DATA_DIR, "otp-cache/");
 		otp = new OTPMain(conf);
 		
 	}
