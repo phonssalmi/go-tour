@@ -113,6 +113,15 @@ public class OtpServerMain {
         httpServer.shutdown();
 	}
 	
+	@Override
+	protected void finalize() throws Throwable {
+		try {
+			httpServer.shutdown();
+		} finally {
+			super.finalize();
+		}
+	}
+	
 	private CommandLineParameters propertiesToParams() {
 		CommandLineParameters params = getDefaultParams();
 		params.build = new File(opts.getProperty(OPTS_OTP_DATA_DIR));
@@ -136,20 +145,18 @@ public class OtpServerMain {
 	private static String default_config_path = "../server-config.cfg";
 	public static void main(String[] args) {
 		String configPath = args.length > 0 ? args[0] : default_config_path;
-		
 		Logger mainLogger = LoggerFactory.getLogger("main");
 		
-		Properties props = null;
+		OtpServerMain serverMain = null;
+		
 		try {
-			props = loadProperties(configPath);
+			serverMain = new OtpServerMain(loadProperties(configPath));
+			serverMain.start();
+			
 		} catch(IOException ioe) {
 			mainLogger.error("Exception while reading properties", ioe);
 			return;
-		}
-		
-		OtpServerMain serverMain = new OtpServerMain(props);
-		try {
-			serverMain.start();
+			
 		} catch(Throwable t) {
 			mainLogger.error("Exception while starting server", t);
 			return;
