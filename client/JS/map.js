@@ -96,11 +96,13 @@ function getIsochrones() {
 		alert("Please put a marker first");
 		return;
 	}
+	var range = document.getElementById("isochrones_range").value * 60;
+	var interval = document.getElementById("isochrones_interval").value * 60;
 	var transportType = document.getElementById("transportType").value;
 	var request = new XMLHttpRequest();
 
 	request.open('GET', 'https://api.openrouteservice.org/isochrones?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&locations='
-		+ startlng + '%2C' + startlat + '&profile=' + transportType + '&range_type=time&range=300&interval=60');
+		+ startlng + '%2C' + startlat + '&profile=' + transportType + '&range_type=time&range=' + range + '&interval=' + interval);
 
 	request.setRequestHeader('Accept', 'text/json; charset=utf-8');
 
@@ -118,4 +120,26 @@ function getIsochrones() {
 
 	request.send();
 
+}
+function onRangeChange() {
+	var interval = document.getElementById("isochrones_interval");
+	var range = document.getElementById("isochrones_range");
+	interval.min = Math.ceil(range.value / 10);
+	interval.value = Math.max(interval.min, interval.value);
+	document.getElementById("rangeMin").innerHTML = "Min:" + range.min;
+	document.getElementById("rangeMax").innerHTML = "Max:" + range.max;
+	document.getElementById("rangeCurrent").innerHTML = range.value;
+
+	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
+	document.getElementById("intervalCurrent").innerHTML = interval.value;
+
+
+
+}
+function onIntervalChange() {
+	var interval = document.getElementById("isochrones_interval");
+	var range = document.getElementById("isochrones_range");
+	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
+	document.getElementById("intervalMax").innerHTML = "Max:" + interval.max;
+	document.getElementById("intervalCurrent").innerHTML = interval.value;
 }
