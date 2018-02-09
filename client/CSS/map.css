@@ -1,24 +1,51 @@
-#mapid { 
-	height: 100vh; 
-	z-index: 50;
+#mapid  {
+    height: 100vh; 
+    width: 100vw;
+    z-index: 50;
 }
 
-body {
-	padding: 0;
-	border: 0;
-	margin: 0;
-	
+.walk-icon {
+    float:left; 
+    margin-left:10px; 
+    background: url('images/walk.png') no-repeat; 
+    background-size: contain; 
+    height:30px;
+    width:20px;
 }
 
-#routeForm {
-	z-index: 100;
-	position: absolute;
-	top: 0px;
+.bike-icon {
+    float:left; 
+    margin-left:10px; 
+    background: url('images/bike.png') no-repeat; 
+    background-size: contain; 
+    height:30px;
+    width:20px;
 }
-#Isochrones{
-	z-index: 100;
-	position: absolute;
-	top: 100px;
-	background-color: white;
 
+.car-icon {
+    float:left; 
+    margin-left:10px; 
+    background: url('images/car.png') no-repeat; 
+    background-size: contain; 
+    height:30px;
+    width:20px;
+}
+
+.bus-icon {
+    float:left; 
+    margin-left:10px; 
+    background: url('images/bus.png') no-repeat; 
+    background-size: contain; 
+    height:30px;
+    width:20px;
+}
+
+#routing-menu{
+    z-index:100; 
+    position:absolute;
+}
+
+#icon-list{
+    display:inline-block; 
+    list-style-type:none;
 }
