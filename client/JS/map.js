@@ -9,6 +9,7 @@ var startMarker;
 var endMarker;
 var startInput;
 var endInput;
+var transportType = "driving-car";
 
 window.onload = function () {
 	/*Map creation*/
@@ -23,9 +24,9 @@ window.onload = function () {
 	map.locate({ setView: true, maxZoom: 14 });
 	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
-    }).addTo(map);
-    
-    createAutocomplete();
+	}).addTo(map);
+
+	createAutocomplete();
 
 	/*Event listeners for the map*/
 	startMarker = L.marker([], { draggable: true });
@@ -36,8 +37,8 @@ window.onload = function () {
 			.setLatLng(e.latlng)
 			.addTo(map);
 		endlng = e.latlng.lng;
-        endlat = e.latlng.lat;
-        getEndPoint(endlat, endlng, endMarker);
+		endlat = e.latlng.lat;
+		getEndPoint(endlat, endlng, endMarker);
 		getRoute();
 	}
 	map.on('contextmenu', onMapRightClick);
@@ -48,35 +49,40 @@ window.onload = function () {
 			.setLatLng(e.latlng)
 			.addTo(map);
 		startlng = e.latlng.lng;
-        startlat = e.latlng.lat;
-        getStartPoint(startlat, startlng, startMarker);
+		startlat = e.latlng.lat;
+		getStartPoint(startlat, startlng, startMarker);
 		getRoute();
 	}
 	map.on('click', onMapClick);
 
 	function startMarkerDrag(e) {
 		startlng = e.latlng.lng;
-        startlat = e.latlng.lat;
-        getStartPoint(startlat, startlng, startMarker);
+		startlat = e.latlng.lat;
+		getStartPoint(startlat, startlng, startMarker);
 	}
 	startMarker.on('move', startMarkerDrag);
 
 	function endMarkerDrag(e) {
 		endlng = e.latlng.lng;
-        endlat = e.latlng.lat;
-        getEndPoint(endlat, endlng, startMarker);
+		endlat = e.latlng.lat;
+		getEndPoint(endlat, endlng, startMarker);
 	}
 	endMarker.on('move', endMarkerDrag);
 	startMarker.on('dragend', getRoute);
 	endMarker.on('dragend', getRoute);
 }
+function getTransportType(e) {
+	transportType = e;
+	getRoute();
+}
+
 function getRoute() {
 	if (startlat == 0 || startlng == 0 || endlat == 0 || endlng == 0)
 		return;
-	//var transportType = document.getElementById("transportType").value;
+	//var transportType = document.getElementById("transport-type").value;
 	var request = new XMLHttpRequest();
 	var requestURI = 'https://api.openrouteservice.org/directions?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&coordinates='
-		+ startlng + '%2C' + startlat + '%7C' + endlng + '%2C' + endlat + '&profile=' + "foot-walking";
+		+ startlng + '%2C' + startlat + '%7C' + endlng + '%2C' + endlat + '&profile=' + transportType;
 	request.open('GET', requestURI);
 	request.setRequestHeader('Accept', 'text/json; charset=utf-8');
 
@@ -126,71 +132,71 @@ function getIsochrones() {
 
 }
 
-function getStartPoint(lat, lng, marker){
-    var req = new XMLHttpRequest();
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng +"&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
-	req.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            showPopup(marker,myArr);
-            startInput.value = myArr.results[0].formatted_address;
-        }        
-    };   
-    req.open("GET", url, true);
-    req.send();
+function getStartPoint(lat, lng, marker) {
+	var req = new XMLHttpRequest();
+	var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
+	req.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			var myArr = JSON.parse(this.responseText);
+			showPopup(marker, myArr);
+			startInput.value = myArr.results[0].formatted_address;
+		}
+	};
+	req.open("GET", url, true);
+	req.send();
 }
 
-function getEndPoint(lat, lng, marker){
-    var req = new XMLHttpRequest();
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng +"&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
-	req.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            showPopup(marker,myArr);
-            endInput.value = myArr.results[0].formatted_address;
-        }        
-    };   
-    req.open("GET", url, true);
-    req.send();
+function getEndPoint(lat, lng, marker) {
+	var req = new XMLHttpRequest();
+	var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
+	req.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			var myArr = JSON.parse(this.responseText);
+			showPopup(marker, myArr);
+			endInput.value = myArr.results[0].formatted_address;
+		}
+	};
+	req.open("GET", url, true);
+	req.send();
 }
 
 
-function createAutocomplete(){
-    startInput = document.getElementById('startPoint');
-    endInput = document.getElementById('endPoint');
-    // var defaultBounds = new google.maps.LatLngBounds(
-    //     new google.maps.LatLng(60.4465963, 22.3275915),
-    //     new google.maps.LatLng(60.44704549999999, 22.2007352));
+function createAutocomplete() {
+	startInput = document.getElementById('startPoint');
+	endInput = document.getElementById('endPoint');
+	// var defaultBounds = new google.maps.LatLngBounds(
+	//     new google.maps.LatLng(60.4465963, 22.3275915),
+	//     new google.maps.LatLng(60.44704549999999, 22.2007352));
 
-    var options = {
+	var options = {
 		// bounds: defaultBounds,
-		componentRestrictions: {country: 'fi'}
-	  };
-    var autocompleteStart = new google.maps.places.Autocomplete(startInput,options);
+		componentRestrictions: { country: 'fi' }
+	};
+	var autocompleteStart = new google.maps.places.Autocomplete(startInput, options);
 	var autocompleteEnd = new google.maps.places.Autocomplete(endInput, options);
-	
-	google.maps.event.addListener(autocompleteStart, 'place_changed', function() {
-		
+
+	google.maps.event.addListener(autocompleteStart, 'place_changed', function () {
+
 		startMarker
-			.setLatLng([autocompleteStart.getPlace().geometry.location.lat(),autocompleteStart.getPlace().geometry.location.lng()])
+			.setLatLng([autocompleteStart.getPlace().geometry.location.lat(), autocompleteStart.getPlace().geometry.location.lng()])
 			.addTo(map);
 		startlng = autocompleteStart.getPlace().geometry.location.lng();
-        startlat = autocompleteStart.getPlace().geometry.location.lat();
-        getStartPoint(startlat, startlng, startMarker);
+		startlat = autocompleteStart.getPlace().geometry.location.lat();
+		getStartPoint(startlat, startlng, startMarker);
 		getRoute();
-  })
+	})
 
-  google.maps.event.addListener(autocompleteEnd, 'place_changed', function() {
-		
-	endMarker
-		.setLatLng([autocompleteEnd.getPlace().geometry.location.lat(),autocompleteEnd.getPlace().geometry.location.lng()])
-		.addTo(map);
-	endlng = autocompleteEnd.getPlace().geometry.location.lng();
-	endlat = autocompleteEnd.getPlace().geometry.location.lat();
-	getEndPoint(endlat, endlng, endMarker);
-	getRoute();
-})
-    
+	google.maps.event.addListener(autocompleteEnd, 'place_changed', function () {
+
+		endMarker
+			.setLatLng([autocompleteEnd.getPlace().geometry.location.lat(), autocompleteEnd.getPlace().geometry.location.lng()])
+			.addTo(map);
+		endlng = autocompleteEnd.getPlace().geometry.location.lng();
+		endlat = autocompleteEnd.getPlace().geometry.location.lat();
+		getEndPoint(endlat, endlng, endMarker);
+		getRoute();
+	})
+
 }
 function onIntervalChange() {
 	var interval = document.getElementById("isochrones_interval");
@@ -213,14 +219,14 @@ function onRangeChange() {
 	document.getElementById("intervalCurrent").innerHTML = interval.value;
 }
 
-function showPopup(marker,myArr){
-    marker.bindPopup("<b>" +myArr.results[0].formatted_address + "</b>").openPopup();
+function showPopup(marker, myArr) {
+	marker.bindPopup("<b>" + myArr.results[0].formatted_address + "</b>").openPopup();
 }
 
-function zoomIn(){
-    map.zoomIn(2);
+function zoomIn() {
+	map.zoomIn(2);
 }
 
-function zoomOut(){
-    map.zoomOut(2);
+function zoomOut() {
+	map.zoomOut(2);
 }
