@@ -35,7 +35,7 @@ window.onload = function () {
 		endlat = e.latlng.lat;
 		/*Change form value for the end marker*/
 		document.getElementById("routeForm").elements["routeEnd"].value = JSON.stringify(e.latlng);
-		getRoute();
+		getRouteN();
 	}
 	map.on('contextmenu', onMapRightClick);
 
@@ -70,6 +70,7 @@ window.onload = function () {
 	startMarker.on('dragend', getRoute);
 	endMarker.on('dragend', getRoute);
 }
+
 function getRoute() {
 	if (startlat == 0 || startlng == 0 || endlat == 0 || endlng == 0)
 		return;
@@ -91,6 +92,60 @@ function getRoute() {
 	};
 	request.send();
 }
+
+function getRouteN() {
+	if(startlat === 0 || startlng === 0 || endlat === 0 || endlng === 0) return;
+
+	requestRoute(startlat, startlng, endlat, endlng).then((data) => {
+		if(typeof data === 'string') {
+			console.log(data);
+			return;
+		}
+		if(data.error) {
+			console.log(data.error);
+			return;
+		}
+		console.log(data.plan.itineraries[0]);
+		drawRouteItinerary(data.plan.itineraries[0]);
+	});
+
+}
+
+let currentPolylines = [];
+const routeColors = { 'WALK': 'red', 'BUS': 'blue' };
+
+function drawRouteItinerary(itr) {
+	clearLines();
+
+	itr.legs.forEach((route) => {
+		console.log(route.legGeometry.points);
+		currentPolylines.push(new L.Polyline(getRouteCords(route), { color: routeColors[route.mode] }));
+		//currentPolylines.push(L.Polyline.fromEncoded(route.legGeometry.points, { color: routeColors[route.mode] }));
+	});
+
+	redrawLines();
+}
+
+function getRouteCords(route) {
+	let routeCords = [];
+	console.log(route.mode);
+	routeCords.push([ route.from.lat, route.from.lon ]);
+	route.steps.forEach((step) => { console.log(step);routeCords.push([ step.lat, step.lon ]); });
+	routeCords.push([ route.to.lat, route.to.lon ]);
+	return routeCords;
+}
+
+function redrawLines() {
+	if(currentPolylines.length === 0) return;
+	currentPolylines.forEach((pl) => { pl.addTo(map); });
+}
+
+function clearLines() {
+	if(currentPolylines.length === 0) return;
+	currentPolylines.forEach((pl) => { map.removeLayer(pl); });
+	currentPolylines = [];
+}
+
 function getIsochrones() {
 	if (startlat == 0 || startlng == 0) {
 		alert("Please put a marker first");
