@@ -105,7 +105,6 @@ function getIsochrones() {
 	}
 	var range = document.getElementById("isochrones_range").value * 60;
 	var interval = document.getElementById("isochrones_interval").value * 60;
-	var transportType = document.getElementById("transportType").value;
 	var request = new XMLHttpRequest();
 
 	request.open('GET', 'https://api.openrouteservice.org/isochrones?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&locations='
