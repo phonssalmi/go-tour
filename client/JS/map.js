@@ -109,12 +109,15 @@ function getIsochrones() {
 	request.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			var polygons = JSON.parse(this.response).features;
+			console.log(polygons);
 			if (geoJSON != null) {
 				geoJSON.remove();
 			}
-			geoJSON = L.geoJSON().addTo(map);
-			geoJSON.addData(polygons);
-
+			geoJSON = L.geoJSON(polygons, {
+				style: function (feature) {
+					return { fillColor: "#29559e" };
+				}
+			}).addTo(map);
 		}
 	};
 
