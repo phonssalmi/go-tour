@@ -13,6 +13,7 @@ var transportType = "driving-car";
 var enableMarkers = false;
 var startMarkerPlaced = false;
 var endMarkerPlaced = false;
+var isochroneMarker = false;
 
 window.onload = function () {
 	/*Map creation*/
@@ -36,7 +37,7 @@ window.onload = function () {
 	endMarker = L.marker([], { draggable: true });
 	function onMapRightClick(e) {
 		/*Place marker*/
-		if(enableMarkers){
+		if(enableMarkers && !isochroneMarker){
 			endMarker
 				.setLatLng(e.latlng)
 				.addTo(map);
@@ -62,6 +63,10 @@ window.onload = function () {
 			getRouteN();
 			startMarkerPlaced = true;
 			checkMarkers();
+
+			if (isochroneMarker){
+				allowIsochroneMarker();
+			}
 		}
 	}
 	map.on('click', onMapClick);
@@ -71,16 +76,27 @@ window.onload = function () {
 		startlat = e.latlng.lat;
 		getStartPoint(startlat, startlng, startMarker);
 	}
-	startMarker.on('move', startMarkerDrag);
 
 	function endMarkerDrag(e) {
 		endlng = e.latlng.lng;
 		endlat = e.latlng.lat;
 		getEndPoint(endlat, endlng, startMarker);
 	}
+
+	function removeEndMarker(){
+		endMarker.remove();
+	}
+
+	function removeStartMarker(){
+		startMarker.remove();
+	}
+
+	startMarker.on('move', startMarkerDrag);
 	endMarker.on('move', endMarkerDrag);
 	startMarker.on('dragend', getRoute);
 	endMarker.on('dragend', getRoute);
+	startMarker.on('dblclick', removeStartMarker);
+	endMarker.on('dblclick', removeEndMarker);
 }
 
 function getTransportType(e) {
@@ -91,7 +107,7 @@ function getTransportType(e) {
 function getRoute() {
 	if (startlat == 0 || startlng == 0 || endlat == 0 || endlng == 0)
 		return;
-	//var transportType = document.getElementById("transport-type").value;
+
 	var request = new XMLHttpRequest();
 	var requestURI = 'https://api.openrouteservice.org/directions?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&coordinates='
 		+ startlng + '%2C' + startlat + '%7C' + endlng + '%2C' + endlat + '&profile=' + transportType;
@@ -324,12 +340,19 @@ function checkMarkers(){
 	}
 }
 
+function allowIsochroneMarker(){
+	enableMarkers = !enableMarkers;
+	isochroneMarker = !isochroneMarker;
+}
+
 function enableIsochrones(){
-	if(document.getElementById("isochrones").style.display === "none"){
-		document.getElementById("isochrones").style.display = "block";
+	allowIsochroneMarker();
+	
+	if(document.getElementById("isochrones").style.display === "block"){
+		document.getElementById("isochrones").style.display = "none";
 	}
 	else{
-		document.getElementById("isochrones").style.display = "none";
+		document.getElementById("isochrones").style.display = "block";
 	}
 }
 
