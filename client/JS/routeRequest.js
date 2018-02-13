@@ -1,10 +1,11 @@
 ///http://localhost:8080/otp/routers/default/plan?fromPlace=60.442529151721295,22.288427352905273&toPlace=60.451123027562986,22.267313003540036&time=11:15am&date=01-26-2018&mode=TRANSIT,WALK&maxWalkDistance=804.672&arriveBy=false&wheelchair=false&locale=en
 
 const DEFAULT_OPTS = {
-	mode: 'TRANSIT,WALK',
+	mode: 'TRANSIT',
 	maxWalkDistance: 800,
 	arriveBy: false,
-	wheelchair: false
+	wheelchair: false,
+	showIntermediateStops: true
 	//time: () => { return getTime(new Date()) },
 	//date: () => { return getDate(new Date()) }
 };
