@@ -63,10 +63,6 @@ window.onload = function () {
 			getRoute();
 			startMarkerPlaced = true;
 			checkMarkers();
-
-			if (isochroneMarker){
-				allowIsochroneMarker();
-			}
 		}
 	}
 	map.on('click', onMapClick);
