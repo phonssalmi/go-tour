@@ -59,7 +59,7 @@ window.onload = function () {
 			startlng = e.latlng.lng;
 			startlat = e.latlng.lat;
 			getStartPoint(startlat, startlng, startMarker);
-			getRoute();
+			getRouteN();
 			startMarkerPlaced = true;
 			checkMarkers();
 		}
@@ -110,6 +110,8 @@ function getRoute() {
 	request.send();
 }
 
+let currentItineraries = [];
+
 function getRouteN() {
 	if(startlat === 0 || startlng === 0 || endlat === 0 || endlng === 0) return;
 
@@ -123,9 +125,25 @@ function getRouteN() {
 			return;
 		}
 		console.log(data);
-		drawRouteItinerary(data.plan.itineraries[0]);
+		currentItineraries = data.plan.itineraries;
+		drawRouteItinerary(currentItineraries[0]);
+
+		let itnRootDiv = document.getElementById('transit-itineraries');
+		itnRootDiv.innerHTML = '';
+		currentItineraries.forEach((itn) => { itnRootDiv.appendChild(drawItineraryOptionDiv(itn)); });
 	});
 
+}
+
+function drawItineraryOptionDiv(itn) {
+	let div = document.createElement('div');
+	div.onclick = function(ev) { drawRouteItinerary(itn); };
+	div.appendChild(document.createTextNode('Duration: ' + itn.duration));
+	div.appendChild(document.createElement('br'));
+	let content = '';
+	itn.legs.forEach((l) => { content += ' > ' + l.mode + ' ' + l.route; });
+	div.appendChild(document.createTextNode(content));
+	return div;
 }
 
 let currentPolylines = [];
@@ -146,19 +164,17 @@ function drawRouteItinerary(itr) {
 
 function routeToPolyline(route) {
 	console.log(route.mode);
-	var pline = L.Polyline.fromEncoded(route.legGeometry.points, { color: routeColors[route.mode] });
+	var polylineOpts = { color: routeColors[route.mode] };
+	if(route.transitLeg) return L.Polyline.fromEncoded(route.legGeometry.points, polylineOpts);
 
-	if(route.mode === 'WALK') {
-		var ncords = [];
-		ncords.push([route.from.lat, route.from.lon]);
-		route.steps.forEach((step) => { ncords.push([step.lat, step.lon]); });
-		ncords.push([route.to.lat, route.to.lon]);
-		ncords.push(...pline.getLatLngs());
-		console.log(ncords);
-		pline.setLatLngs(ncords);
-	}
+	var ncords = [];
+	ncords.push([route.from.lat, route.from.lon]);
+	route.steps.forEach((step) => { ncords.push([step.lat, step.lon]); });
+	ncords.push([route.to.lat, route.to.lon]);
+	//ncords.push(...pline.getLatLngs());
+	console.log(ncords);
+	return new L.Polyline(ncords, polylineOpts);
 
-	return pline;
 	//route.steps.forEach((step) => { console.log(step);routeCords.push([ step.lat, step.lon ]); });
 	//routeCords.push([ route.to.lat, route.to.lon ]);
 }
