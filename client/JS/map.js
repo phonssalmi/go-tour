@@ -10,6 +10,9 @@ var endMarker;
 var startInput;
 var endInput;
 var transportType = "driving-car";
+var enableMarkers = false;
+var startMarkerPlaced = false;
+var endMarkerPlaced = false;
 
 window.onload = function () {
 	/*Map creation*/
@@ -33,25 +36,33 @@ window.onload = function () {
 	endMarker = L.marker([], { draggable: true });
 	function onMapRightClick(e) {
 		/*Place marker*/
-		endMarker
-			.setLatLng(e.latlng)
-			.addTo(map);
-		endlng = e.latlng.lng;
-		endlat = e.latlng.lat;
-		getEndPoint(endlat, endlng, endMarker);
-		getRoute();
+		if(enableMarkers){
+			endMarker
+				.setLatLng(e.latlng)
+				.addTo(map);
+			endlng = e.latlng.lng;
+			endlat = e.latlng.lat;
+			getEndPoint(endlat, endlng, endMarker);
+			getRoute();
+			endMarkerPlaced = true;
+			checkMarkers();
+		}
 	}
 	map.on('contextmenu', onMapRightClick);
 
 	function onMapClick(e) {
 		/*Place marker*/
-		startMarker
-			.setLatLng(e.latlng)
-			.addTo(map);
-		startlng = e.latlng.lng;
-		startlat = e.latlng.lat;
-		getStartPoint(startlat, startlng, startMarker);
-		getRoute();
+		if(enableMarkers){
+			startMarker
+				.setLatLng(e.latlng)
+				.addTo(map);
+			startlng = e.latlng.lng;
+			startlat = e.latlng.lat;
+			getStartPoint(startlat, startlng, startMarker);
+			getRoute();
+			startMarkerPlaced = true;
+			checkMarkers();
+		}
 	}
 	map.on('click', onMapClick);
 
@@ -216,6 +227,29 @@ function onRangeChange() {
 
 	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
 	document.getElementById("intervalCurrent").innerHTML = interval.value;
+}
+
+function placeMarkers(){
+	enableMarkers = !enableMarkers;
+	startMarkerPlaced = false;
+	endMarkerPlaced = false;
+}
+
+function checkMarkers(){
+	if (startMarkerPlaced && endMarkerPlaced){
+		enableMarkers = false;
+		startMarkerPlaced = false;
+		endMarkerPlaced = false;
+	}
+}
+
+function enableIsochrones(){
+	if(document.getElementById("isochrones").style.display === "none"){
+		document.getElementById("isochrones").style.display = "block";
+	}
+	else{
+		document.getElementById("isochrones").style.display = "none";
+	}
 }
 
 function showPopup(marker, myArr) {

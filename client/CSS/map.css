@@ -45,7 +45,16 @@
     position:absolute;
 }
 
-#transport-type{
+#button-list{
     display:inline-block; 
     list-style-type:none;
+    margin-bottom: 10px;
+}
+
+#markers-button{
+    display:block;
+    float:right;
+    margin-left:10px; 
+    margin-bottom:20px;
+    margin-right:10px;
 }
