@@ -98,6 +98,7 @@ window.onload = function () {
 	startMarker.on('dblclick', removeStartMarker);
 	endMarker.on('dblclick', removeEndMarker);
 }
+
 function getTransportType(e) {
 	transportType = e;
 	getRoute();
@@ -123,6 +124,70 @@ function getRoute() {
 		}
 	};
 	request.send();
+}
+
+function getRouteN() {
+	if(startlat === 0 || startlng === 0 || endlat === 0 || endlng === 0) return;
+
+	requestRoute(startlat, startlng, endlat, endlng).then((data) => {
+		if(typeof data === 'string') {
+			console.log(data);
+			return;
+		}
+		if(data.error) {
+			console.log(data.error);
+			return;
+		}
+		console.log(data);
+		drawRouteItinerary(data.plan.itineraries[0]);
+	});
+
+}
+
+let currentPolylines = [];
+const routeColors = { 'WALK': 'red', 'BUS': 'blue' };
+
+function drawRouteItinerary(itr) {
+	clearLines();
+
+	itr.legs.forEach((route) => {
+		console.log(route.legGeometry.points);
+		currentPolylines.push(routeToPolyline(route));
+		//currentPolylines.push(new L.Polyline(getRouteCords(route), { color: routeColors[route.mode] }));
+		//currentPolylines.push(L.Polyline.fromEncoded(route.legGeometry.points, { color: routeColors[route.mode] }));
+	});
+
+	redrawLines();
+}
+
+function routeToPolyline(route) {
+	console.log(route.mode);
+	var pline = L.Polyline.fromEncoded(route.legGeometry.points, { color: routeColors[route.mode] });
+
+	if(route.mode === 'WALK') {
+		var ncords = [];
+		ncords.push([route.from.lat, route.from.lon]);
+		route.steps.forEach((step) => { ncords.push([step.lat, step.lon]); });
+		ncords.push([route.to.lat, route.to.lon]);
+		ncords.push(...pline.getLatLngs());
+		console.log(ncords);
+		pline.setLatLngs(ncords);
+	}
+
+	return pline;
+	//route.steps.forEach((step) => { console.log(step);routeCords.push([ step.lat, step.lon ]); });
+	//routeCords.push([ route.to.lat, route.to.lon ]);
+}
+
+function redrawLines() {
+	if(currentPolylines.length === 0) return;
+	currentPolylines.forEach((pl) => { pl.addTo(map); });
+}
+
+function clearLines() {
+	if(currentPolylines.length === 0) return;
+	currentPolylines.forEach((pl) => { map.removeLayer(pl); });
+	currentPolylines = [];
 }
 
 function getIsochrones() {
