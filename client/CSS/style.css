@@ -1,0 +1,189 @@
+*{
+    padding:0px;
+    margin:0px;
+
+}
+
+#map{
+    height: 100vh;
+    width: 100%;
+
+
+    }
+#content{
+    position: absolute;
+    z-index: 100;
+    height: auto;
+    width: 100%;
+    }
+.button-right{
+    text-align: right;
+    margin-top: 5px;
+
+
+}
+
+.button-left{
+
+    text-align: left;
+    margin-left: 25px;
+    margin-top: 10px;
+}
+#view_route{
+display: none;
+}
+
+.button-left-button1{
+    margin: 20px;
+}
+
+#page_content{
+    position: absolute;
+    width:500px;
+    background: darkgreen;
+    display: none;
+}
+.leaflet-control-zoom {
+    padding: 20px 20px;
+    background: blueviolet;
+  }
+.leaflet-bar{
+
+}
+.leaflet-top {
+    float:left;
+    position: relative;
+    margin-left: 20px;
+    background: white;
+    margin-top:10px;
+    border-radius: 3px;
+
+}
+.leaflet-routing-container{
+    background: none;
+    box-shadow: none;
+    border: none;
+    text-align: center;
+
+   }
+.leaflet-routing-container p{
+    font-weight: 600;
+    font-size: 22px;
+    color:#8176E9;
+}
+.leaflet-routing-geocoder{
+
+    position:relative;
+
+
+}
+.leaflet-routing-geocoders input{
+    background: #D9E2DA;
+    padding: 5px 0px;
+    border-bottom: none;
+    border-radius: 10px;
+   display: inline;
+    }
+/*the cross button*/
+.leaflet-routing-remove-waypoint::after {
+    background: red;
+   display: none;
+}
+.leaflet-routing-add-waypoint::after{
+    display: none;
+}
+
+/*the way points container*/
+.leaflet-routing-alternatives-container{
+    background:#8FA2EB;
+    border-radius: 5px;
+}
+/************sweet alert***********************/
+
+.text-field{
+    height:30px;
+    width: 150px;
+    padding: 2px;
+}
+
+
+#time{
+    height:30px;
+    text-align:center;
+    font-weight:bold;
+    width:310px;
+    margin: 10px auto;
+    border-radius: 5px;
+}
+#now{
+    width:155px;
+    background: #50C347;
+    float:left;
+    height:30px;
+    padding-top:5px;
+}
+#later{
+    width:155px;
+    background: #8E8E8E;
+    float:right;
+    height:30px;
+    padding-top:5px;
+}
+#time_now{
+    display:none;
+}
+#date{
+    display: none;
+}
+.indicators{
+    width: 100%;
+    clear: both;
+}
+.indicators label{
+    float: left;
+    text-align: left;
+}
+.indicators input{
+    float: right;
+    text-align: right;
+}
+
+.leaflet-top.leaflet-left .leaflet-control-zoom.leaflet-bar.leaflet-control{
+	display:none;
+	visibility:hidden;
+}
+
+.leaflet-popup-tip-container{
+	position:relative;
+	margin:0px;
+	margin-left:-20px;
+}
+/*-----------------------------------table route info---------------------------*/
+.popup_heading{
+    font-size: 25px;
+    color:#8176E9;
+    margin-bottom: 10px;
+    font-weight:bold;
+}
+
+#table_route_info{
+    width:100%;
+
+}
+#table_route_info th{
+   padding:5px;
+}
+
+
+
+
+/*--------------------------------------ferrie-----------------------------------*/
+
+#ferrie h2{
+    color:#678BDF;
+    font-weight: bold;
+    border-bottom: 1px dotted red;
+}
+#ferrie p{
+    font-size: 16px;
+}

@@ -5,6 +5,12 @@ var endlat = 0;
 var polyline = null;
 var geoJSON = null;
 var map;
+var startMarker;
+var endMarker;
+var startInput;
+var endInput;
+var transportType = "driving-car";
+
 window.onload = function () {
 	/*Map creation*/
 	map = L.map('mapid', {
@@ -14,28 +20,30 @@ window.onload = function () {
 		scaleControl: false,
 		minZoom: 4
 	});
-	/*Initial map location*/
-	map.zoomControl.setPosition('bottomright');
 
 	map.locate({ setView: true, maxZoom: 14 });
 	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
 	}).addTo(map);
 
+	createAutocomplete();
+
 	/*Event listeners for the map*/
-	var startMarker = L.marker([], { draggable: true });
-	var endMarker = L.marker([], { draggable: true });
+	startMarker = L.marker([], { draggable: true });
+	endMarker = L.marker([], { draggable: true });
 	function onMapRightClick(e) {
 		/*Place marker*/
 		endMarker
 			.setLatLng(e.latlng)
 			.addTo(map);
-		endMarker.bindPopup(JSON.stringify(endMarker.getLatLng()));
 		endlng = e.latlng.lng;
 		endlat = e.latlng.lat;
+
 		/*Change form value for the end marker*/
-		document.getElementById("routeForm").elements["routeEnd"].value = JSON.stringify(e.latlng);
-		getRouteN();
+		//document.getElementById("routeForm").elements["routeEnd"].value = JSON.stringify(e.latlng);
+		getRouteN();	//temp
+		getEndPoint(endlat, endlng, endMarker);
+		//getRoute();
 	}
 	map.on('contextmenu', onMapRightClick);
 
@@ -44,37 +52,39 @@ window.onload = function () {
 		startMarker
 			.setLatLng(e.latlng)
 			.addTo(map);
-		startMarker.bindPopup(JSON.stringify(startMarker.getLatLng()));
 		startlng = e.latlng.lng;
 		startlat = e.latlng.lat;
+		getStartPoint(startlat, startlng, startMarker);
 		getRoute();
-
-		/*Change form value for the start marker*/
-		document.getElementById("routeForm").elements["routeStart"].value = JSON.stringify(e.latlng);
 	}
 	map.on('click', onMapClick);
 
 	function startMarkerDrag(e) {
-		document.getElementById("routeForm").elements["routeStart"].value = JSON.stringify(e.latlng)
 		startlng = e.latlng.lng;
 		startlat = e.latlng.lat;
+		getStartPoint(startlat, startlng, startMarker);
 	}
 	startMarker.on('move', startMarkerDrag);
 
 	function endMarkerDrag(e) {
-		document.getElementById("routeForm").elements["routeEnd"].value = JSON.stringify(e.latlng)
 		endlng = e.latlng.lng;
 		endlat = e.latlng.lat;
+		getEndPoint(endlat, endlng, startMarker);
 	}
 	endMarker.on('move', endMarkerDrag);
 	startMarker.on('dragend', getRoute);
 	endMarker.on('dragend', getRoute);
 }
 
+function getTransportType(e) {
+	transportType = e;
+	getRoute();
+}
+
 function getRoute() {
 	if (startlat == 0 || startlng == 0 || endlat == 0 || endlng == 0)
 		return;
-	var transportType = document.getElementById("transportType").value;
+	//var transportType = document.getElementById("transport-type").value;
 	var request = new XMLHttpRequest();
 	var requestURI = 'https://api.openrouteservice.org/directions?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&coordinates='
 		+ startlng + '%2C' + startlat + '%7C' + endlng + '%2C' + endlat + '&profile=' + transportType;
@@ -105,7 +115,7 @@ function getRouteN() {
 			console.log(data.error);
 			return;
 		}
-		console.log(data.plan.itineraries[0]);
+		console.log(data);
 		drawRouteItinerary(data.plan.itineraries[0]);
 	});
 
@@ -119,20 +129,31 @@ function drawRouteItinerary(itr) {
 
 	itr.legs.forEach((route) => {
 		console.log(route.legGeometry.points);
-		currentPolylines.push(new L.Polyline(getRouteCords(route), { color: routeColors[route.mode] }));
+		currentPolylines.push(routeToPolyline(route));
+		//currentPolylines.push(new L.Polyline(getRouteCords(route), { color: routeColors[route.mode] }));
 		//currentPolylines.push(L.Polyline.fromEncoded(route.legGeometry.points, { color: routeColors[route.mode] }));
 	});
 
 	redrawLines();
 }
 
-function getRouteCords(route) {
-	let routeCords = [];
+function routeToPolyline(route) {
 	console.log(route.mode);
-	routeCords.push([ route.from.lat, route.from.lon ]);
-	route.steps.forEach((step) => { console.log(step);routeCords.push([ step.lat, step.lon ]); });
-	routeCords.push([ route.to.lat, route.to.lon ]);
-	return routeCords;
+	var pline = L.Polyline.fromEncoded(route.legGeometry.points, { color: routeColors[route.mode] });
+
+	if(route.mode === 'WALK') {
+		var ncords = [];
+		ncords.push([route.from.lat, route.from.lon]);
+		route.steps.forEach((step) => { ncords.push([step.lat, step.lon]); });
+		ncords.push([route.to.lat, route.to.lon]);
+		ncords.push(...pline.getLatLngs());
+		console.log(ncords);
+		pline.setLatLngs(ncords);
+	}
+
+	return pline;
+	//route.steps.forEach((step) => { console.log(step);routeCords.push([ step.lat, step.lon ]); });
+	//routeCords.push([ route.to.lat, route.to.lon ]);
 }
 
 function redrawLines() {
@@ -164,18 +185,96 @@ function getIsochrones() {
 	request.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			var polygons = JSON.parse(this.response).features;
+			console.log(polygons);
 			if (geoJSON != null) {
 				geoJSON.remove();
 			}
-			geoJSON = L.geoJSON().addTo(map);
-			geoJSON.addData(polygons);
-
+			geoJSON = L.geoJSON(polygons, {
+				style: function (feature) {
+					return { fillColor: "#29559e" };
+				}
+			}).addTo(map);
 		}
 	};
 
 	request.send();
 
 }
+
+function getStartPoint(lat, lng, marker) {
+	var req = new XMLHttpRequest();
+	var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
+	req.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			var myArr = JSON.parse(this.responseText);
+			showPopup(marker, myArr);
+			startInput.value = myArr.results[0].formatted_address;
+		}
+	};
+	req.open("GET", url, true);
+	req.send();
+}
+
+function getEndPoint(lat, lng, marker) {
+	var req = new XMLHttpRequest();
+	var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
+	req.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			var myArr = JSON.parse(this.responseText);
+			showPopup(marker, myArr);
+			endInput.value = myArr.results[0].formatted_address;
+		}
+	};
+	req.open("GET", url, true);
+	req.send();
+}
+
+
+function createAutocomplete() {
+	startInput = document.getElementById('startPoint');
+	endInput = document.getElementById('endPoint');
+	// var defaultBounds = new google.maps.LatLngBounds(
+	//     new google.maps.LatLng(60.4465963, 22.3275915),
+	//     new google.maps.LatLng(60.44704549999999, 22.2007352));
+
+	var options = {
+		// bounds: defaultBounds,
+		componentRestrictions: { country: 'fi' }
+	};
+	var autocompleteStart = new google.maps.places.Autocomplete(startInput, options);
+	var autocompleteEnd = new google.maps.places.Autocomplete(endInput, options);
+
+	google.maps.event.addListener(autocompleteStart, 'place_changed', function () {
+
+		startMarker
+			.setLatLng([autocompleteStart.getPlace().geometry.location.lat(), autocompleteStart.getPlace().geometry.location.lng()])
+			.addTo(map);
+		startlng = autocompleteStart.getPlace().geometry.location.lng();
+		startlat = autocompleteStart.getPlace().geometry.location.lat();
+		getStartPoint(startlat, startlng, startMarker);
+		getRoute();
+	})
+
+	google.maps.event.addListener(autocompleteEnd, 'place_changed', function () {
+
+		endMarker
+			.setLatLng([autocompleteEnd.getPlace().geometry.location.lat(), autocompleteEnd.getPlace().geometry.location.lng()])
+			.addTo(map);
+		endlng = autocompleteEnd.getPlace().geometry.location.lng();
+		endlat = autocompleteEnd.getPlace().geometry.location.lat();
+		getEndPoint(endlat, endlng, endMarker);
+		getRoute();
+	})
+
+}
+function onIntervalChange() {
+	var interval = document.getElementById("isochrones_interval");
+	var range = document.getElementById("isochrones_range");
+	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
+	document.getElementById("intervalMax").innerHTML = "Max:" + interval.max;
+	document.getElementById("intervalCurrent").innerHTML = interval.value;
+}
+
 function onRangeChange() {
 	var interval = document.getElementById("isochrones_interval");
 	var range = document.getElementById("isochrones_range");
@@ -187,14 +286,16 @@ function onRangeChange() {
 
 	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
 	document.getElementById("intervalCurrent").innerHTML = interval.value;
-
-
-
 }
-function onIntervalChange() {
-	var interval = document.getElementById("isochrones_interval");
-	var range = document.getElementById("isochrones_range");
-	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
-	document.getElementById("intervalMax").innerHTML = "Max:" + interval.max;
-	document.getElementById("intervalCurrent").innerHTML = interval.value;
+
+function showPopup(marker, myArr) {
+	marker.bindPopup("<b>" + myArr.results[0].formatted_address + "</b>").openPopup();
+}
+
+function zoomIn() {
+	map.zoomIn(2);
+}
+
+function zoomOut() {
+	map.zoomOut(2);
 }
