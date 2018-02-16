@@ -23,7 +23,10 @@ public class DefaultOtpGraphServer {
 	public DefaultOtpGraphServer(CommandLineParameters options) {
 		opts = options;
 		if (!opts.graphDirectory.exists() || !opts.graphDirectory.isDirectory())
-			throw new IllegalArgumentException("Path must denote to an existing directory");
+			throw new IllegalArgumentException("Graph directory path must denote to an existing directory");
+		
+		if (!opts.build.exists() || !opts.build.isDirectory())
+			throw new IllegalArgumentException("Build directory path must denote to an existing directory");
 	}
 
 	public OTPServer startServer() {
