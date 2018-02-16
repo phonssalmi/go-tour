@@ -37,7 +37,7 @@ window.onload = function () {
 	endMarker = L.marker([], { draggable: true });
 	function onMapRightClick(e) {
 		/*Place marker*/
-		if(enableMarkers && !isochroneMarker){
+		if (enableMarkers && !isochroneMarker) {
 			endMarker
 				.setLatLng(e.latlng)
 				.addTo(map);
@@ -53,7 +53,7 @@ window.onload = function () {
 
 	function onMapClick(e) {
 		/*Place marker*/
-		if(enableMarkers){
+		if (enableMarkers) {
 			startMarker
 				.setLatLng(e.latlng)
 				.addTo(map);
@@ -79,20 +79,22 @@ window.onload = function () {
 		getEndPoint(endlat, endlng, startMarker);
 	}
 
-	function removeEndMarker(){
-		endMarker.remove();
+	function removeMarker(e) {
+		if (polyline != null) {
+			map.removeLayer(polyline);
+			polyline = null;
+		}
+		map.removeLayer(e.target);
 	}
 
-	function removeStartMarker(){
-		startMarker.remove();
-	}
+
 
 	startMarker.on('move', startMarkerDrag);
 	endMarker.on('move', endMarkerDrag);
 	startMarker.on('dragend', getRoute);
 	endMarker.on('dragend', getRoute);
-	startMarker.on('dblclick', removeStartMarker);
-	endMarker.on('dblclick', removeEndMarker);
+	startMarker.on('dblclick', removeMarker);
+	endMarker.on('dblclick', removeMarker);
 }
 
 function getTransportType(e) {
@@ -125,14 +127,14 @@ function getRoute() {
 let currentItineraries = [];
 
 function getRouteN() {
-	if(startlat === 0 || startlng === 0 || endlat === 0 || endlng === 0) return;
+	if (startlat === 0 || startlng === 0 || endlat === 0 || endlng === 0) return;
 
 	requestRoute(startlat, startlng, endlat, endlng).then((data) => {
-		if(typeof data === 'string') {
+		if (typeof data === 'string') {
 			console.log(data);
 			return;
 		}
-		if(data.error) {
+		if (data.error) {
 			console.log(data.error);
 			return;
 		}
@@ -149,7 +151,7 @@ function getRouteN() {
 
 function drawItineraryOptionDiv(itn) {
 	let div = document.createElement('div');
-	div.onclick = function(ev) { drawRouteItinerary(itn); };
+	div.onclick = function (ev) { drawRouteItinerary(itn); };
 	div.appendChild(document.createTextNode('Duration: ' + itn.duration));
 	div.appendChild(document.createElement('br'));
 	let content = '';
@@ -177,7 +179,7 @@ function drawRouteItinerary(itr) {
 function routeToPolyline(route) {
 	console.log(route.mode);
 	var polylineOpts = { color: routeColors[route.mode] };
-	if(route.transitLeg) return L.Polyline.fromEncoded(route.legGeometry.points, polylineOpts);
+	if (route.transitLeg) return L.Polyline.fromEncoded(route.legGeometry.points, polylineOpts);
 
 	var ncords = [];
 	ncords.push([route.from.lat, route.from.lon]);
@@ -192,12 +194,12 @@ function routeToPolyline(route) {
 }
 
 function redrawLines() {
-	if(currentPolylines.length === 0) return;
+	if (currentPolylines.length === 0) return;
 	currentPolylines.forEach((pl) => { pl.addTo(map); });
 }
 
 function clearLines() {
-	if(currentPolylines.length === 0) return;
+	if (currentPolylines.length === 0) return;
 	currentPolylines.forEach((pl) => { map.removeLayer(pl); });
 	currentPolylines = [];
 }
@@ -322,32 +324,32 @@ function onRangeChange() {
 	document.getElementById("intervalCurrent").innerHTML = interval.value;
 }
 
-function placeMarkers(){
+function placeMarkers() {
 	enableMarkers = !enableMarkers;
 	startMarkerPlaced = false;
 	endMarkerPlaced = false;
 }
 
-function checkMarkers(){
-	if (startMarkerPlaced && endMarkerPlaced){
+function checkMarkers() {
+	if (startMarkerPlaced && endMarkerPlaced) {
 		enableMarkers = false;
 		startMarkerPlaced = false;
 		endMarkerPlaced = false;
 	}
 }
 
-function allowIsochroneMarker(){
+function allowIsochroneMarker() {
 	enableMarkers = !enableMarkers;
 	isochroneMarker = !isochroneMarker;
 }
 
-function enableIsochrones(){
+function enableIsochrones() {
 	allowIsochroneMarker();
-	
-	if(document.getElementById("isochrones").style.display === "block"){
+
+	if (document.getElementById("isochrones").style.display === "block") {
 		document.getElementById("isochrones").style.display = "none";
 	}
-	else{
+	else {
 		document.getElementById("isochrones").style.display = "block";
 	}
 }
