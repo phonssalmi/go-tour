@@ -7,7 +7,7 @@ import org.opentripplanner.standalone.OTPMain;
 
 public class Whatever {
 	
-	private static final String DATA_DIR = "../../otp-data/";
+	private static final String DATA_DIR = "/opt/otp-data/otp-data/";
 	private static final String GTFS_MAIN_URL = "http://data.foli.fi/gtfs";
 	
 	private OTPMain otp;
@@ -23,7 +23,7 @@ public class Whatever {
 		conf.server = true;
 		conf.port = 8080;
 		conf.securePort = 8443;
-		conf.graphDirectory = new File(DATA_DIR, "otp-cache/");
+		//conf.graphDirectory = new File(DATA_DIR, "otp-cache/");
 		otp = new OTPMain(conf);
 		
 	}
@@ -33,7 +33,7 @@ public class Whatever {
 	}
 	
 	public static void main(String[] args) {
-		new Whatever().run();
+		//new Whatever().run();
 	}
 	
 }
