@@ -1,22 +1,21 @@
 {
-  "type": "EatingPlaces",
+  "type": "FeatureCollection",
   "features": [
     {
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
         "name": "Kaskis",
-        "openingTimes": {
-          "Monday": "Closed",
-          "Tuesday": "16:00-23:00",
-          "Wednesday": "16:00-23:00",
-          "Thursday": "16:00-23:00",
-          "Friday": "16:00-00:00",
-          "Saturday": "16:00-00:00",
-          "Sunday": "Closed",
-        },
+        "Monday": "Closed",
+        "Tuesday": "16:00-23:00",
+        "Wednesday": "16:00-23:00",
+        "Thursday": "16:00-23:00",
+        "Friday": "16:00-00:00",
+        "Saturday": "16:00-00:00",
+        "Sunday": "Closed",
         "address": "Kaskenkatu 6a, 20700 Turku",
         "website": "http://www.kaskis.fi",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
       },
       "geometry": {
         "type": "Point",
@@ -28,21 +27,20 @@
     },
    
    {
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Bar Toimisto",
-        "openingTimes": {
-          "Monday": "09:00-02:00",
-          "Tuesday": "09:00-02:00",
-          "Wednesday": "09:00-02:00",
-          "Thursday": "09:00-02:00",
-          "Friday": "09:00-02:00",
-          "Saturday": "09:00-02:00",
-          "Sunday": "09:00-02:00",
-        },
+        "Monday": "09:00-02:00",
+        "Tuesday": "09:00-02:00",
+        "Wednesday": "09:00-02:00",
+        "Thursday": "09:00-02:00",
+        "Friday": "09:00-02:00",
+        "Saturday": "09:00-02:00",
+        "Sunday": "09:00-02:00",
         "address": "Kaskenkatu 3, 20700 Turku",
         "website": "http://www.bartoimisto.fi",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -54,21 +52,20 @@
     },
 	
 	{
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Mantun Grilli",
-        "openingTimes": {
-          "Monday": "Closed",
-          "Tuesday": "18:00-05:00",
-          "Wednesday": "18:00-05:00",
-          "Thursday": "18:00-05:00",
-          "Friday": "18:00-05:00",
-          "Saturday": "18:00-05:00",
-          "Sunday": "18:00-00:00",
-        },
+        "Monday": "Closed",
+        "Tuesday": "18:00-05:00",
+        "Wednesday": "18:00-05:00",
+        "Thursday": "18:00-05:00",
+        "Friday": "18:00-05:00",
+        "Saturday": "18:00-05:00",
+        "Sunday": "18:00-00:00",
         "address": "Olavinpuisto, 20700 Turku",
         "website": "https://www.facebook.com/mantungrilli",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -80,21 +77,20 @@
     },
 	
 	{
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Tintå",
-        "openingTimes": {
-          "Monday": "11:00-24:00",
-          "Tuesday": "11:00-24:00",
-          "Wednesday": "11:00-24:00",
-          "Thursday": "11:00-24:00",
-          "Friday": "11:00-02:00",
-          "Saturday": "12:00-02:00",
-          "Sunday": "12:00-22:00",
-        },
+        "Monday": "11:00-24:00",
+        "Tuesday": "11:00-24:00",
+        "Wednesday": "11:00-24:00",
+        "Thursday": "11:00-24:00",
+        "Friday": "11:00-02:00",
+        "Saturday": "12:00-02:00",
+        "Sunday": "12:00-22:00",
         "address": "Läntinen Rantakatu 9, 20100 Turku",
         "website": "http://www.tinta.fi/",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -106,21 +102,20 @@
     },
 	
 	{
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Blanko",
-        "openingTimes": {
-          "Monday": "Closed",
-          "Tuesday": "Closed",
-          "Wednesday": "Closed",
-          "Thursday": "Closed",
-          "Friday": "Closed",
-          "Saturday": "Closed",
-          "Sunday": "Closed",
-        },
+        "Monday": "Closed",
+        "Tuesday": "Closed",
+        "Wednesday": "Closed",
+        "Thursday": "Closed",
+        "Friday": "Closed",
+        "Saturday": "Closed",
+        "Sunday": "Closed",
         "address": "Aurakatu 1, 20100 Turku",
         "website": "http://www.blanko.net/",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -132,21 +127,20 @@
     },
 	
 	{
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Di Trevi",
-        "openingTimes": {
-          "Monday": "11:00-22:00",
-          "Tuesday": "11:00-22:00",
-          "Wednesday": "11:00-23:00",
-          "Thursday": "11:00-23:00",
-          "Friday": "11:00-01:00",
-          "Saturday": "12:00-01:00",
-          "Sunday": "14:00-22:00",
-        },
+        "Monday": "11:00-22:00",
+        "Tuesday": "11:00-22:00",
+        "Wednesday": "11:00-23:00",
+        "Thursday": "11:00-23:00",
+        "Friday": "11:00-01:00",
+        "Saturday": "12:00-01:00",
+        "Sunday": "14:00-22:00",
         "address": "Aurakatu 1, 20100 Turku",
         "website": "http://www.ditrevi.fi/",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -158,21 +152,20 @@
     },
 	
 	{
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Fontana",
-        "openingTimes": {
-          "Monday": "10:00-22:00",
-          "Tuesday": "10:00-22:00",
-          "Wednesday": "10:00-22:00",
-          "Thursday": "10:00-22:00",
-          "Friday": "10:00-23:00",
-          "Saturday": "10:00-23:00",
-          "Sunday": "12:00-20:00",
-        },
+        "Monday": "10:00-22:00",
+        "Tuesday": "10:00-22:00",
+        "Wednesday": "10:00-22:00",
+        "Thursday": "10:00-22:00",
+        "Friday": "10:00-23:00",
+        "Saturday": "10:00-23:00",
+        "Sunday": "12:00-20:00",
         "address": "Aurakatu 1, 20100 Turku",
         "website": "https://www.fontana.fi",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -184,21 +177,20 @@
     },
 	
 	{
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Viikinkiravintola Harald",
-        "openingTimes": {
-          "Monday": "12:00-23:00",
-          "Tuesday": "12:00-24:00",
-          "Wednesday": "12:00-24:00",
-          "Thursday": "12:00-24:00",
-          "Friday": "12:00-01:00",
-          "Saturday": "12:00-01:00",
-          "Sunday": "15:00-22:00",
-        },
+        "Monday": "12:00-23:00",
+        "Tuesday": "12:00-24:00",
+        "Wednesday": "12:00-24:00",
+        "Thursday": "12:00-24:00",
+        "Friday": "12:00-01:00",
+        "Saturday": "12:00-01:00",
+        "Sunday": "15:00-22:00",
         "address": "Aurakatu 3, 20100 Turku",
         "website": "https://www.ravintolaharald.fi/turku/",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -210,21 +202,20 @@
     },
 	
 	{
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Karu Izakaya",
-        "openingTimes": {
-          "Monday": "Closed",
-          "Tuesday": "17:00-22:00",
-          "Wednesday": "17:00-22:00",
-          "Thursday": "17:00-22:00",
-          "Friday": "17:00-24:00",
-          "Saturday": "14:00-24:00",
-          "Sunday": "Closed",
-        },
+        "Monday": "Closed",
+        "Tuesday": "17:00-22:00",
+        "Wednesday": "17:00-22:00",
+        "Thursday": "17:00-22:00",
+        "Friday": "17:00-24:00",
+        "Saturday": "14:00-24:00",
+        "Sunday": "Closed",
         "address": "Aurakatu 3, 20100 Turku",
         "website": "http://www.ravintolakaru.fi/ravintola-karu-izakaya",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -236,21 +227,20 @@
     },
 	
 	  {
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Panimoravintola Koulu",
-        "openingTimes": {
-          "Monday": "11:00-21:30",
-          "Tuesday": "11:00-21:30",
-          "Wednesday": "11:00-21:30",
-          "Thursday": "11:00-21:30",
-          "Friday": "11:00-23:30",
-          "Saturday": "12:00-23:30",
-          "Sunday": "Closed",
-        },
+        "Monday": "11:00-21:30",
+        "Tuesday": "11:00-21:30",
+        "Wednesday": "11:00-21:30",
+        "Thursday": "11:00-21:30",
+        "Friday": "11:00-23:30",
+        "Saturday": "12:00-23:30",
+        "Sunday": "Closed",
         "address": "Eerikinkatu 18, 20100 Turku",
         "website": "http://www.panimoravintolakoulu.fi/",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -262,21 +252,20 @@
     },
 	
 	{
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "MorriSon's",
-        "openingTimes": {
-          "Monday": "11:00-22:00",
-          "Tuesday": "11:00-22:00",
-          "Wednesday": "11:00-22:00",
-          "Thursday": "11:00-22:00",
-          "Friday": "11:00-23:00",
-          "Saturday": "12:00-23:00",
-          "Sunday": "13:00-22:00",
-        },
+        "Monday": "11:00-22:00",
+        "Tuesday": "11:00-22:00",
+        "Wednesday": "11:00-22:00",
+        "Thursday": "11:00-22:00",
+        "Friday": "11:00-23:00",
+        "Saturday": "12:00-23:00",
+        "Sunday": "13:00-22:00",
         "address": "Kristiinankatu 9, 20100 Turku",
         "website": "http://morrisons.fi/turku/",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -288,21 +277,20 @@
     },
 	
 	{
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Kotipizza",
-        "openingTimes": {
-          "Monday": "11:00-22:00",
-          "Tuesday": "11:00-22:00",
-          "Wednesday": "11:00-22:00",
-          "Thursday": "11:00-22:00",
-          "Friday": "11:00-22:00",
-          "Saturday": "11:00-22:00",
-          "Sunday": "12:00-22:00",
-        },
+        "Monday": "11:00-22:00",
+        "Tuesday": "11:00-22:00",
+        "Wednesday": "11:00-22:00",
+        "Thursday": "11:00-22:00",
+        "Friday": "11:00-22:00",
+        "Saturday": "11:00-22:00",
+        "Sunday": "12:00-22:00",
         "address": "Humalistonkatu 5, 20100 Turku",
         "website": "http://www.kotipizza.fi/",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -314,21 +302,20 @@
     },
 	
 	{
-      "type": "Restaurant",
+      "type": "Feature",
       "properties": {
 		"name": "Kebab Box",
-        "openingTimes": {
-          "Monday": "10:00-03:00",
-          "Tuesday": "10:00-03:00",
-          "Wednesday": "10:00-05:00",
-          "Thursday": "10:00-05:00",
-          "Friday": "10:00-05:00",
-          "Saturday": "12:00-05:00",
-          "Sunday": "10:00-03:00",
-        },
+        "Monday": "10:00-03:00",
+        "Tuesday": "10:00-03:00",
+        "Wednesday": "10:00-05:00",
+        "Thursday": "10:00-05:00",
+        "Friday": "10:00-05:00",
+        "Saturday": "12:00-05:00",
+        "Sunday": "10:00-03:00",
         "address": "Humalistonkatu 7A, 20100 Turku",
         "website": "http://www.facebook.com/KebabBoxTurku/",
-        "description": "PLACEHOLDER"
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -337,7 +324,155 @@
           60.45068915482972
         ]
       }
-    }
+    },
+	
+	{
+      "type": "Feature",
+      "properties": {
+		"name": "Rahtiksen messi",
+        "Monday": "15:00-22:00",
+        "Tuesday": "15:00-22:00",
+        "Wednesday": "15:00-22:00",
+        "Thursday": "11:00-22:00",
+        "Friday": "11:00-22:00",
+        "Saturday": "13:00-22:00",
+        "Sunday": "13:00-22:00",
+        "address": "Itäinen Rantakatu 61, 20100 Turku",
+        "website": "https://www.rahtiksenmessi.com/",
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
+	  },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.247920632362366,
+          60.440576162218896
+        ]
+      }
+    },
+	
+	{
+      "type": "Feature",
+      "properties": {
+		"name": "Melisa",
+        "Monday": "10:30-21:00",
+        "Tuesday": "10:30-21:00",
+        "Wednesday": "10:30-21:00",
+        "Thursday": "10:30-21:00",
+        "Friday": "10:30-21:00",
+        "Saturday": "11:00-21:00",
+        "Sunday": "12:00-21:00",
+        "address": "Nuppulantie 28, 20320 Turku",
+        "website": "http://ravintolamelisa.fi",
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
+	  },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.23785698413849,
+          60.468224635557064
+        ]
+      }
+    },
+	{
+      "type": "Feature",
+      "properties": {
+		"name": "Arina Ravintola",
+        "Monday": "10:00-21:00",
+        "Tuesday": "10:00-21:00",
+        "Wednesday": "10:00-21:00",
+        "Thursday": "10:00-21:00",
+        "Friday": "10:00-22:00",
+        "Saturday": "10:00-22:00",
+        "Sunday": "10:00-21:00",
+        "address": "Nuppulantie 43, 21280 Turku",
+        "website": "http://arinaravintola.fi",
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
+	  },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.23586678504944,
+          60.469142144286316
+        ]
+      }
+    },
+	
+	 {
+      "type": "Feature",
+      "properties": {
+		"name": "Ravintola Uno",
+        "Monday": "10:00-22:00",
+        "Tuesday": "10:00-22:00",
+        "Wednesday": "10:00-22:00",
+        "Thursday": "10:00-22:00",
+        "Friday": "10:00-23:00",
+        "Saturday": "11:00-23:00",
+        "Sunday": "11:00-22:00",
+        "address": "Kotkankatu 1, 20610 Turku",
+        "website": "https://www.facebook.com/Ravintola-Numero-Uno-1670351553239168/",
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
+	  },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.340360283851624,
+          60.44170615826021
+        ]
+      }
+    },
+	
+	{
+      "type": "Feature",
+      "properties": {
+		"name": "Treffi Kebab Pizzeria",
+        "Monday": "11.00-21.00",
+        "Tuesday": "11.00-21.00",
+        "Wednesday": "11.00-21.00",
+        "Thursday": "11.00-21.00",
+        "Friday": "11.00-22.00",
+        "Saturday": "11:00-22:00",
+        "Sunday": "12:00-21:00",
+        "address": "Simolankatu 27, 20540 Turku",
+        "website": "https://pizza-online.fi/ravintolat/turku/treffikebab/",
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
+	  },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.297407388687134,
+          60.461177198206016
+        ]
+      }
+    },
+	
+	{
+      "type": "Feature",
+      "properties": {
+		"name": "Pizza Perez",
+        "Monday": "10.00-21.30",
+        "Tuesday": "10.00-21.30",
+        "Wednesday": "10.00-21.30",
+        "Thursday": "10.00-21.30",
+        "Friday": "10.00-21.30",
+        "Saturday": "10.00-21.00",
+        "Sunday": "10.00-21.00",
+        "address": "Pizza Perez Leipäläntie 71, 20300 Turku",
+        "website": "http://www.pizzaperez.fi/",
+        "description": "PLACEHOLDER",
+		"class": "Restaurant"
+	   },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.282209992408752,
+          60.471992337378346
+        ]
+      }
    
   ]
 }
