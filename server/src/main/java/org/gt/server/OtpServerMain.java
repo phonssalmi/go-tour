@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.BindException;
 import java.util.Properties;
 
+import org.data.gtfs.GTFSZipLoader;
 import org.glassfish.grizzly.http.CompressionConfig;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -29,6 +30,7 @@ public class OtpServerMain {
 	private static final String OPTS_GRAPH_DIR			= "otp.server.graph.dir";
 	private static final String OPTS_OTP_DATA_DIR		= "otp.server.data.dir";
 	private static final String OPTS_CLIENT_DIR			= "otp.server.client.dir";
+	private static final String OPTS_GTFS_URI			= "otp.data.gtfs.uri";
 
 	private ThreadPoolConfig defaultThreadPooling = ThreadPoolConfig.defaultConfig().setCorePoolSize(1).setMaxPoolSize(Runtime.getRuntime().availableProcessors());
 	
@@ -142,10 +144,32 @@ public class OtpServerMain {
 		return params;
 	}
 
-	private static String default_config_path = "../server-config.cfg";
+	private static final String CMD_ARG_UPDATE_FOLI_DATA	= "update-foli";
+	private static final String GTFS_DEFAULT_URL = "http://data.foli.fi/gtfs/gtfs.zip";
+	
+	private static String default_config_path = "target/server-config.cfg";
 	public static void main(String[] args) {
 		String configPath = args.length > 0 ? args[0] : default_config_path;
 		Logger mainLogger = LoggerFactory.getLogger("main");
+		
+		if(args.length > 1 && args[1].equals(CMD_ARG_UPDATE_FOLI_DATA)) {
+			try {
+				mainLogger.info("Updating GTFS data");
+				
+				Properties props = loadProperties(configPath);
+				GTFSZipLoader dataLoader = new GTFSZipLoader(new File(props.getProperty(OPTS_OTP_DATA_DIR)));
+				
+				mainLogger.info("Downloading " + props.getProperty(OPTS_GTFS_URI, GTFS_DEFAULT_URL));
+				dataLoader.load(props.getProperty(OPTS_GTFS_URI, GTFS_DEFAULT_URL));
+				
+				mainLogger.info("Done!");
+				
+			} catch(Exception e) {
+				mainLogger.error("Error while updating GTFS data", e);
+			}
+			
+			return;
+		}
 		
 		OtpServerMain serverMain = null;
 		
