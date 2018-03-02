@@ -54,3 +54,7 @@
 #isochrones{
     display: none;
 }
+
+#attraction-menu-container {
+	display: none;
+}
