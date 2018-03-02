@@ -23,8 +23,41 @@ geometry: { coordinates:[lat lng]}
 }
 */
 
-loadMapData(dataPath) {
-	fetch(dataPath, {
+var testData = {
+	type: 'test',
+	features: [
+		{
+			type: 'feature',
+			properties: {
+				open: true,
+				class: 'museum',
+				name: 'test-place1'
+			},
+			coordinates: [ 60.44422270611994, 22.274436950683597 ]
+		},
+		{
+			type: 'feature',
+			properties: {
+				open: true,
+				class: 'museum',
+				name: 'test-place2'
+			},
+			coordinates: [ 60.44926050852973, 22.286281585693363 ]
+		},
+		{
+			type: 'feature',
+			properties: {
+				open: true,
+				class: 'restaurant',
+				name: 'test-place3'
+			},
+			coordinates: [ 60.451292342179464, 22.255983352661133 ]
+		}
+	]
+};
+
+function loadMapData(dataPath) {
+	return fetch(dataPath, {
 		method: 'GET',
 		referrer: 'no-referrer',
 		redirect: 'error',
@@ -34,19 +67,24 @@ loadMapData(dataPath) {
 		return data.json();
 
 	}).then((jsonData) => {
-		if(!jsonData.features) throw new Error('Error while parsing map data. Missing features');
-
-		jsonData.features.forEach((feature) => {
-			var fClass = feature.properties.class;
-			if(typedAttractionMap[fClass].length == 0)
-				typedAttractionMap[fClass] = [];
-
-			typedAttractionMap[fClass].push(featureToAttrData(feature));
-		});
+		parseMapData(jsonData);
 
 	}).catch((e) => {
 		console.log('Error while fetching/parsing map data');
 		//inform
+	});
+}
+
+function parseMapData(jsonData) {
+	if(!jsonData.features) throw new Error('Error while parsing map data. Missing features');
+
+	jsonData.features.forEach((feature) => {
+		var fClass = feature.properties.class;
+		if(!typedAttractionMap[fClass]) {
+			typedAttractionMap[fClass] = { data: [], isEnabled: false };
+		}
+
+		typedAttractionMap[fClass].data.push(featureToAttrData(feature));
 	});
 }
 
@@ -62,14 +100,14 @@ function featureToAttrData(feature) {
 
 
 var boundMap = null;
-bindToMap(map) {
+function bindToMap(map) {
 	boundMap = map;
 	Object.keys(typedAttractionMap).forEach((type) => {
 		toggleLayerData(typedAttractionMap[type]);
 	});
 }
 
-toggleLayer(layerName) {
+function toggleLayer(layerName) {
 	if(Object.keys(typedAttractionMap).length == 0) {
 		console.log('No attraction data..');
 		return;
@@ -77,25 +115,51 @@ toggleLayer(layerName) {
 	toggleLayerData(typedAttractionMap[layerName]);
 }
 
-toggleLayerData(layerData) {
-	Object.keys(layerData).forEach((attr) => {
-		if(!attr.lMarker) attr.lMarker = makeMarker(attr.lat, attr.lng); //L.marker([ attr.lat, attr.lon ]);
+function toggleLayerData(layerData) {
+	Object.keys(layerData.data).forEach((attr) => {
+		var current = layerData.data[attr];
+		if(!current.lMarker) current.lMarker = makeMarker(current.lat, current.lng, current);
 		if(layerData.isEnabled) {
-			attr.lMarker.remove();
+			current.lMarker.remove();
 		} else {
-			attr.lMarker.addTo(boundMap);
-		}
-		layerData.isEnabled = !layerData.isEnabled;
+			current.lMarker.addTo(boundMap);
+		}	
 	});
+	layerData.isEnabled = !layerData.isEnabled;
 }
 
-makeMarker(lat, lng, attractionData) {
-	var mark = L.marker([ lat, lng ]);
-	mark.click = function() {
-		console.log(attractionData);
+var attractionPanel = null;
+var attractionContainer = null;
+function makeMarker(lat, lng, attractionData) {
+	if(attractionPanel === null) {
+		attractionPanel = document.getElementById('attraction-panel');
+		attractionContainer = document.getElementById('attraction-menu-container');
 	}
+
+	var mark = L.marker([ lat, lng ]);
+	console.log(mark);
+	mark.on('click', clickEventWrapper(attractionPanel, attractionContainer, attractionData));
 
 	return mark;
 }
+
+
+var currentlyShownAttr = null;
+function clickEventWrapper(attrDataPanel, attrDataContainer, attrData) {
+	return function (evData) {
+		console.log(attrData);
+		if(attrDataContainer.style.display === 'none') {
+			attrDataContainer.style.display = 'inherit';
+		} else if(currentlyShownAttr === attrData) {
+			attrDataContainer.style.display = 'none';
+			return;
+		}
+		
+		currentlyShownAttr = attrData;
+		attrDataPanel.innerHTML = JSON.stringify(Object.assign({}, attrData, { lMarker: '' }));
+
+	}
+}
+
 
 
