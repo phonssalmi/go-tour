@@ -1,12 +1,6 @@
-var startlng = 0;
-var startlat = 0;
-var endlng = 0;
-var endlat = 0;
 var polyline = null;
 var geoJSON = null;
 var map;
-var startMarker;
-var endMarker;
 var startInput;
 var endInput;
 var transportType = "driving-car";
@@ -14,6 +8,8 @@ var enableMarkers = false;
 var startMarkerPlaced = false;
 var endMarkerPlaced = false;
 var isochroneMarker = false;
+var previousMarker;
+var markersArray = [];
 
 window.onload = function () {
 	/*Map creation*/
@@ -32,69 +28,35 @@ window.onload = function () {
 
 	createAutocomplete();
 
-	/*Event listeners for the map*/
-	startMarker = L.marker([], { draggable: true });
-	endMarker = L.marker([], { draggable: true });
 	function onMapRightClick(e) {
-		/*Place marker*/
-		if (enableMarkers && !isochroneMarker) {
-			endMarker
-				.setLatLng(e.latlng)
-				.addTo(map);
-			endlng = e.latlng.lng;
-			endlat = e.latlng.lat;
-			getEndPoint(endlat, endlng, endMarker);
-			getRoute();
-			endMarkerPlaced = true;
-			checkMarkers();
-		}
 	}
 	map.on('contextmenu', onMapRightClick);
 
 	function onMapClick(e) {
 		/*Place marker*/
 		if (enableMarkers) {
-			startMarker
-				.setLatLng(e.latlng)
-				.addTo(map);
-			startlng = e.latlng.lng;
-			startlat = e.latlng.lat;
-			getStartPoint(startlat, startlng, startMarker);
-			getRouteN();
-			startMarkerPlaced = true;
-			checkMarkers();
+			var tempMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
+			markersArray.push(tempMarker);
+			getPointAddress(markersArray[0]);
+			getPointAddress(markersArray[markersArray.length - 1]);
+			getRoute();
+
 		}
 	}
 	map.on('click', onMapClick);
 
-	function startMarkerDrag(e) {
-		startlng = e.latlng.lng;
-		startlat = e.latlng.lat;
-		getStartPoint(startlat, startlng, startMarker);
-	}
+	// function removeMarker(e) {
+	// 	if (polyline != null) {
+	// 		map.removeLayer(polyline);
+	// 		polyline = null;
+	// 	}
+	// 	map.removeLayer(e.target);
+	// 	if (e.target == startMarker) {  //it's wrong and it should be done properly... but it works for now
+	// 		startlat = startlng = 0;
+	// 	}
+	// 	else { endlat = endlng = 0; }
+	// }
 
-	function endMarkerDrag(e) {
-		endlng = e.latlng.lng;
-		endlat = e.latlng.lat;
-		getEndPoint(endlat, endlng, startMarker);
-	}
-
-	function removeMarker(e) {
-		if (polyline != null) {
-			map.removeLayer(polyline);
-			polyline = null;
-		}
-		map.removeLayer(e.target);
-	}
-
-
-
-	startMarker.on('move', startMarkerDrag);
-	endMarker.on('move', endMarkerDrag);
-	startMarker.on('dragend', getRoute);
-	endMarker.on('dragend', getRoute);
-	startMarker.on('dblclick', removeMarker);
-	endMarker.on('dblclick', removeMarker);
 }
 
 function getTransportType(e) {
@@ -103,12 +65,17 @@ function getTransportType(e) {
 }
 
 function getRoute() {
-	if (startlat == 0 || startlng == 0 || endlat == 0 || endlng == 0)
+	if (markersArray.length < 2) {
 		return;
-
+	}
+	var coordinatesString = "";
+	for (i = 0; i < markersArray.length; i++) {
+		coordinatesString += markersArray[i]._latlng.lng + '%2C' + markersArray[i]._latlng.lat + '%7C';
+	}
+	coordinatesString = coordinatesString.slice(0, -3);
 	var request = new XMLHttpRequest();
 	var requestURI = 'https://api.openrouteservice.org/directions?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&coordinates='
-		+ startlng + '%2C' + startlat + '%7C' + endlng + '%2C' + endlat + '&profile=' + transportType;
+		+ coordinatesString + '&profile=' + transportType;
 	request.open('GET', requestURI);
 	request.setRequestHeader('Accept', 'text/json; charset=utf-8');
 
@@ -205,7 +172,7 @@ function clearLines() {
 }
 
 function getIsochrones() {
-	if (startlat == 0 || startlng == 0) {
+	if (markersArray.length <= 0) {
 		alert("Please put a marker first");
 		return;
 	}
@@ -214,7 +181,7 @@ function getIsochrones() {
 	var request = new XMLHttpRequest();
 
 	request.open('GET', 'https://api.openrouteservice.org/isochrones?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&locations='
-		+ startlng + '%2C' + startlat + '&profile=' + transportType + '&range_type=time&range=' + range + '&interval=' + interval);
+		+ markersArray[0]._latlng.lng + '%2C' + markersArray[0]._latlng.lat + '&profile=' + transportType + '&range_type=time&range=' + range + '&interval=' + interval);
 
 	request.setRequestHeader('Accept', 'text/json; charset=utf-8');
 
@@ -232,14 +199,12 @@ function getIsochrones() {
 			}).addTo(map);
 		}
 	};
-
 	request.send();
-
 }
 
-function getStartPoint(lat, lng, marker) {
+function getPointAddress(marker) {
 	var req = new XMLHttpRequest();
-	var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
+	var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + marker._latlng.lat + "," + marker._latlng.lng + "&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
 	req.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			var myArr = JSON.parse(this.responseText);
@@ -250,21 +215,6 @@ function getStartPoint(lat, lng, marker) {
 	req.open("GET", url, true);
 	req.send();
 }
-
-function getEndPoint(lat, lng, marker) {
-	var req = new XMLHttpRequest();
-	var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
-	req.onreadystatechange = function () {
-		if (this.readyState == 4 && this.status == 200) {
-			var myArr = JSON.parse(this.responseText);
-			showPopup(marker, myArr);
-			endInput.value = myArr.results[0].formatted_address;
-		}
-	};
-	req.open("GET", url, true);
-	req.send();
-}
-
 
 function createAutocomplete() {
 	startInput = document.getElementById('startPoint');
@@ -281,24 +231,20 @@ function createAutocomplete() {
 	var autocompleteEnd = new google.maps.places.Autocomplete(endInput, options);
 
 	google.maps.event.addListener(autocompleteStart, 'place_changed', function () {
-
-		startMarker
-			.setLatLng([autocompleteStart.getPlace().geometry.location.lat(), autocompleteStart.getPlace().geometry.location.lng()])
-			.addTo(map);
-		startlng = autocompleteStart.getPlace().geometry.location.lng();
-		startlat = autocompleteStart.getPlace().geometry.location.lat();
-		getStartPoint(startlat, startlng, startMarker);
+		var tempMarker = L.marker([autocompleteStart.getPlace().geometry.location.lat(), autocompleteStart.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
+		getPointAddress(tempMarker);
+		markersArray.push(tempMarker);
+		markersArray[0]._latlng.lng = autocompleteStart.getPlace().geometry.location.lng();
+		markersArray[0]._latlng.lat = autocompleteStart.getPlace().geometry.location.lat();
 		getRoute();
 	})
 
 	google.maps.event.addListener(autocompleteEnd, 'place_changed', function () {
-
-		endMarker
-			.setLatLng([autocompleteEnd.getPlace().geometry.location.lat(), autocompleteEnd.getPlace().geometry.location.lng()])
-			.addTo(map);
-		endlng = autocompleteEnd.getPlace().geometry.location.lng();
-		endlat = autocompleteEnd.getPlace().geometry.location.lat();
-		getEndPoint(endlat, endlng, endMarker);
+		var tempMarker = L.marker([autocompleteStart.getPlace().geometry.location.lat(), autocompleteStart.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
+		getPointAddress(tempMarker);
+		markersArray.push(tempMarker);
+		markersArray[markersArray.length - 1]._latlng.lng = autocompleteEnd.getPlace().geometry.location.lng();
+		markersArray[markersArray.length - 1]._latlng.lat = autocompleteEnd.getPlace().geometry.location.lat();
 		getRoute();
 	})
 
@@ -326,16 +272,6 @@ function onRangeChange() {
 
 function placeMarkers() {
 	enableMarkers = !enableMarkers;
-	startMarkerPlaced = false;
-	endMarkerPlaced = false;
-}
-
-function checkMarkers() {
-	if (startMarkerPlaced && endMarkerPlaced) {
-		enableMarkers = false;
-		startMarkerPlaced = false;
-		endMarkerPlaced = false;
-	}
 }
 
 function allowIsochroneMarker() {
