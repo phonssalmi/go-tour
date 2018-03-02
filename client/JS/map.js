@@ -30,6 +30,8 @@ window.onload = function () {
 		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap contributors</a>'
 	}).addTo(map);
 
+	loadAttractions(map);
+
 	createAutocomplete();
 
 	/*Event listeners for the map*/
@@ -362,4 +364,10 @@ function zoomIn() {
 
 function zoomOut() {
 	map.zoomOut(2);
+}
+
+function loadAttractions(map) {
+	parseMapData(testData);
+	//loadMapData('path').then(() => {
+	bindToMap(map);
 }
