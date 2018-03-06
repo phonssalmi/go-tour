@@ -10,6 +10,7 @@ var endMarkerPlaced = false;
 var isochroneMarker = false;
 var previousMarker;
 var markersArray = [];
+var orsKey = "58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8";
 
 window.onload = function () {
 	/*Map creation*/
@@ -58,8 +59,14 @@ function removeMarkers() {
 	getRoute();
 }
 function onDrag(e) {
-	getRoute();
 	getPointAddress(e.target);
+	if (isochroneMarker) {
+		removeIsochrones();
+		getIsochrones();
+	}
+	else {
+		getRoute();
+	}
 }
 
 function getTransportType(e) {
@@ -80,7 +87,7 @@ function getRoute() {
 	}
 	coordinatesString = coordinatesString.slice(0, -3);
 	var request = new XMLHttpRequest();
-	var requestURI = 'https://api.openrouteservice.org/directions?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&coordinates='
+	var requestURI = 'https://api.openrouteservice.org/directions?api_key=' + orsKey + '&coordinates='
 		+ coordinatesString + '&profile=' + transportType;
 	request.open('GET', requestURI);
 	request.setRequestHeader('Accept', 'text/json; charset=utf-8');
@@ -184,7 +191,7 @@ function getIsochrones() {
 	var interval = document.getElementById("isochrones_interval").value * 60;
 	var request = new XMLHttpRequest();
 
-	request.open('GET', 'https://api.openrouteservice.org/isochrones?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&locations='
+	request.open('GET', 'https://api.openrouteservice.org/isochrones?api_key=' + orsKey + '&locations='
 		+ markersArray[0]._latlng.lng + '%2C' + markersArray[0]._latlng.lat + '&profile=' + transportType + '&range_type=time&range=' + range + '&interval=' + interval);
 
 	request.setRequestHeader('Accept', 'text/json; charset=utf-8');
@@ -269,6 +276,7 @@ function createAutocomplete() {
 function onIntervalChange() {
 	var interval = document.getElementById("isochrones_interval");
 	var range = document.getElementById("isochrones_range");
+
 	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
 	document.getElementById("intervalMax").innerHTML = "Max:" + interval.max;
 	document.getElementById("intervalCurrent").innerHTML = interval.value;
