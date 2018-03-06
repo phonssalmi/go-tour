@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Document sans nom</title>
+
+<script type="text/javascript" src="js/interface.js"></script>
+<script type="text/javascript" src="js/jQuery.js" ></script>
+<script type="text/javascript" src="js/iutil.js"></script>
+<script type="text/javascript" src="js/fisheye.js"></script>
+
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body bgcolor="#999999">
+
+<div class="banner" id="banner">
+	<div class="container">
+    	<div class="items">
+       	 <a class="item" href="#"><img src="images/walk2.png"/><span>On Foot</span></a>
+   	     <a class="item" href="#"><img src="images/bicycle1.png"/><span>Bicycle</span></a>
+		 <a class="item" href="#"><img src="images/car.png"/><span>Car</span></a>
+         <a class="item" href="#"><img src="images/7892-200.png"/><span>Bus</span></a> 
+         </div>
+    </div>
+    
+    <br/><br/>
+    
+</div>    
+
+    <form action="">
+        <div class="shadow">
+             Go Tour !
+        </div>
+
+        <table class="t" >
+        <div>
+		<tr></tr><tr></tr><tr></tr>
+        <tr></tr><tr></tr><tr></tr><tr></tr>
+         <tr>
+            <td>
+                <input type="text" name="" value="" class="text">
+            </td>
+            
+            <td>
+                <input type="button" name="help" class="help" />
+            
+            </td>
+            
+            <td class="split right"><img src="images/map.JPG"/></td>
+    
+         </tr>   
+        
+         <tr>
+            <td>
+                <input type="text" name="" value="" class="text">
+            </td>
+            
+            <td>
+                <a href="#"><button class="parameters"></button></a>
+            </td>
+            
+         </tr>  
+         
+        <tr>
+            <tr></tr><tr></tr>
+            <tr></tr><tr></tr>
+            <tr></tr><tr></tr>
+            <tr></tr><tr></tr>
+    
+            <td class="td">
+                <input type="text" class="td"/>
+            </td>
+            
+         </tr>
+         
+         <tr></tr>
+         <tr></tr>
+         <tr></tr>
+         <tr></tr>
+         <tr></tr>
+         
+         <tr>
+            <td><p class="smile">Travel Smart <img src="images/s-l1000.png" /></p></td>
+         </tr>
+         
+         </div>
+        
+    </table>
+
+  </form>
+    
+
+
+
+<script type="text/javascript">
+	
+	$(document).ready(function()
+		{
+			$('#banner').Fisheye(
+				{
+					maxWidth: 60,
+					items: 'a',
+					itemsText: 'span',
+					container: '.container',
+					itemWidth: 40,
+					proximity: 90,
+					halign : 'right',
+					valign : 'bottom',
+					halign : 'center'
+				}
+			)
+		}
+	);
+	
+	
+</script>
+
+</body>
+
+
+</html>
