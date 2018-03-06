@@ -63,6 +63,7 @@ function removeMarkers() {
 	});
 	markersArray = [];
 	getRoute();
+	autocompleteArray = [];
 }
 function onDrag(e) {
 	getPointAddress(e.target);
@@ -106,6 +107,27 @@ function getRoute() {
 		}
 	};
 	request.send();
+}
+function createOneInput(){
+	inputsDiv = document.getElementById("inputs-form");
+	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
+	'<input placeholder="Location" class="input-fields">' +
+	'<span class="leaflet-routing-remove-waypoint"></span>'+
+	'</div>';
+	createAutocomplete();
+}
+function recreateInputs(){
+	inputsDiv = document.getElementById("inputs-form");
+	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
+	'<input placeholder="Start" class="input-fields">' +
+	'<span class="leaflet-routing-remove-waypoint"></span>'+
+	'</div>' +
+	'<div class="leaflet-routing-geocoder">' +
+	'<input placeholder="End" class="input-fields">' +
+	'<span class="leaflet-routing-remove-waypoint"></span>' +
+	'</div>' +
+	'<button class="leaflet-routing-add-waypoint" type="button"></button>';
+	createAutocomplete();
 }
 
 let currentItineraries = [];
@@ -351,9 +373,11 @@ function enableIsochrones() {
 
 	if (document.getElementById("isochrones").style.display === "block") {
 		document.getElementById("isochrones").style.display = "none";
+		recreateInputs();
 	}
 	else {
 		document.getElementById("isochrones").style.display = "block";
+		createOneInput();
 	}
 }
 
