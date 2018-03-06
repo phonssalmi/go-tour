@@ -10,6 +10,14 @@ var endMarkerPlaced = false;
 var isochroneMarker = false;
 var previousMarker;
 var markersArray = [];
+var inputsArray = [];
+var inputsDiv = 0;
+var autocompleteArray = [];
+var inputStringHTML = "<div class=\"leaflet-routing-geocoder\">" +
+"<input class=\"input-fields\">" +
+"<span class=\"leaflet-routing-remove-waypoint\">" +
+"</span></div>";
+
 
 window.onload = function () {
 	/*Map creation*/
@@ -27,7 +35,6 @@ window.onload = function () {
 	}).addTo(map);
 
 	createAutocomplete();
-
 	function onMapRightClick(e) {
 	}
 	map.on('contextmenu', onMapRightClick);
@@ -37,8 +44,7 @@ window.onload = function () {
 		if (enableMarkers) {
 			var tempMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
 			markersArray.push(tempMarker);
-			getPointAddress(markersArray[0]);
-			getPointAddress(markersArray[markersArray.length - 1]);
+			getPointAddress(tempMarker);
 			getRoute();
 
 		}
@@ -202,53 +208,95 @@ function getIsochrones() {
 	request.send();
 }
 
-function getPointAddress(marker) {
+function getPointAddress(marker, autoCreate = true) {
 	var req = new XMLHttpRequest();
 	var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + marker._latlng.lat + "," + marker._latlng.lng + "&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
 	req.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			var myArr = JSON.parse(this.responseText);
 			showPopup(marker, myArr);
-			startInput.value = myArr.results[0].formatted_address;
+			if(autoCreate){				
+			 createPlaceInputFromMarker(marker, myArr);
+			}
 		}
 	};
 	req.open("GET", url, true);
 	req.send();
 }
 
-function createAutocomplete() {
-	startInput = document.getElementById('startPoint');
-	endInput = document.getElementById('endPoint');
-	// var defaultBounds = new google.maps.LatLngBounds(
-	//     new google.maps.LatLng(60.4465963, 22.3275915),
-	//     new google.maps.LatLng(60.44704549999999, 22.2007352));
+function createPlaceInputFromMarker(marker, myArr){
+	var index = markersArray.indexOf(marker);
+	inputsDiv = document.getElementById("inputs-form");
+
+	if(index!=-1){
+		if(index != 0 && index != 1){
+			var inp = document.createElement('div');
+			inp.innerHTML = inputStringHTML;
+			inputsDiv.appendChild(inp);
+		}
+		inputsArray = document.getElementsByClassName("input-fields");
+		inputsArray[index].value = myArr.results[0].formatted_address;
+	}
+}
+
+function createEmptyInput(marker){
+	var index = markersArray.indexOf(marker);
+	inputsDiv = document.getElementById("inputs-form");
+
+	if(index!=-1){
+		if(index != 0 && inputsArray[inputsArray.length - 1].value.length > 0){
+			var inp = document.createElement('div');
+			inp.innerHTML = inputStringHTML;
+			inputsDiv.appendChild(inp);
+			createAutocomplete(false);
+		}
+	}
+}
+
+function createAutocomplete(createInput = true) {
 
 	var options = {
-		// bounds: defaultBounds,
 		componentRestrictions: { country: 'fi' }
 	};
-	var autocompleteStart = new google.maps.places.Autocomplete(startInput, options);
-	var autocompleteEnd = new google.maps.places.Autocomplete(endInput, options);
+	inputsArray = document.getElementsByClassName("input-fields");
+	for (i = autocompleteArray.length; i < inputsArray.length; i++){
+		autocompleteArray[i] = new google.maps.places.Autocomplete(inputsArray[i], options);
+		google.maps.event.addListener(autocompleteArray[i], 'place_changed', function () {
+			var tempMarker = L.marker([this.getPlace().geometry.location.lat(), this.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
+			getPointAddress(tempMarker, false);
+			markersArray.push(tempMarker);
+			getRoute();
+			checkMarkers(tempMarker);
+		})
+	}
 
-	google.maps.event.addListener(autocompleteStart, 'place_changed', function () {
-		var tempMarker = L.marker([autocompleteStart.getPlace().geometry.location.lat(), autocompleteStart.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
-		getPointAddress(tempMarker);
-		markersArray.push(tempMarker);
-		markersArray[0]._latlng.lng = autocompleteStart.getPlace().geometry.location.lng();
-		markersArray[0]._latlng.lat = autocompleteStart.getPlace().geometry.location.lat();
-		getRoute();
-	})
+	// google.maps.event.addListener(autocompleteStart, 'place_changed', function () {
+	// 	var tempMarker = L.marker([autocompleteStart.getPlace().geometry.location.lat(), autocompleteStart.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
+	// 	getPointAddress(tempMarker);
+	// 	markersArray.push(tempMarker);
+	// 	markersArray[0]._latlng.lng = autocompleteStart.getPlace().geometry.location.lng();
+	// 	markersArray[0]._latlng.lat = autocompleteStart.getPlace().geometry.location.lat();
+	// 	getRoute();
+	// })
 
-	google.maps.event.addListener(autocompleteEnd, 'place_changed', function () {
-		var tempMarker = L.marker([autocompleteStart.getPlace().geometry.location.lat(), autocompleteStart.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
-		getPointAddress(tempMarker);
-		markersArray.push(tempMarker);
-		markersArray[markersArray.length - 1]._latlng.lng = autocompleteEnd.getPlace().geometry.location.lng();
-		markersArray[markersArray.length - 1]._latlng.lat = autocompleteEnd.getPlace().geometry.location.lat();
-		getRoute();
-	})
+	// google.maps.event.addListener(autocompleteEnd, 'place_changed', function () {
+	// 	var tempMarker = L.marker([autocompleteStart.getPlace().geometry.location.lat(), autocompleteStart.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
+	// 	getPointAddress(tempMarker);
+	// 	markersArray.push(tempMarker);
+	// 	markersArray[markersArray.length - 1]._latlng.lng = autocompleteEnd.getPlace().geometry.location.lng();
+	// 	markersArray[markersArray.length - 1]._latlng.lat = autocompleteEnd.getPlace().geometry.location.lat();
+	// 	getRoute();
+	// })
 
 }
+
+function checkMarkers(marker){
+	inputsArray = document.getElementsByClassName("input-fields");
+	if (inputsArray.length == markersArray.length){
+		createEmptyInput(marker);
+	}
+}
+
 function onIntervalChange() {
 	var interval = document.getElementById("isochrones_interval");
 	var range = document.getElementById("isochrones_range");
@@ -301,3 +349,4 @@ function zoomIn() {
 function zoomOut() {
 	map.zoomOut(2);
 }
+
