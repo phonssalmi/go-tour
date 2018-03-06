@@ -18,6 +18,7 @@ var inputStringHTML = "<div class=\"leaflet-routing-geocoder\">" +
 "<span class=\"leaflet-routing-remove-waypoint\">" +
 "</span></div>";
 
+var orsKey = "58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8";
 
 window.onload = function () {
 	/*Map creation*/
@@ -36,13 +37,18 @@ window.onload = function () {
 
 	createAutocomplete();
 	function onMapRightClick(e) {
+		//deleteMarkers();
+		//removeIsochrones();
 	}
 	map.on('contextmenu', onMapRightClick);
 
 	function onMapClick(e) {
 		/*Place marker*/
 		if (enableMarkers) {
-			var tempMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
+			if (isochroneMarker && markersArray.length > 0) {
+				return;
+			}
+			var tempMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: true }).addTo(map).addEventListener('dragend', onDrag);
 			markersArray.push(tempMarker);
 			getPointAddress(tempMarker);
 			getRoute();
@@ -50,19 +56,23 @@ window.onload = function () {
 		}
 	}
 	map.on('click', onMapClick);
-
-	// function removeMarker(e) {
-	// 	if (polyline != null) {
-	// 		map.removeLayer(polyline);
-	// 		polyline = null;
-	// 	}
-	// 	map.removeLayer(e.target);
-	// 	if (e.target == startMarker) {  //it's wrong and it should be done properly... but it works for now
-	// 		startlat = startlng = 0;
-	// 	}
-	// 	else { endlat = endlng = 0; }
-	// }
-
+}
+function removeMarkers() {
+	markersArray.forEach(marker => {
+		map.removeLayer(marker);
+	});
+	markersArray = [];
+	getRoute();
+}
+function onDrag(e) {
+	getPointAddress(e.target);
+	if (isochroneMarker) {
+		removeIsochrones();
+		getIsochrones();
+	}
+	else {
+		getRoute();
+	}
 }
 
 function getTransportType(e) {
@@ -71,6 +81,9 @@ function getTransportType(e) {
 }
 
 function getRoute() {
+	if (polyline != null) {
+		map.removeLayer(polyline);
+	}
 	if (markersArray.length < 2) {
 		return;
 	}
@@ -80,7 +93,7 @@ function getRoute() {
 	}
 	coordinatesString = coordinatesString.slice(0, -3);
 	var request = new XMLHttpRequest();
-	var requestURI = 'https://api.openrouteservice.org/directions?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&coordinates='
+	var requestURI = 'https://api.openrouteservice.org/directions?api_key=' + orsKey + '&coordinates='
 		+ coordinatesString + '&profile=' + transportType;
 	request.open('GET', requestURI);
 	request.setRequestHeader('Accept', 'text/json; charset=utf-8');
@@ -88,9 +101,7 @@ function getRoute() {
 	request.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			var encoded = JSON.parse(this.response).routes[0].geometry;
-			if (polyline != null) {
-				map.removeLayer(polyline);
-			}
+
 			polyline = L.Polyline.fromEncoded(encoded).addTo(map);
 		}
 	};
@@ -186,7 +197,7 @@ function getIsochrones() {
 	var interval = document.getElementById("isochrones_interval").value * 60;
 	var request = new XMLHttpRequest();
 
-	request.open('GET', 'https://api.openrouteservice.org/isochrones?api_key=58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8&locations='
+	request.open('GET', 'https://api.openrouteservice.org/isochrones?api_key=' + orsKey + '&locations='
 		+ markersArray[0]._latlng.lng + '%2C' + markersArray[0]._latlng.lat + '&profile=' + transportType + '&range_type=time&range=' + range + '&interval=' + interval);
 
 	request.setRequestHeader('Accept', 'text/json; charset=utf-8');
@@ -207,6 +218,10 @@ function getIsochrones() {
 	};
 	request.send();
 }
+function removeIsochrones() {
+	if (geoJSON != null)
+		map.removeLayer(geoJSON);
+}
 
 function getPointAddress(marker, autoCreate = true) {
 	var req = new XMLHttpRequest();
@@ -218,6 +233,7 @@ function getPointAddress(marker, autoCreate = true) {
 			if(autoCreate){				
 			 createPlaceInputFromMarker(marker, myArr);
 			}
+
 		}
 	};
 	req.open("GET", url, true);
@@ -300,6 +316,7 @@ function checkMarkers(marker){
 function onIntervalChange() {
 	var interval = document.getElementById("isochrones_interval");
 	var range = document.getElementById("isochrones_range");
+
 	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
 	document.getElementById("intervalMax").innerHTML = "Max:" + interval.max;
 	document.getElementById("intervalCurrent").innerHTML = interval.value;
@@ -328,6 +345,8 @@ function allowIsochroneMarker() {
 }
 
 function enableIsochrones() {
+	removeMarkers();
+	removeIsochrones();
 	allowIsochroneMarker();
 
 	if (document.getElementById("isochrones").style.display === "block") {
