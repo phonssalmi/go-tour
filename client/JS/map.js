@@ -29,13 +29,18 @@ window.onload = function () {
 	createAutocomplete();
 
 	function onMapRightClick(e) {
+		//deleteMarkers();
+		//removeIsochrones();
 	}
 	map.on('contextmenu', onMapRightClick);
 
 	function onMapClick(e) {
 		/*Place marker*/
 		if (enableMarkers) {
-			var tempMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
+			if (isochroneMarker && markersArray.length > 0) {
+				return;
+			}
+			var tempMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: true }).addTo(map).addEventListener('dragend', onDrag);
 			markersArray.push(tempMarker);
 			getPointAddress(markersArray[0]);
 			getPointAddress(markersArray[markersArray.length - 1]);
@@ -44,19 +49,17 @@ window.onload = function () {
 		}
 	}
 	map.on('click', onMapClick);
-
-	// function removeMarker(e) {
-	// 	if (polyline != null) {
-	// 		map.removeLayer(polyline);
-	// 		polyline = null;
-	// 	}
-	// 	map.removeLayer(e.target);
-	// 	if (e.target == startMarker) {  //it's wrong and it should be done properly... but it works for now
-	// 		startlat = startlng = 0;
-	// 	}
-	// 	else { endlat = endlng = 0; }
-	// }
-
+}
+function removeMarkers() {
+	markersArray.forEach(marker => {
+		map.removeLayer(marker);
+	});
+	markersArray = [];
+	getRoute();
+}
+function onDrag(e) {
+	getRoute();
+	getPointAddress(e.target);
 }
 
 function getTransportType(e) {
@@ -65,6 +68,9 @@ function getTransportType(e) {
 }
 
 function getRoute() {
+	if (polyline != null) {
+		map.removeLayer(polyline);
+	}
 	if (markersArray.length < 2) {
 		return;
 	}
@@ -82,9 +88,7 @@ function getRoute() {
 	request.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			var encoded = JSON.parse(this.response).routes[0].geometry;
-			if (polyline != null) {
-				map.removeLayer(polyline);
-			}
+
 			polyline = L.Polyline.fromEncoded(encoded).addTo(map);
 		}
 	};
@@ -201,6 +205,10 @@ function getIsochrones() {
 	};
 	request.send();
 }
+function removeIsochrones() {
+	if (geoJSON != null)
+		map.removeLayer(geoJSON);
+}
 
 function getPointAddress(marker) {
 	var req = new XMLHttpRequest();
@@ -209,7 +217,16 @@ function getPointAddress(marker) {
 		if (this.readyState == 4 && this.status == 200) {
 			var myArr = JSON.parse(this.responseText);
 			showPopup(marker, myArr);
-			startInput.value = myArr.results[0].formatted_address;
+			var index = markersArray.indexOf(marker);
+			if (index != -1) {
+				if (index == 0) {
+					startInput.value = myArr.results[0].formatted_address;
+				}
+				if (index == markersArray.length - 1) {
+					endInput.value = myArr.results[0].formatted_address;
+				}
+			}
+			//startInput.value = myArr.results[0].formatted_address;
 		}
 	};
 	req.open("GET", url, true);
@@ -240,7 +257,7 @@ function createAutocomplete() {
 	})
 
 	google.maps.event.addListener(autocompleteEnd, 'place_changed', function () {
-		var tempMarker = L.marker([autocompleteStart.getPlace().geometry.location.lat(), autocompleteStart.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
+		var tempMarker = L.marker([autocompleteEnd.getPlace().geometry.location.lat(), autocompleteEnd.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
 		getPointAddress(tempMarker);
 		markersArray.push(tempMarker);
 		markersArray[markersArray.length - 1]._latlng.lng = autocompleteEnd.getPlace().geometry.location.lng();
@@ -280,6 +297,8 @@ function allowIsochroneMarker() {
 }
 
 function enableIsochrones() {
+	removeMarkers();
+	removeIsochrones();
 	allowIsochroneMarker();
 
 	if (document.getElementById("isochrones").style.display === "block") {
