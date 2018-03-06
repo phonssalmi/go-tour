@@ -232,8 +232,8 @@ function getPointAddress(marker, autoCreate = true) {
 			showPopup(marker, myArr);
 			if(autoCreate){				
 			 createPlaceInputFromMarker(marker, myArr);
+			 createAutocomplete();
 			}
-
 		}
 	};
 	req.open("GET", url, true);
@@ -264,12 +264,12 @@ function createEmptyInput(marker){
 			var inp = document.createElement('div');
 			inp.innerHTML = inputStringHTML;
 			inputsDiv.appendChild(inp);
-			createAutocomplete(false);
+			createAutocomplete();
 		}
 	}
 }
 
-function createAutocomplete(createInput = true) {
+function createAutocomplete() {
 
 	var options = {
 		componentRestrictions: { country: 'fi' }
