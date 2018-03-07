@@ -84,6 +84,11 @@ function getTransportType(e) {
 }
 
 function getRoute() {
+	if(transportType === 'bus') {	//TODO, make a real solution, this is temp fix
+		getRouteN();
+		return;
+	}
+
 	if (polyline != null) {
 		map.removeLayer(polyline);
 	}
@@ -134,8 +139,16 @@ function recreateInputs(){
 
 let currentItineraries = [];
 
+function clearMarkerArray() {
+	markersArray = [];	//TEMPORARY, FOR RESETING FROM CONSOLE
+}
+
 function getRouteN() {
-	if (startlat === 0 || startlng === 0 || endlat === 0 || endlng === 0) return;
+	if(markersArray.length < 2) return;
+	var startlat = markersArray[0]._latlng.lat;
+	var startlng = markersArray[0]._latlng.lng;
+	var endlat = markersArray[1]._latlng.lat;
+	var endlng = markersArray[1]._latlng.lng;
 
 	requestRoute(startlat, startlng, endlat, endlng).then((data) => {
 		if (typeof data === 'string') {
@@ -191,8 +204,7 @@ function routeToPolyline(route) {
 
 	var ncords = [];
 	ncords.push([route.from.lat, route.from.lon]);
-	route.steps.forEach((step) => { ncords.push([step.lat, step.lon]); });
-	ncords.push([route.to.lat, route.to.lon]);
+	route.steps.forEach((step) => { ncords.push([step.lat, step.lon]); });ncords.push([route.to.lat, route.to.lon]);
 	//ncords.push(...pline.getLatLngs());
 	console.log(ncords);
 	return new L.Polyline(ncords, polylineOpts);
