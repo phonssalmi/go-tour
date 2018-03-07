@@ -25,9 +25,12 @@
 
 .button-left{
 
-    text-align: left;
-    margin-left: 25px;
-    margin-top: 10px;
+    /* text-align: right; */
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(16, 66, 180);
+    color: white;
+    padding: 10px;
 }
 #view_route{
 display: none;
@@ -44,11 +47,9 @@ display: none;
     display: none;
 }
 .leaflet-control-zoom {
-    padding: 14px 14px;
+    padding: 20px 20px;
     background: blueviolet;
-}
-
-
+  }
 .leaflet-bar{
 
 }

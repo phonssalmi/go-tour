@@ -54,7 +54,12 @@ window.onload = function () {
 			markersArray.push(tempMarker);
 			getPointAddress(tempMarker);
 			getRoute();
-
+			if (markersArray.length == 2){
+				createEmptyInput(tempMarker,true);
+			}
+			else{
+				createEmptyInput(tempMarker);
+			}
 		}
 	}
 	map.on('click', onMapClick);
@@ -291,12 +296,12 @@ function createPlaceInputFromMarker(marker, myArr){
 	}
 }
 
-function createEmptyInput(marker){
+function createEmptyInput(marker, forceCreate = false){
 	var index = markersArray.indexOf(marker);
 	inputsDiv = document.getElementById("inputs-form");
 
 	if(index!=-1){
-		if(index != 0 && inputsArray[inputsArray.length - 1].value.length > 0){
+		if((index != 0 && inputsArray[inputsArray.length - 1].value.length > 0) || forceCreate){
 			var inp = document.createElement('div');
 			inp.innerHTML = inputStringHTML;
 			inputsDiv.appendChild(inp);
