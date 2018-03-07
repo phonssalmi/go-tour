@@ -135,8 +135,9 @@ function makeMarker(lat, lng, attractionData) {
 		attractionPanel = document.getElementById('attraction-panel');
 		attractionContainer = document.getElementById('attraction-menu-container');
 	}
-
+	
 	var mark = L.marker([ lat, lng ]);
+	
 	console.log(mark);
 	mark.on('click', clickEventWrapper(attractionPanel, attractionContainer, attractionData));
 
@@ -156,10 +157,13 @@ function clickEventWrapper(attrDataPanel, attrDataContainer, attrData) {
 		}
 		
 		currentlyShownAttr = attrData;
-		attrDataPanel.innerHTML = JSON.stringify(Object.assign({}, attrData, { lMarker: '' }));
+		updateAttrPanel(attrData, attrDataPanel);
+		//attrDataPanel.innerHTML = JSON.stringify(Object.assign({}, attrData, { lMarker: '' }));
 
 	}
 }
 
-
+function updateAttrPanel(attrData, attrDataPanel) {
+	attrDataPanel.innerHTML = '<div style="width: 200px;padding: 5px;background-color: #FFFFFF"><h4 style="margin: 0">' + attrData.name + '</h4><h3 style="margin: 5px 0 0 0">' + attrData.class + '</h3><div>';
+}
 
