@@ -52,7 +52,7 @@
 				<button id="walk" class="walk-icon" value="foot-walking" onclick="getTransportType(value)"></button>
 				<button id="bike" class="bike-icon" value="cycling-regular" onclick="getTransportType(value)"></button>
 				<button id="car" class="car-icon" value="driving-car" onclick="getTransportType(value)"></button>
-				<button id="bus" class="bus-icon"></button>
+				<button id="bus" class="bus-icon" value="bus" onclick="getTransportType(value)"></button>
 
 
 			</div>
@@ -99,7 +99,7 @@
 
 	</div>
 
-	<div id="attraction-menu-container" class="leaflet-top leaflet-left">
+	<div id="attraction-menu-container" class="leaflet-bottom leaflet-left" style="display: none">
 		<div class="leaflet-routing-container leaflet-bar leaflet-control">
 			<div id="attraction-panel">
 				
@@ -112,7 +112,7 @@
 		</div>
 	</div>
 
-	<div class="leaflet-bottom leaflet-left" style="position:absolute;z-index:50;">
+	<div class="leaflet-bottom leaflet-right" style="position:absolute;z-index:50;margin-bottom:16px;">
 		<div class="leaflet-control-zoom leaflet-bar leaflet-control">
 			<a class="leaflet-control-zoom-in" href="#" title="Zoom in" onclick="zoomIn()">+</a>
 			<a class="leaflet-control-zoom-out" href="#" title="Zoom out" onclick="zoomOut()">-</a>
