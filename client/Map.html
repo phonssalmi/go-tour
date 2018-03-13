@@ -9,7 +9,7 @@
 
 	<!-- Project files -->
 	<link rel="stylesheet" type="text/css" href="CSS/map.css" />
-	
+
 	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 	<script type="text/javascript" src="JS/routeRequest.js"></script>
 	<script type="text/javascript" src="JS/attractions.js"></script>
@@ -47,37 +47,46 @@
 
 <body>
 	<div id="mapid"></div>
-	<div id="routing-menu" class="leaflet-top col-lg-3 col-md-12">
+	<div id="routing-menu" class="leaflet-top col-lg-4 col-md-12">
 		<div class="leaflet-routing-container col-12 leaflet-control">
 			<div id="button-list">
-				<button id="walk" class="button-left" value="foot-walking" onclick="getTransportType(value)">Walk <i class="fas fa-male"></i></button>
-				<button id="bike" class="button-left" value="cycling-regular" onclick="getTransportType(value)">Bicycle <i class = "fas fa-bicycle"></i></button>
-				<button id="car" class="button-left" value="driving-car" onclick="getTransportType(value)">Car <i class="fas fa-car"></i></button>
-				<button id="bus" class="button-left">Bus <i class="fas fa-bus"></i></button>
+				<button id="walk" class="button-left" value="foot-walking" onclick="getTransportType(value)">Walk
+					<i class="fas fa-male"></i>
+				</button>
+				<button id="bike" class="button-left" value="cycling-regular" onclick="getTransportType(value)">Bicycle
+					<i class="fas fa-bicycle"></i>
+				</button>
+				<button id="car" class="button-left" value="driving-car" onclick="getTransportType(value)">Car
+					<i class="fas fa-car"></i>
+				</button>
+				<button id="bus" class="button-left">Bus
+					<i class="fas fa-bus"></i>
+				</button>
 
 
 			</div>
 			<div id="inputs-form" class="leaflet-routing-geocoders ">
-				<div class="leaflet-routing-geocoder">
-					<input placeholder="Start" class="input-fields">
-					<span class="leaflet-routing-remove-waypoint"></span>
+				<div>
+					<div class="leaflet-routing-geocoder">
+						<input placeholder="Start" class="input-fields">
+					</div>
 				</div>
-				<div class="leaflet-routing-geocoder">
-					<input placeholder="End" class="input-fields">
-					<span class="leaflet-routing-remove-waypoint"></span>
+				<div>
+					<div class="leaflet-routing-geocoder">
+						<input placeholder="End" class="input-fields">
+					</div>
 				</div>
-				<button class="leaflet-routing-add-waypoint" type="button"></button>
 			</div>
 			<div id="button-list">
 				<button class="btn btn-primary" id="special-button" onclick="enableIsochrones()">
-						<i class="far fa-clock"></i>
-						Place Isochrones
-					</button>			
+					<i class="far fa-clock"></i>
+					Place Isochrones
+				</button>
 				<button class="btn btn-primary" id="special-button" onclick="placeMarkers()">
 					<i class="fas fa-map-marker"></i>
 					Place Markers
 				</button>
-			</div>			
+			</div>
 			<p>Southwest Finland Routing.</p>
 			<div id="isochrones">
 				<button value="isochrones" onclick="getIsochrones()">Generate Isochrones</button>
@@ -103,7 +112,7 @@
 	<div id="attraction-menu-container" class="leaflet-bottom leaflet-left" style="display: none">
 		<div class="leaflet-routing-container leaflet-bar leaflet-control">
 			<div id="attraction-panel">
-				
+
 			</div>
 		</div>
 	</div>
