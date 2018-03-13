@@ -47,19 +47,19 @@
 
 <body>
 	<div id="mapid"></div>
-	<div id="routing-menu" class="leaflet-top col-lg-4 col-md-12">
+	<div id="routing-menu" class="leaflet-top col-xl-3 col-lg-4 col-md-12">
 		<div class="leaflet-routing-container col-12 leaflet-control">
 			<div id="button-list">
-				<button id="walk" class="button-left" value="foot-walking" onclick="getTransportType(value)">Walk
+				<button id="walk" class="btn btn-info buttonMargin" value="foot-walking" onclick="getTransportType(value)">Walk
 					<i class="fas fa-male"></i>
 				</button>
-				<button id="bike" class="button-left" value="cycling-regular" onclick="getTransportType(value)">Bicycle
+				<button id="bike" class="btn btn-info buttonMargin" value="cycling-regular" onclick="getTransportType(value)">Bicycle
 					<i class="fas fa-bicycle"></i>
 				</button>
-				<button id="car" class="button-left" value="driving-car" onclick="getTransportType(value)">Car
+				<button id="car" class="btn btn-info buttonMargin" value="driving-car" onclick="getTransportType(value)">Car
 					<i class="fas fa-car"></i>
 				</button>
-				<button id="bus" class="button-left">Bus
+				<button id="bus" class="btn btn-info buttonMargin">Bus
 					<i class="fas fa-bus"></i>
 				</button>
 
@@ -78,11 +78,11 @@
 				</div>
 			</div>
 			<div id="button-list">
-				<button class="btn btn-primary" id="special-button" onclick="enableIsochrones()">
+				<button class="btn btn-primary buttonMargin" id="special-button" onclick="enableIsochrones()">
 					<i class="far fa-clock"></i>
 					Place Isochrones
 				</button>
-				<button class="btn btn-primary" id="special-button" onclick="placeMarkers()">
+				<button class="btn btn-primary buttonMargin" id="special-button" onclick="placeMarkers()">
 					<i class="fas fa-map-marker"></i>
 					Place Markers
 				</button>

@@ -33,6 +33,9 @@
     padding: 10px;
     margin: 5px;
 }
+.buttonMargin{
+    margin:3px;
+}
 #view_route{
 display: none;
 }
