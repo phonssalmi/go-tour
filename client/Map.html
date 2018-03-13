@@ -47,8 +47,8 @@
 
 <body>
 	<div id="mapid"></div>
-	<div id="routing-menu" class="leaflet-top leaflet-left">
-		<div class="leaflet-routing-container leaflet-bar leaflet-control">
+	<div id="routing-menu" class="leaflet-top col-lg-3 col-md-12">
+		<div class="leaflet-routing-container col-12 leaflet-control">
 			<div id="button-list">
 				<button id="walk" class="button-left" value="foot-walking" onclick="getTransportType(value)">Walk <i class="fas fa-male"></i></button>
 				<button id="bike" class="button-left" value="cycling-regular" onclick="getTransportType(value)">Bicycle <i class = "fas fa-bicycle"></i></button>
@@ -70,11 +70,11 @@
 			</div>
 			<div id="button-list">
 				<button class="btn btn-primary" id="special-button" onclick="enableIsochrones()">
-						<span class="glyphicon glyphicon-time"></span>
+						<i class="far fa-clock"></i>
 						Place Isochrones
 					</button>			
 				<button class="btn btn-primary" id="special-button" onclick="placeMarkers()">
-					<span class="glyphicon glyphicon-map-marker"></span>
+					<i class="fas fa-map-marker"></i>
 					Place Markers
 				</button>
 			</div>			

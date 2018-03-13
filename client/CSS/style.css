@@ -31,6 +31,7 @@
     background-color: rgb(16, 66, 180);
     color: white;
     padding: 10px;
+    margin: 5px;
 }
 #view_route{
 display: none;
@@ -54,13 +55,12 @@ display: none;
 
 }
 .leaflet-top {
-    float:left;
-    position: relative;
-    margin-left: 20px;
+    /* float:left; */
+    /* position: relative; */
+    /* margin-left: 20px; */
     background: white;
-    margin-top:10px;
-    border-radius: 3px;
-
+    margin-top:auto;
+    height: auto;
 }
 .leaflet-routing-container{
     background: none;
