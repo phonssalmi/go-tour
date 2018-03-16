@@ -14,8 +14,8 @@ var inputsArray = [];
 var inputsDiv = 0;
 var autocompleteArray = [];
 var inputStringHTML = "<div class=\"leaflet-routing-geocoder\">" +
-"<input class=\"input-fields\">" +
-"</div>";
+	"<input class=\"input-fields\">" +
+	"</div>";
 
 var orsKey = "58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8";
 
@@ -53,10 +53,10 @@ window.onload = function () {
 			markersArray.push(tempMarker);
 			getPointAddress(tempMarker);
 			getRoute();
-			if (markersArray.length == 2){
-				createEmptyInput(tempMarker,true);
+			if (markersArray.length == 2) {
+				createEmptyInput(tempMarker, true);
 			}
-			else{
+			else {
 				createEmptyInput(tempMarker);
 			}
 		}
@@ -82,13 +82,20 @@ function onDrag(e) {
 	}
 }
 
-function getTransportType(e) {
-	transportType = e;
+function getTransportType(e, sender) {
+	$('#transportType').children().each(function(){
+		this.style.backgroundColor = "#007bff";
+	})
+	sender.style.backgroundColor = "blue";
+	transportType = e
+
+	if(e === 'bus') map.removeLayer(polyline);
+	else clearLines();
 	getRoute();
 }
 
 function getRoute() {
-	if(transportType === 'bus') {	//TODO, make a real solution, this is temp fix
+	if (transportType === 'bus') {	//TODO, make a real solution, this is temp fix
 		getRouteN();
 		return;
 	}
@@ -119,25 +126,25 @@ function getRoute() {
 	};
 	request.send();
 }
-function createOneInput(){
+function createOneInput() {
 	inputsDiv = document.getElementById("inputs-form");
 	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
-	'<input placeholder="Location" class="input-fields">' +
-	'<span class="leaflet-routing-remove-waypoint"></span>'+
-	'</div>';
+		'<input placeholder="Location" class="input-fields">' +
+		'<span class="leaflet-routing-remove-waypoint"></span>' +
+		'</div>';
 	createAutocomplete();
 }
-function recreateInputs(){
+function recreateInputs() {
 	inputsDiv = document.getElementById("inputs-form");
 	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
-	'<input placeholder="Start" class="input-fields">' +
-	'<span class="leaflet-routing-remove-waypoint"></span>'+
-	'</div>' +
-	'<div class="leaflet-routing-geocoder">' +
-	'<input placeholder="End" class="input-fields">' +
-	'<span class="leaflet-routing-remove-waypoint"></span>' +
-	'</div>' +
-	'<button class="leaflet-routing-add-waypoint" type="button"></button>';
+		'<input placeholder="Start" class="input-fields">' +
+		'<span class="leaflet-routing-remove-waypoint"></span>' +
+		'</div>' +
+		'<div class="leaflet-routing-geocoder">' +
+		'<input placeholder="End" class="input-fields">' +
+		'<span class="leaflet-routing-remove-waypoint"></span>' +
+		'</div>' +
+		'<button class="leaflet-routing-add-waypoint" type="button"></button>';
 	createAutocomplete();
 }
 
@@ -148,7 +155,7 @@ function clearMarkerArray() {
 }
 
 function getRouteN() {
-	if(markersArray.length < 2) return;
+	if (markersArray.length < 2) return;
 	var startlat = markersArray[0]._latlng.lat;
 	var startlng = markersArray[0]._latlng.lng;
 	var endlat = markersArray[1]._latlng.lat;
@@ -208,7 +215,7 @@ function routeToPolyline(route) {
 
 	var ncords = [];
 	ncords.push([route.from.lat, route.from.lon]);
-	route.steps.forEach((step) => { ncords.push([step.lat, step.lon]); });ncords.push([route.to.lat, route.to.lon]);
+	route.steps.forEach((step) => { ncords.push([step.lat, step.lon]); }); ncords.push([route.to.lat, route.to.lon]);
 	//ncords.push(...pline.getLatLngs());
 	console.log(ncords);
 	return new L.Polyline(ncords, polylineOpts);
@@ -270,9 +277,9 @@ function getPointAddress(marker, autoCreate = true) {
 		if (this.readyState == 4 && this.status == 200) {
 			var myArr = JSON.parse(this.responseText);
 			showPopup(marker, myArr);
-			if(autoCreate){				
-			 createPlaceInputFromMarker(marker, myArr);
-			 createAutocomplete();
+			if (autoCreate) {
+				createPlaceInputFromMarker(marker, myArr);
+				createAutocomplete();
 			}
 		}
 	};
@@ -280,12 +287,12 @@ function getPointAddress(marker, autoCreate = true) {
 	req.send();
 }
 
-function createPlaceInputFromMarker(marker, myArr){
+function createPlaceInputFromMarker(marker, myArr) {
 	var index = markersArray.indexOf(marker);
 	inputsDiv = document.getElementById("inputs-form");
 
-	if(index!=-1){
-		if(index != 0 && index != 1){
+	if (index != -1) {
+		if (index != 0 && index != 1) {
 			var inp = document.createElement('div');
 			inp.innerHTML = inputStringHTML;
 			inputsDiv.appendChild(inp);
@@ -295,12 +302,12 @@ function createPlaceInputFromMarker(marker, myArr){
 	}
 }
 
-function createEmptyInput(marker, forceCreate = false){
+function createEmptyInput(marker, forceCreate = false) {
 	var index = markersArray.indexOf(marker);
 	inputsDiv = document.getElementById("inputs-form");
 
-	if(index!=-1){
-		if((index != 0 && inputsArray[inputsArray.length - 1].value.length > 0) || forceCreate){
+	if (index != -1) {
+		if ((index != 0 && inputsArray[inputsArray.length - 1].value.length > 0) || forceCreate) {
 			var inp = document.createElement('div');
 			inp.innerHTML = inputStringHTML;
 			inputsDiv.appendChild(inp);
@@ -315,7 +322,7 @@ function createAutocomplete() {
 		componentRestrictions: { country: 'fi' }
 	};
 	inputsArray = document.getElementsByClassName("input-fields");
-	for (i = autocompleteArray.length; i < inputsArray.length; i++){
+	for (i = autocompleteArray.length; i < inputsArray.length; i++) {
 		autocompleteArray[i] = new google.maps.places.Autocomplete(inputsArray[i], options);
 		google.maps.event.addListener(autocompleteArray[i], 'place_changed', function () {
 			var tempMarker = L.marker([this.getPlace().geometry.location.lat(), this.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
@@ -346,9 +353,9 @@ function createAutocomplete() {
 
 }
 
-function checkMarkers(marker){
+function checkMarkers(marker) {
 	inputsArray = document.getElementsByClassName("input-fields");
-	if (inputsArray.length == markersArray.length){
+	if (inputsArray.length == markersArray.length) {
 		createEmptyInput(marker);
 	}
 }
@@ -412,10 +419,10 @@ function zoomOut() {
 }
 
 
-
+var attractionUri = '/JS/RestaurantsGeoJSON.js';
 function loadAttractions(map) {
-	parseMapData(testData);
-	//loadMapData('path').then(() => {
-	bindToMap(map);
+	loadMapData(attractionUri).then((data) => {
+		bindToMap(map);
+	});
 }
 
