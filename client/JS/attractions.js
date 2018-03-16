@@ -1,6 +1,20 @@
 
 //var attractionTypes = {};
 var typedAttractionMap = {};
+
+var attractionIcon = L.Icon.extend({
+	options: {
+		iconSize: [ 32, 32 ],
+		shadowSize: [ 32, 32 ],
+		iconAnchor: [ 32, 16 ],
+		popupAnchor: [ -5, 10 ]
+	}
+});
+
+var iconTypes = {
+	'museum': new attractionIcon(),
+	'Restaurant': new attractionIcon()
+};
 /*
 museums: {
   isEnabled: true,	//whether this layer(museums) is shown on map or not
@@ -71,7 +85,7 @@ function loadMapData(dataPath) {
 
 	}).catch((e) => {
 		console.log('Error while fetching/parsing map data');
-		//console.log('debug', e);
+		console.log('debug', e);
 	});
 }
 
