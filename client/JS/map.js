@@ -14,8 +14,8 @@ var inputsArray = [];
 var inputsDiv = 0;
 var autocompleteArray = [];
 var inputStringHTML = "<div class=\"leaflet-routing-geocoder\">" +
-	"<input class=\"input-fields\">" +
-	"</div>";
+	"<input class=\"input-fields extra-input\">" +
+	"<i class=\"fas fa-times\"></i></div>";
 
 var orsKey = "58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8";
 
