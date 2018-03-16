@@ -4,6 +4,14 @@
     z-index: 50;
 }
 
+.input-fields {
+    width: 95%;
+}
+
+.extra-input{
+    margin-right: 5px;
+}
+
 .walk-icon {
     float:left; 
     margin-left:10px; 
