@@ -92,8 +92,8 @@ function featureToAttrData(feature) {
 	return Object.assign({}
 		, feature.properties
 		, {
-			lat: feature.coordinates[0],
-			lng: feature.coordinates[1]
+			lat: feature.geometry.coordinates[1],
+			lng: feature.geometry.coordinates[0]
 		});
 }
 

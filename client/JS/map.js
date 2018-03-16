@@ -87,7 +87,10 @@ function getTransportType(e, sender) {
 		this.style.backgroundColor = "#007bff";
 	})
 	sender.style.backgroundColor = "blue";
-	transportType = e;
+	transportType = e
+
+	if(e === 'bus') map.removeLayer(polyline);
+	else clearLines();
 	getRoute();
 }
 
@@ -416,10 +419,10 @@ function zoomOut() {
 }
 
 
-
+var attractionUri = '/JS/RestaurantsGeoJSON.js';
 function loadAttractions(map) {
-	parseMapData(testData);
-	//loadMapData('path').then(() => {
-	bindToMap(map);
+	loadMapData(attractionUri).then((data) => {
+		bindToMap(map);
+	});
 }
 
