@@ -50,16 +50,16 @@
 	<div id="routing-menu" class="leaflet-top col-xl-3 col-lg-4 col-md-12">
 		<div class="leaflet-routing-container col-12 leaflet-control">
 			<div id="button-list">
-				<button id="walk" class="btn btn-info buttonMargin" value="foot-walking" onclick="getTransportType(value)">Walk
+				<button id="walk" class="btn btn-primary buttonMargin" value="foot-walking" onclick="getTransportType(value)">Walk
 					<i class="fas fa-male"></i>
 				</button>
-				<button id="bike" class="btn btn-info buttonMargin" value="cycling-regular" onclick="getTransportType(value)">Bicycle
+				<button id="bike" class="btn btn-primary buttonMargin" value="cycling-regular" onclick="getTransportType(value)">Bicycle
 					<i class="fas fa-bicycle"></i>
 				</button>
-				<button id="car" class="btn btn-info buttonMargin" value="driving-car" onclick="getTransportType(value)">Car
+				<button id="car" class="btn btn-primary buttonMargin" value="driving-car" onclick="getTransportType(value)">Car
 					<i class="fas fa-car"></i>
 				</button>
-				<button id="bus" class="btn btn-info buttonMargin">Bus
+				<button id="bus" class="btn btn-primary buttonMargin">Bus
 					<i class="fas fa-bus"></i>
 				</button>
 
@@ -89,17 +89,17 @@
 			</div>
 			<p>Southwest Finland Routing.</p>
 			<div id="isochrones">
-				<button value="isochrones" onclick="getIsochrones()">Generate Isochrones</button>
+				<button value="isochrones" class=" btn btn-sm btn-primary" onclick="getIsochrones()">Generate Isochrones</button>
 				<p>
 					Isochrones Range:
-					<input type="range" min="5" max=200 step="5" value="30" id="isochrones_range" oninput="onRangeChange()">
+					<p><input type="range" min="5" max=200 step="5" value="30" id="isochrones_range" oninput="onRangeChange()"></p>
 					<span id="rangeCurrent">30</span>
 				</p>
 				<span id="rangeMin">Min: 5</span>
 				<span id="rangeMax">Max: 200</span>
 				<p>
 					Isochrones Interval:
-					<input type="range" min="3" max="60" step="1" value="5" id="isochrones_interval" oninput="onIntervalChange()">
+					<p><input type="range" min="3" max="60" step="1" value="5" id="isochrones_interval" oninput="onIntervalChange()"></p>
 					<span id="intervalCurrent">5</span>
 				</p>
 				<span id="intervalMin">Min: 1</span>
