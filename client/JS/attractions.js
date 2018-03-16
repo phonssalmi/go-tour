@@ -71,7 +71,7 @@ function loadMapData(dataPath) {
 
 	}).catch((e) => {
 		console.log('Error while fetching/parsing map data');
-		//inform
+		//console.log('debug', e);
 	});
 }
 
@@ -138,7 +138,7 @@ function makeMarker(lat, lng, attractionData) {
 	
 	var mark = L.marker([ lat, lng ]);
 	
-	console.log(mark);
+	//console.log(mark);
 	mark.on('click', clickEventWrapper(attractionPanel, attractionContainer, attractionData));
 
 	return mark;
@@ -148,7 +148,7 @@ function makeMarker(lat, lng, attractionData) {
 var currentlyShownAttr = null;
 function clickEventWrapper(attrDataPanel, attrDataContainer, attrData) {
 	return function (evData) {
-		console.log(attrData);
+		//console.log(attrData);
 		if(attrDataContainer.style.display === 'none') {
 			attrDataContainer.style.display = 'inherit';
 		} else if(currentlyShownAttr === attrData) {
