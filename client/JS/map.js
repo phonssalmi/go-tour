@@ -419,7 +419,7 @@ function zoomOut() {
 }
 
 
-var attractionUri = '/JS/RestaurantsGeoJSON.js';
+var attractionUri = 'JS/RestaurantsGeoJSON.js';
 function loadAttractions(map) {
 	loadMapData(attractionUri).then((data) => {
 		bindToMap(map);
