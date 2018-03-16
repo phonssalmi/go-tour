@@ -1,4 +1,4 @@
-museums = {
+{
     "type": "FeatureCollection",
     "features": [
       {
