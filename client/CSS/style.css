@@ -51,7 +51,8 @@ display: none;
     display: none;
 }
 .leaflet-control-zoom {
-    padding: 20px 20px;
+	margin-bottom: 25px;
+    padding: 10px 10px;
     background: blueviolet;
   }
 .leaflet-bar{
