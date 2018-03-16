@@ -51,7 +51,8 @@ display: none;
     display: none;
 }
 .leaflet-control-zoom {
-    padding: 20px 20px;
+	margin-bottom: 25px;
+    padding: 10px 10px;
     background: blueviolet;
   }
 .leaflet-bar{
@@ -78,17 +79,15 @@ display: none;
     color:#8176E9;
 }
 .leaflet-routing-geocoder{
-
     position:relative;
-
-
+    white-space: nowrap;
 }
 .leaflet-routing-geocoders input{
     background: #D9E2DA;
     padding: 5px 0px;
     border-bottom: none;
     border-radius: 10px;
-   display: inline;
+    width: 90%;
     }
 /*the cross button*/
 .leaflet-routing-remove-waypoint::after {

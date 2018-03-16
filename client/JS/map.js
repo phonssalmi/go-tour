@@ -14,8 +14,8 @@ var inputsArray = [];
 var inputsDiv = 0;
 var autocompleteArray = [];
 var inputStringHTML = "<div class=\"leaflet-routing-geocoder\">" +
-	"<input class=\"input-fields\">" +
-	"</div>";
+	"<input class=\"input-fields extra-input\">" +
+	"<i class=\"fas fa-times\" onclick=\"removeInput(this.parentNode.parentNode)\"></i></div>";
 
 var orsKey = "58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8";
 
@@ -28,6 +28,8 @@ window.onload = function () {
 		scaleControl: false,
 		minZoom: 4
 	});
+
+	inputsArray = document.getElementsByClassName("input-fields");
 
 	map.locate({ setView: true, maxZoom: 14 });
 	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -59,6 +61,7 @@ window.onload = function () {
 			else {
 				createEmptyInput(tempMarker);
 			}
+			createAutocomplete();
 		}
 	}
 	map.on('click', onMapClick);
@@ -87,7 +90,10 @@ function getTransportType(e, sender) {
 		this.style.backgroundColor = "#007bff";
 	})
 	sender.style.backgroundColor = "blue";
-	transportType = e;
+	transportType = e
+
+	if(e === 'bus') map.removeLayer(polyline);
+	else clearLines();
 	getRoute();
 }
 
@@ -126,20 +132,20 @@ function getRoute() {
 function createOneInput() {
 	inputsDiv = document.getElementById("inputs-form");
 	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
-		'<input placeholder="Location" class="input-fields">' +
-		'<span class="leaflet-routing-remove-waypoint"></span>' +
+		'<input placeholder="Location" class="input-fields extra-input">' +
+		'<i class=\"fas fa-times\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
 		'</div>';
 	createAutocomplete();
 }
 function recreateInputs() {
 	inputsDiv = document.getElementById("inputs-form");
 	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
-		'<input placeholder="Start" class="input-fields">' +
-		'<span class="leaflet-routing-remove-waypoint"></span>' +
+		'<input placeholder="Start" class="input-fields extra-input">' +
+		'<i class=\"fas fa-times\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
 		'</div>' +
 		'<div class="leaflet-routing-geocoder">' +
-		'<input placeholder="End" class="input-fields">' +
-		'<span class="leaflet-routing-remove-waypoint"></span>' +
+		'<input placeholder="End" class="input-fields extra-input">' +
+		'<i class=\"fas fa-times\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
 		'</div>' +
 		'<button class="leaflet-routing-add-waypoint" type="button"></button>';
 	createAutocomplete();
@@ -230,6 +236,20 @@ function clearLines() {
 	if (currentPolylines.length === 0) return;
 	currentPolylines.forEach((pl) => { map.removeLayer(pl); });
 	currentPolylines = [];
+}
+
+function removeInput(node){
+	// autocomplete does not work after removing input
+	inputsDiv = document.getElementById("inputs-form");
+	var index = Array.prototype.indexOf.call(inputsDiv.children, node);
+	if (inputsArray.length < 3 || index == inputsDiv.children.length - 1){
+		return;
+	}
+	inputsDiv.removeChild(node);
+	map.removeLayer(markersArray[index]);
+	markersArray.splice(index,1);
+	inputsArray.splice(index,1);
+	getRoute();
 }
 
 function getIsochrones() {
@@ -416,11 +436,13 @@ function zoomOut() {
 }
 
 
-
+var attractionUris = [ 'JS/RestaurantsGeoJSON.js', 'JS/museums.js' ];
 function loadAttractions(map) {
-	parseMapData(testData);
-	//loadMapData('path').then(() => {
-	bindToMap(map);
+	attractionUris.forEach((uri, idx) => {
+		loadMapData(uri).then((data) => {
+			if(idx === attractionUris.length - 1) bindToMap(map);
+		});
+	});
 }
 
 function locateUser() {

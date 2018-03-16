@@ -1,6 +1,20 @@
 
 //var attractionTypes = {};
 var typedAttractionMap = {};
+
+var attractionIcon = L.Icon.extend({
+	options: {
+		iconSize: [ 32, 32 ],
+		shadowSize: [ 32, 32 ],
+		iconAnchor: [ 32, 16 ],
+		popupAnchor: [ -5, 10 ]
+	}
+});
+
+var iconTypes = {
+	'museum': new attractionIcon(),
+	'Restaurant': new attractionIcon()
+};
 /*
 museums: {
   isEnabled: true,	//whether this layer(museums) is shown on map or not
@@ -71,7 +85,7 @@ function loadMapData(dataPath) {
 
 	}).catch((e) => {
 		console.log('Error while fetching/parsing map data');
-		//inform
+		console.log('debug', e);
 	});
 }
 
@@ -92,8 +106,8 @@ function featureToAttrData(feature) {
 	return Object.assign({}
 		, feature.properties
 		, {
-			lat: feature.coordinates[0],
-			lng: feature.coordinates[1]
+			lat: feature.geometry.coordinates[1],
+			lng: feature.geometry.coordinates[0]
 		});
 }
 
@@ -138,7 +152,7 @@ function makeMarker(lat, lng, attractionData) {
 	
 	var mark = L.marker([ lat, lng ]);
 	
-	console.log(mark);
+	//console.log(mark);
 	mark.on('click', clickEventWrapper(attractionPanel, attractionContainer, attractionData));
 
 	return mark;
@@ -148,7 +162,7 @@ function makeMarker(lat, lng, attractionData) {
 var currentlyShownAttr = null;
 function clickEventWrapper(attrDataPanel, attrDataContainer, attrData) {
 	return function (evData) {
-		console.log(attrData);
+		//console.log(attrData);
 		if(attrDataContainer.style.display === 'none') {
 			attrDataContainer.style.display = 'inherit';
 		} else if(currentlyShownAttr === attrData) {

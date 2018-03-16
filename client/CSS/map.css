@@ -4,10 +4,18 @@
     z-index: 50;
 }
 
+.input-fields {
+    width: 95%;
+}
+
+.extra-input{
+    margin-right: 5px;
+}
+
 .walk-icon {
     float:left; 
     margin-left:10px; 
-    background: url('images/walk.png') no-repeat; 
+    background: url('images/Walk.png') no-repeat; 
     background-size: contain; 
     height:30px;
     width:20px;
