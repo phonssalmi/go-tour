@@ -419,10 +419,12 @@ function zoomOut() {
 }
 
 
-var attractionUri = 'JS/RestaurantsGeoJSON.js';
+var attractionUris = [ 'JS/RestaurantsGeoJSON.js', 'JS/museums.js' ];
 function loadAttractions(map) {
-	loadMapData(attractionUri).then((data) => {
-		bindToMap(map);
+	attractionUris.forEach((uri, idx) => {
+		loadMapData(uri).then((data) => {
+			if(idx === attractionUris.length - 1) bindToMap(map);
+		});
 	});
 }
 
