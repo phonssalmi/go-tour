@@ -245,3 +245,7 @@ function updateAttrPanel(attrData, attrDataPanel) {
 	attrDataPanel.innerHTML = '<div style="width: 200px;padding: 5px;background-color: #FFFFFF"><h4 style="margin: 0">' + attrData.name + '</h4><h3 style="margin: 5px 0 0 0">' + attrData.class + '</h3><div>';
 }
 
+function searchByString(str) {
+
+}
+
