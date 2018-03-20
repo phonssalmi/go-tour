@@ -48,8 +48,14 @@
 <body>
 	<div id="mapid"></div>
 	<div id="routing-menu" class="leaflet-top col-xl-3 col-lg-4 col-md-12">
+		<div class="leaflet-control">
+			<button class="btn btn-primary btn-sm buttonMargin" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing" data-target=".routing">
+				<i class="fas fa-angle-up"></i>
+				<i class="fas fa-angle-down"></i>
+			</button>
+		</div>
 		<div class="leaflet-routing-container col-12 leaflet-control">
-			<div id="transportType">
+			<div id="transportType" class="routing collapse show">
 				<button id="walk" class="btn btn-primary btn-sm buttonMargin" value="foot-walking" onclick="getTransportType(value,this)">Walk
 					<i class="fas fa-male"></i>
 				</button>
@@ -62,10 +68,8 @@
 				<button id="bus" class="btn btn-primary btn-sm buttonMargin" value="bus" onclick="getTransportType(value,this)">Bus
 					<i class="fas fa-bus"></i>
 				</button>
-
-
 			</div>
-			<div id="inputs-form" class="leaflet-routing-geocoders">
+			<div id="inputs-form" class="leaflet-routing-geocoders routing collapse show">
 				<div>
 					<div class="leaflet-routing-geocoder">
 						<input placeholder="Start" class="input-fields">
@@ -81,7 +85,7 @@
 			</div>
 			<hr>
 			<div id="button-list">
-				<button class="btn btn-primary btn-sm buttonMargin" id="special-button"  onclick="enableIsochrones()">
+				<button class="btn btn-primary btn-sm buttonMargin" id="special-button" onclick="enableIsochrones()">
 					<i class="far fa-clock"></i>
 					Place Isochrones
 				</button>
@@ -94,27 +98,31 @@
 					<i class="fas fa-map-marker"></i>
 					Locate Me
 				</button>
-				
+
 			</div>
 			<p>Southwest Finland Routing.</p>
 			<div id="isochrones">
 				<button value="isochrones" class=" btn btn-sm btn-primary" onclick="getIsochrones()">Generate Isochrones</button>
 				<p>
 					Isochrones Range:
-					<p><input type="range" min="5" max=200 step="5" value="30" id="isochrones_range" oninput="onRangeChange()"></p>
+					<p>
+						<input type="range" min="5" max=200 step="5" value="30" id="isochrones_range" oninput="onRangeChange()">
+					</p>
 					<span id="rangeCurrent">30</span>
 				</p>
 				<span id="rangeMin">Min: 5</span>
 				<span id="rangeMax">Max: 200</span>
 				<p>
 					Isochrones Interval:
-					<p><input type="range" min="3" max="60" step="1" value="5" id="isochrones_interval" oninput="onIntervalChange()"></p>
+					<p>
+						<input type="range" min="3" max="60" step="1" value="5" id="isochrones_interval" oninput="onIntervalChange()">
+					</p>
 					<span id="intervalCurrent">5</span>
 				</p>
 				<span id="intervalMin">Min: 1</span>
 				<span id="intervalMax">Max: 60</span>
 			</div>
-			<div id="directions" class="leaflet-routing-geocoder">
+			<div id="directions" class="leaflet-routing-geocoder routing collapse show">
 				<hr>
 				<p id="totalDistance"></p>
 				<p id="totalTime"></p>
