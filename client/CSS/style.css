@@ -43,6 +43,12 @@ display: none;
 .button-left-button1{
     margin: 20px;
 }
+button[aria-expanded=true] .fa-angle-down {
+    display: none;
+ }
+button[aria-expanded=false] .fa-angle-up {
+    display: none;
+ }
 
 #page_content{
     position: absolute;
