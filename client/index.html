@@ -79,17 +79,18 @@
 					</div>
 				</div>
 			</div>
+			<hr>
 			<div id="button-list">
-				<button class="btn btn-primary buttonMargin" id="special-button"  onclick="enableIsochrones()">
+				<button class="btn btn-primary btn-sm buttonMargin" id="special-button"  onclick="enableIsochrones()">
 					<i class="far fa-clock"></i>
 					Place Isochrones
 				</button>
-				<button class="btn btn-primary buttonMargin" id="special-button" onclick="placeMarkers()">
+				<button class="btn btn-primary btn-sm buttonMargin" id="special-button" onclick="placeMarkers()">
 					<i class="fas fa-map-marker"></i>
 					Place Markers
 				</button>
 				<!-- Locate user button -->
-				<button class="btn btn-primary buttonMargin" id="special-button" onclick="locateUser()">
+				<button class="btn btn-primary btn-sm buttonMargin" id="special-button" onclick="locateUser()">
 					<i class="fas fa-map-marker"></i>
 					Locate Me
 				</button>
@@ -112,6 +113,11 @@
 				</p>
 				<span id="intervalMin">Min: 1</span>
 				<span id="intervalMax">Max: 60</span>
+			</div>
+			<div id="directions" class="leaflet-routing-geocoder">
+				<hr>
+				<p id="totalDistance"></p>
+				<p id="totalTime"></p>
 			</div>
 		</div>
 
