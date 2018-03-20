@@ -29,8 +29,6 @@ window.onload = function () {
 		minZoom: 4
 	});
 
-	document.getElementById("car").style.backgroundColor = "blue";
-
 	inputsArray = document.getElementsByClassName("input-fields");
 
 	map.locate({ setView: true, maxZoom: 14 });
@@ -124,7 +122,20 @@ function getRoute() {
 
 	request.onreadystatechange = function () {
 		if (this.readyState === 4) {
-			var encoded = JSON.parse(this.response).routes[0].geometry;
+			var JSONresponse = JSON.parse(this.response);
+			console.log(JSONresponse);
+			var totalDistance = (parseFloat(JSONresponse.routes[0].summary.distance) / 1000).toFixed(1);
+			var totalTime = (parseFloat(JSONresponse.routes[0].summary.duration) / 60).toFixed(1);
+			document.getElementById("totalDistance").innerHTML = "Distance: " + totalDistance + " km";
+			document.getElementById("totalTime").innerHTML ="Time: " +  totalTime + " min";
+			var steps = [];
+			for(var i = 0;i< JSONresponse.routes[0].segments.length; i++){
+				for(var j = 0; j<JSONresponse.routes[0].segments[i].steps.length;j++){
+					steps.push(JSONresponse.routes[0].segments[i].steps[j]);
+				}
+			}
+			console.log(steps);
+			var encoded = JSONresponse.routes[0].geometry;
 
 			polyline = L.Polyline.fromEncoded(encoded).addTo(map);
 		}
@@ -135,7 +146,7 @@ function createOneInput() {
 	inputsDiv = document.getElementById("inputs-form");
 	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
 		'<input placeholder="Location" class="input-fields extra-input">' +
-		'<i class=\"fas fa-times remove-icon\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
+		'<i class=\"fas fa-times\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
 		'</div>';
 	createAutocomplete();
 }
@@ -143,7 +154,7 @@ function recreateInputs() {
 	inputsDiv = document.getElementById("inputs-form");
 	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
 		'<input placeholder="Start" class="input-fields extra-input">' +
-		'<i class=\"fas fa-times remove-icon\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
+		'<i class=\"fas fa-times\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
 		'</div>' +
 		'<div class="leaflet-routing-geocoder">' +
 		'<input placeholder="End" class="input-fields extra-input">' +
@@ -250,8 +261,8 @@ function removeInput(node){
 	inputsDiv.removeChild(node);
 	map.removeLayer(markersArray[index]);
 	markersArray.splice(index,1);
+	inputsArray.splice(index,1);
 	getRoute();
-	autocompleteArray.splice(index,1);	
 }
 
 function getIsochrones() {
