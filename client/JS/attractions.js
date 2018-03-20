@@ -2,19 +2,52 @@
 //var attractionTypes = {};
 var typedAttractionMap = {};
 
-var attractionIcon = L.Icon.extend({
+var iconUrls = {
+	'restaurant': 'markers_icons/purple.png',
+	'museum': 'markers_icons/red_img.png'
+};
+
+var iconTypes = {};
+
+/*var attractionIcon = L.Icon.extend({
 	options: {
-		iconSize: [ 32, 32 ],
-		shadowSize: [ 32, 32 ],
-		iconAnchor: [ 32, 16 ],
+		iconUrl: iconUrls['museum'],
+		iconSize: [ 18, 28 ],
+		shadowSize: [ 18, 28 ],
+		iconAnchor: [ 9, 27 ],
 		popupAnchor: [ -5, 10 ]
 	}
-});
+});*/
 
-var iconTypes = {
-	'museum': new attractionIcon(),
-	'Restaurant': new attractionIcon()
-};
+function getIcon(type) {
+	if(!iconUrls[type]) return new L.Icon.Default();
+	if(!iconTypes[type]) iconTypes[type] = L.icon({
+		iconUrl: iconUrls[type],
+		iconSize: [ 18, 28 ],
+		shadowSize: [ 18, 28 ],
+		iconAnchor: [ 9, 27 ],
+		popupAnchor: [ -5, 10 ]
+	});
+
+	return iconTypes[type];
+}
+
+function findAttractionByName(name) {
+	var types = Object.keys(typedAttractionMap);
+	for(var t = 0; t < types.length; t++) {
+		var curr = typedAttractionMap[types[t]];
+		for(var i = 0; i < curr.data.length; i++) {
+			if(curr.data[i].name === name) return curr.data[i];
+		}
+	}
+	return null;
+}
+
+function findAttractionsByType(type) {
+	if(typedAttractionMap[type].data && typedAttractionMap[type].data.length !== 0) return typedAttractionMap[type];
+	return null;
+}
+
 /*
 museums: {
   isEnabled: true,	//whether this layer(museums) is shown on map or not
@@ -93,7 +126,7 @@ function parseMapData(jsonData) {
 	if(!jsonData.features) throw new Error('Error while parsing map data. Missing features');
 
 	jsonData.features.forEach((feature) => {
-		var fClass = feature.properties.class;
+		var fClass = feature.properties.class.toLowerCase();
 		if(!typedAttractionMap[fClass]) {
 			typedAttractionMap[fClass] = { data: [], isEnabled: false };
 		}
@@ -116,30 +149,61 @@ function featureToAttrData(feature) {
 var boundMap = null;
 function bindToMap(map) {
 	boundMap = map;
-	Object.keys(typedAttractionMap).forEach((type) => {
-		toggleLayerData(typedAttractionMap[type]);
-	});
+	//Object.keys(typedAttractionMap).forEach((type) => {
+	//	toggleLayerData(typedAttractionMap[type]);
+	//});
 }
 
-function toggleLayer(layerName) {
-	if(Object.keys(typedAttractionMap).length == 0) {
-		console.log('No attraction data..');
+function toggleLayerByName(layerName) {
+	toggleLayer(findAttractionsByType(layerName));
+}
+
+function toggleLayer(layerData) {
+	if(layerData === null) {
+		console.log('No layer data'); 
 		return;
 	}
-	toggleLayerData(typedAttractionMap[layerName]);
-}
 
-function toggleLayerData(layerData) {
-	Object.keys(layerData.data).forEach((attr) => {
-		var current = layerData.data[attr];
+	for(var i = 0; i < layerData.data.length; i++) {
+		var current = layerData.data[i];
 		if(!current.lMarker) current.lMarker = makeMarker(current.lat, current.lng, current);
 		if(layerData.isEnabled) {
 			current.lMarker.remove();
 		} else {
 			current.lMarker.addTo(boundMap);
 		}	
-	});
+	}
 	layerData.isEnabled = !layerData.isEnabled;
+}
+
+function showLayer(layerData) {
+	if(layerData === null) {
+		console.log('No layer data');
+		return;
+	}
+
+	if(layerData.isEnabled) return;
+	for(var i = 0; i < layerData.data.length; i++) {
+		var curr = layerData.data[i];
+		if(!curr.lMarker) curr.lMarker = makeMarker(curr.lat, curr.lng, curr);
+		curr.lMarker.addTo(boundMap);
+	}
+	
+	layerData.isEnabled = true;
+}
+
+function hideLayer(layerData) {
+	if(layerData === null) {
+		console.log('No layer data');
+		return;
+	}
+
+	if(!layerData.isEnabled) return;
+	for(var i = 0; i < layerData.data.length; i++) {
+		if(layerData.data[i].lMarker) layerData.data[i].lMarker.remove();
+	}
+
+	layerData.isEnabled = false;
 }
 
 var attractionPanel = null;
@@ -150,7 +214,7 @@ function makeMarker(lat, lng, attractionData) {
 		attractionContainer = document.getElementById('attraction-menu-container');
 	}
 	
-	var mark = L.marker([ lat, lng ]);
+	var mark = L.marker([ lat, lng ], { icon: getIcon(attractionData.class) });
 	
 	//console.log(mark);
 	mark.on('click', clickEventWrapper(attractionPanel, attractionContainer, attractionData));
