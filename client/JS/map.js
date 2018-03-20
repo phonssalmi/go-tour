@@ -77,7 +77,7 @@ function removeMarkers() {
 	autocompleteArray = [];
 }
 function onDrag(e) {
-	getPointAddress(e.target);
+	getPointAddress(e.target, false, true);
 	if (isochroneMarker) {
 		removeIsochrones();
 		getIsochrones();
@@ -289,7 +289,7 @@ function removeIsochrones() {
 		map.removeLayer(geoJSON);
 }
 
-function getPointAddress(marker, autoCreate = true) {
+function getPointAddress(marker, autoCreate = true, changeInputValue = false) {
 	var req = new XMLHttpRequest();
 	var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + marker._latlng.lat + "," + marker._latlng.lng + "&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
 	req.onreadystatechange = function () {
@@ -299,6 +299,9 @@ function getPointAddress(marker, autoCreate = true) {
 			if (autoCreate) {
 				createPlaceInputFromMarker(marker, myArr);
 				createAutocomplete();
+			}
+			if(changeInputValue){
+				changeInputsValue(marker, myArr);
 			}
 		}
 	};
@@ -319,6 +322,11 @@ function createPlaceInputFromMarker(marker, myArr) {
 		inputsArray = document.getElementsByClassName("input-fields");
 		inputsArray[index].value = myArr.results[0].formatted_address;
 	}
+}
+
+function changeInputsValue(marker, myArr){
+	var index = markersArray.indexOf(marker);
+	inputsArray[index].value = myArr.results[0].formatted_address;
 }
 
 function createEmptyInput(marker, forceCreate = false) {
