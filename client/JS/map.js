@@ -188,7 +188,7 @@ function getRouteN() {
 			console.log(data.error);
 			return;
 		}
-		console.log(data);
+
 		currentItineraries = data.plan.itineraries;
 		drawRouteItinerary(currentItineraries[0]);
 
@@ -365,7 +365,7 @@ function createAutocomplete() {
 	for (i = autocompleteArray.length; i < inputsArray.length; i++) {
 		autocompleteArray[i] = new google.maps.places.Autocomplete(inputsArray[i], options);
 		google.maps.event.addListener(autocompleteArray[i], 'place_changed', function () {
-			var tempMarker = L.marker([this.getPlace().geometry.location.lat(), this.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', getRoute);
+			var tempMarker = L.marker([this.getPlace().geometry.location.lat(), this.getPlace().geometry.location.lng()], { draggable: true }).addTo(map).addEventListener('dragend', onDrag);
 			getPointAddress(tempMarker, false);
 			markersArray.push(tempMarker);
 			getRoute();
