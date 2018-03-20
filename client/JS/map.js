@@ -445,3 +445,21 @@ function loadAttractions(map) {
 	});
 }
 
+function locateUser() {
+	map.locate({ setView: true, maxZoom: 14 })
+		.on('locationfound', function(e){
+			var tempMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: true }).addEventListener('dragend', onDrag);
+			if(markersArray.length != 0) {
+				markersArray[0].setLatLng([e.latlng.lat, e.latlng.lng]);
+			}
+			else{
+				markersArray.push(tempMarker.addTo(map));
+			}
+			getPointAddress(markersArray[0]);
+			getRoute();
+			console.log("Location found");
+		})
+		.on('locationerror', function(e) {
+			console.log("Location not found");
+		});
+}
