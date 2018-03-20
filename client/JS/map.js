@@ -77,7 +77,7 @@ function removeMarkers() {
 	autocompleteArray = [];
 }
 function onDrag(e) {
-	getPointAddress(e.target);
+	getPointAddress(e.target, false, true);
 	if (isochroneMarker) {
 		removeIsochrones();
 		getIsochrones();
@@ -124,7 +124,20 @@ function getRoute() {
 
 	request.onreadystatechange = function () {
 		if (this.readyState === 4) {
-			var encoded = JSON.parse(this.response).routes[0].geometry;
+			var JSONresponse = JSON.parse(this.response);
+			console.log(JSONresponse);
+			var totalDistance = (parseFloat(JSONresponse.routes[0].summary.distance) / 1000).toFixed(1);
+			var totalTime = (parseFloat(JSONresponse.routes[0].summary.duration) / 60).toFixed(1);
+			document.getElementById("totalDistance").innerHTML = "Distance: " + totalDistance + " km";
+			document.getElementById("totalTime").innerHTML ="Time: " +  totalTime + " min";
+			var steps = [];
+			for(var i = 0;i< JSONresponse.routes[0].segments.length; i++){
+				for(var j = 0; j<JSONresponse.routes[0].segments[i].steps.length;j++){
+					steps.push(JSONresponse.routes[0].segments[i].steps[j]);
+				}
+			}
+			console.log(steps);
+			var encoded = JSONresponse.routes[0].geometry;
 
 			polyline = L.Polyline.fromEncoded(encoded).addTo(map);
 		}
@@ -147,7 +160,7 @@ function recreateInputs() {
 		'</div>' +
 		'<div class="leaflet-routing-geocoder">' +
 		'<input placeholder="End" class="input-fields extra-input">' +
-		'<i class=\"fas fa-times\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
+		'<i class=\"fas fa-times remove-icon\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
 		'</div>' +
 		'<button class="leaflet-routing-add-waypoint" type="button"></button>';
 	createAutocomplete();
@@ -250,8 +263,8 @@ function removeInput(node){
 	inputsDiv.removeChild(node);
 	map.removeLayer(markersArray[index]);
 	markersArray.splice(index,1);
+	autocompleteArray.splice(index,1);
 	getRoute();
-	autocompleteArray.splice(index,1);	
 }
 
 function getIsochrones() {
@@ -289,7 +302,7 @@ function removeIsochrones() {
 		map.removeLayer(geoJSON);
 }
 
-function getPointAddress(marker, autoCreate = true) {
+function getPointAddress(marker, autoCreate = true, changeInputValue = false) {
 	var req = new XMLHttpRequest();
 	var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + marker._latlng.lat + "," + marker._latlng.lng + "&key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE";
 	req.onreadystatechange = function () {
@@ -299,6 +312,9 @@ function getPointAddress(marker, autoCreate = true) {
 			if (autoCreate) {
 				createPlaceInputFromMarker(marker, myArr);
 				createAutocomplete();
+			}
+			if(changeInputValue){
+				changeInputsValue(marker, myArr);
 			}
 		}
 	};
@@ -319,6 +335,11 @@ function createPlaceInputFromMarker(marker, myArr) {
 		inputsArray = document.getElementsByClassName("input-fields");
 		inputsArray[index].value = myArr.results[0].formatted_address;
 	}
+}
+
+function changeInputsValue(marker, myArr){
+	var index = markersArray.indexOf(marker);
+	inputsArray[index].value = myArr.results[0].formatted_address;
 }
 
 function createEmptyInput(marker, forceCreate = false) {
