@@ -29,6 +29,8 @@ window.onload = function () {
 		minZoom: 4
 	});
 
+	document.getElementById("car").style.backgroundColor = "blue";
+
 	inputsArray = document.getElementsByClassName("input-fields");
 
 	map.locate({ setView: true, maxZoom: 14 });
@@ -146,7 +148,7 @@ function createOneInput() {
 	inputsDiv = document.getElementById("inputs-form");
 	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
 		'<input placeholder="Location" class="input-fields extra-input">' +
-		'<i class=\"fas fa-times\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
+		'<i class=\"fas fa-times remove-icon\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
 		'</div>';
 	createAutocomplete();
 }
@@ -154,11 +156,11 @@ function recreateInputs() {
 	inputsDiv = document.getElementById("inputs-form");
 	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
 		'<input placeholder="Start" class="input-fields extra-input">' +
-		'<i class=\"fas fa-times\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
+		'<i class=\"fas fa-times remove-icon\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
 		'</div>' +
 		'<div class="leaflet-routing-geocoder">' +
 		'<input placeholder="End" class="input-fields extra-input">' +
-		'<i class=\"fas fa-times\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
+		'<i class=\"fas fa-times remove-icon\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
 		'</div>' +
 		'<button class="leaflet-routing-add-waypoint" type="button"></button>';
 	createAutocomplete();
@@ -261,7 +263,7 @@ function removeInput(node){
 	inputsDiv.removeChild(node);
 	map.removeLayer(markersArray[index]);
 	markersArray.splice(index,1);
-	inputsArray.splice(index,1);
+	autocompleteArray.splice(index,1);
 	getRoute();
 }
 
