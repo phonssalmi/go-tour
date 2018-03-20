@@ -246,6 +246,33 @@ function updateAttrPanel(attrData, attrDataPanel) {
 }
 
 function searchByString(str) {
+	if(str === null || str.length === 0) return [];
+	var query = str.toLowerCase();
 
+	var possibleResList = [];
+
+	var attractionTypes = Object.keys(typedAttractionMap);
+	for(var i = 0; i < attractionTypes.length; i++) {
+		if(attractionTypes[i].startsWith(query))
+			possibleResList.push(asSearchResult(attractionTypes[i]));
+	}
+
+	for(var i = 0; i < attractionTypes.length; i++) {
+		typedAttractionMap[attractionTypes[i]].data.forEach((attrData) => {
+			if(attrData.name.toLowerCase().startsWith(query))
+				possibleResList.push(asSearchResult(attrData));
+		});
+	}
+
+	return possibleResList;
+}
+
+function asSearchResult(data) {
+	var type = (data instanceof Object) ? 'item' : 'list';
+	return {
+		name: type === 'item' ? data.name : data,
+		type: type,
+		data: data
+	};
 }
 
