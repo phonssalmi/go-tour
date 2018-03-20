@@ -29,6 +29,8 @@ window.onload = function () {
 		minZoom: 4
 	});
 
+	document.getElementById("car").style.backgroundColor = "blue";
+
 	inputsArray = document.getElementsByClassName("input-fields");
 
 	map.locate({ setView: true, maxZoom: 14 });
