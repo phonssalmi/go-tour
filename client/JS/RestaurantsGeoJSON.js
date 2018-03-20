@@ -15,7 +15,7 @@
         "address": "Kaskenkatu 6a, 20700 Turku",
         "website": "http://www.kaskis.fi",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
       },
       "geometry": {
         "type": "Point",
@@ -40,7 +40,7 @@
         "address": "Kaskenkatu 3, 20700 Turku",
         "website": "http://www.bartoimisto.fi",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -65,7 +65,7 @@
         "address": "Olavinpuisto, 20700 Turku",
         "website": "https://www.facebook.com/mantungrilli",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -90,7 +90,7 @@
         "address": "Läntinen Rantakatu 9, 20100 Turku",
         "website": "http://www.tinta.fi/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -115,7 +115,7 @@
         "address": "Aurakatu 1, 20100 Turku",
         "website": "http://www.blanko.net/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -140,7 +140,7 @@
         "address": "Aurakatu 1, 20100 Turku",
         "website": "http://www.ditrevi.fi/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -165,7 +165,7 @@
         "address": "Aurakatu 1, 20100 Turku",
         "website": "https://www.fontana.fi",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -190,7 +190,7 @@
         "address": "Aurakatu 3, 20100 Turku",
         "website": "https://www.ravintolaharald.fi/turku/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -215,7 +215,7 @@
         "address": "Aurakatu 3, 20100 Turku",
         "website": "http://www.ravintolakaru.fi/ravintola-karu-izakaya",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -240,7 +240,7 @@
         "address": "Eerikinkatu 18, 20100 Turku",
         "website": "http://www.panimoravintolakoulu.fi/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -265,7 +265,7 @@
         "address": "Kristiinankatu 9, 20100 Turku",
         "website": "http://morrisons.fi/turku/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -290,7 +290,7 @@
         "address": "Humalistonkatu 5, 20100 Turku",
         "website": "http://www.kotipizza.fi/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -315,7 +315,7 @@
         "address": "Humalistonkatu 7A, 20100 Turku",
         "website": "http://www.facebook.com/KebabBoxTurku/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -340,7 +340,7 @@
         "address": "Itäinen Rantakatu 61, 20100 Turku",
         "website": "https://www.rahtiksenmessi.com/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -365,7 +365,7 @@
         "address": "Nuppulantie 28, 20320 Turku",
         "website": "http://ravintolamelisa.fi",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -389,7 +389,7 @@
         "address": "Nuppulantie 43, 21280 Turku",
         "website": "http://arinaravintola.fi",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -414,7 +414,7 @@
         "address": "Kotkankatu 1, 20610 Turku",
         "website": "https://www.facebook.com/Ravintola-Numero-Uno-1670351553239168/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -439,7 +439,7 @@
         "address": "Simolankatu 27, 20540 Turku",
         "website": "https://pizza-online.fi/ravintolat/turku/treffikebab/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	  },
       "geometry": {
         "type": "Point",
@@ -464,7 +464,7 @@
         "address": "Pizza Perez Leipäläntie 71, 20300 Turku",
         "website": "http://www.pizzaperez.fi/",
         "description": "PLACEHOLDER",
-		"class": "Restaurant"
+		"class": "restaurant"
 	   },
       "geometry": {
         "type": "Point",
