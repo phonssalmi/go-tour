@@ -468,6 +468,7 @@ function loadAttractions(map) {
 	});
 }
 
+/*Function to enter user's location as the starting position for a route*/
 function locateUser() {
 	map.locate({ setView: true, maxZoom: 14 })
 		.on('locationfound', function(e){
@@ -485,4 +486,46 @@ function locateUser() {
 		.on('locationerror', function(e) {
 			console.log("Location not found");
 		});
+}
+
+/*Function to show users location on the map*/
+/*Proper functionality needs to be tested: Does it update the position if the user moves?*/
+var trackingOn = 0;
+var userMarker = null;
+function trackUser() {
+	if(trackingOn == 0) /*Turn on tracking*/
+	{	
+		trackingOn = 1;
+		map.on('locationfound', function(e){
+			console.log("LocationFound called");
+			var userIcon = L.icon({
+								iconUrl: 'markers_icons/user_img.png',
+								iconSize: [ 17, 17 ],
+								iconAnchor: [ 8, 8 ],
+							});
+			if(userMarker == null) /*If no marker -> create one*/
+			{
+				userMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: false, icon: userIcon });
+				userMarker.addTo(map);
+				console.log("User tracking marker added");
+			}
+			else	/*If marker -> move it to new location*/
+			{
+				userMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
+				console.log("User location tracking success");	
+			}
+				
+		});
+		map.on('locationerror', function(e) {
+				console.log("User location tracking failure");
+		});
+		map.locate({watch: true, timeout: 1000});
+	}
+	else /*Stop tracking and remove the marker*/
+	{
+		trackingOn = 0;
+		map.stopLocate();
+		userMarker.remove();
+		userMarker = null;
+	}
 }
