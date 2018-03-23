@@ -15,8 +15,8 @@
 	<script type="text/javascript" src="JS/attractions.js"></script>
 	<script type="text/javascript" src="JS/map.js"></script>
 	<script type="text/javascript" src="JS/Polyline.encoded.js"></script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE&libraries=places"></script>
-
+	<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa_gZPpd2jbG06slhnujNjy2pagPZRKGE&libraries=places"></script>
+-->
 	<meta charset="UTF-8">
 	<title>Routing</title>
 
@@ -138,6 +138,24 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="attraction-search-container" class="leaflet-bottom leaflet-left">
+		<div id="search-container" class="leaflet-control">
+			<div id="search-img-container">
+				<a href="#">
+					<div id="search-image">
+						<img src="CSS/images/magnifyingglass.png"></img>
+					</div>
+				</a>
+			</div>
+			<div id="search-bar">
+				<output type="text" id="search-suggestive" class="search-input"></output>
+
+				<input type="text" id="search-in" class="search-input" placeholder="Search.." />
+			</div>
+		</div>
+	</div>
+
 
 	<div class="leaflet-right leaflet-top" style="position:absolute;z-index:50;">
 		<div id="transit-itineraries" class="leaflet-bar leaflet-control">
