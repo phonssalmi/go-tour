@@ -276,3 +276,33 @@ function asSearchResult(data) {
 	};
 }
 
+function onSearchButtonClick() {
+	console.log('wat');
+	document.getElementById('search-container').classList.toggle('search-focused');
+	var inputEl = document.getElementById('search-in');
+	inputEl.oninput = searchInputEventHandlerWrapper(inputEl);
+}
+
+function searchInputEventHandlerWrapper(inElement) {
+	var lastInputValue = '';
+
+	return function searchInputHandler(ev) {
+		var inputValue = inElement.value;
+		if(inputValue === lastInputValue) return;
+
+		lastInputValue = inputValue;
+		console.log(inputValue);
+
+		if(inputValue === '') {
+			document.getElementById('search-suggestive').value = '';
+			return;
+		}
+
+		var searchResults = searchByString(inputValue);
+		console.log(searchResults);
+		if(searchResults.length !== 0) {
+			document.getElementById('search-suggestive').value = searchResults[0].name;
+		}
+	}
+}
+
