@@ -93,10 +93,7 @@ button[aria-expanded=false] .fa-angle-up {
     padding: 5px 0px;
     border-bottom: none;
     border-radius: 10px;
-    width: 90%;
-    }
-    .leaflet-routing-geocoders{
-        border-bottom: none !important;
+    width: 95%;
     }
 /*the cross button*/
 .leaflet-routing-remove-waypoint::after {
@@ -186,6 +183,13 @@ button[aria-expanded=false] .fa-angle-up {
 }
 #table_route_info th{
    padding:5px;
+}
+.directions-table{
+    max-height: 30vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: left;
+    
 }
 
 
