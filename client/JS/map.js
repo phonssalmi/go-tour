@@ -127,13 +127,13 @@ function onDrag(e) {
 }
 
 function getTransportType(e, sender) {
-	$('#transportType').children().each(function(){
+	$('#transportType').children().each(function () {
 		this.style.backgroundColor = "#007bff";
 	})
 	sender.style.backgroundColor = "blue";
 	transportType = e
 
-	if(e === 'bus') map.removeLayer(polyline);
+	if (e === 'bus') map.removeLayer(polyline);
 	else clearLines();
 	getRoute();
 }
@@ -164,24 +164,39 @@ function getRoute() {
 	request.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			var JSONresponse = JSON.parse(this.response);
-			console.log(JSONresponse);
-			var totalDistance = (parseFloat(JSONresponse.routes[0].summary.distance) / 1000).toFixed(1);
-			var totalTime = (parseFloat(JSONresponse.routes[0].summary.duration) / 60).toFixed(1);
-			document.getElementById("totalDistance").innerHTML = "Distance: " + totalDistance + " km";
-			document.getElementById("totalTime").innerHTML ="Time: " +  totalTime + " min";
+			var totalDistance = parseDistance(JSONresponse.routes[0].summary.distance);
+			var totalTime = parseTime(JSONresponse.routes[0].summary.duration);
+			document.getElementById("totalDistance").innerHTML = "Total distance: " + totalDistance;
+			document.getElementById("totalTime").innerHTML = "Total time: " + totalTime;
+			var encoded = JSONresponse.routes[0].geometry;
+			polyline = L.Polyline.fromEncoded(encoded).addTo(map);
 			var steps = [];
-			for(var i = 0;i< JSONresponse.routes[0].segments.length; i++){
-				for(var j = 0; j<JSONresponse.routes[0].segments[i].steps.length;j++){
+			for (var i = 0; i < JSONresponse.routes[0].segments.length; i++) {
+				for (var j = 0; j < JSONresponse.routes[0].segments[i].steps.length; j++) {
 					steps.push(JSONresponse.routes[0].segments[i].steps[j]);
 				}
 			}
-			console.log(steps);
-			var encoded = JSONresponse.routes[0].geometry;
-
-			polyline = L.Polyline.fromEncoded(encoded).addTo(map);
+			var displaySteps = "<table style='width:100%'>";
+			for (var i = 0; i < steps.length; i++) {
+				displaySteps += "<tr>";
+				displaySteps += "<td colspan ='2'>" + steps[i].instruction + "</td>";
+				displaySteps += "</tr>";
+				displaySteps += "<tr>";
+				displaySteps += "<td>" + parseDistance(steps[i].distance) + "</td>";
+				displaySteps += "<td>" + parseTime(steps[i].duration) + "</td>";
+				displaySteps += "</tr>";
+			}
+			displaySteps += "</table>";
+			document.getElementById("directionsTable").innerHTML = displaySteps;
 		}
 	};
 	request.send();
+}
+function parseDistance(distance) {
+	return (parseFloat(distance) / 1000).toFixed(2) + " km";
+}
+function parseTime(time) {
+	return (parseFloat(time) / 60).toFixed(2) + " min";
 }
 function createOneInput() {
 	inputsDiv = document.getElementById("inputs-form");
@@ -292,17 +307,17 @@ function clearLines() {
 	currentPolylines = [];
 }
 
-function removeInput(node){
+function removeInput(node) {
 	// autocomplete does not work after removing input
 	inputsDiv = document.getElementById("inputs-form");
 	var index = Array.prototype.indexOf.call(inputsDiv.children, node);
-	if (inputsArray.length < 3 || index == inputsDiv.children.length - 1){
+	if (inputsArray.length < 3 || index == inputsDiv.children.length - 1) {
 		return;
 	}
 	inputsDiv.removeChild(node);
 	map.removeLayer(markersArray[index]);
-	markersArray.splice(index,1);
-	autocompleteArray.splice(index,1);
+	markersArray.splice(index, 1);
+	autocompleteArray.splice(index, 1);
 	getRoute();
 }
 
@@ -352,7 +367,7 @@ function getPointAddress(marker, autoCreate = true, changeInputValue = false) {
 				createPlaceInputFromMarker(marker, myArr);
 				createAutocomplete();
 			}
-			if(changeInputValue){
+			if (changeInputValue) {
 				changeInputsValue(marker, myArr);
 			}
 		}
@@ -376,7 +391,7 @@ function createPlaceInputFromMarker(marker, myArr) {
 	}
 }
 
-function changeInputsValue(marker, myArr){
+function changeInputsValue(marker, myArr) {
 	var index = markersArray.indexOf(marker);
 	inputsArray[index].value = myArr.results[0].formatted_address;
 }
@@ -455,10 +470,10 @@ function onRangeChange() {
 	interval.value = Math.max(interval.min, interval.value);
 	document.getElementById("rangeMin").innerHTML = "Min:" + range.min;
 	document.getElementById("rangeMax").innerHTML = "Max:" + range.max;
-	document.getElementById("rangeCurrent").innerHTML = range.value;
+	document.getElementById("rangeCurrent").innerHTML = range.value + "min";
 
 	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
-	document.getElementById("intervalCurrent").innerHTML = interval.value;
+	document.getElementById("intervalCurrent").innerHTML = interval.value + "min";
 }
 
 function placeMarkers() {
@@ -498,11 +513,11 @@ function zoomOut() {
 }
 
 
-var attractionUris = [ 'JS/RestaurantsGeoJSON.js', 'JS/museums.js' ];
+var attractionUris = ['JS/RestaurantsGeoJSON.js', 'JS/museums.js'];
 function loadAttractions(map) {
 	attractionUris.forEach((uri, idx) => {
 		loadMapData(uri).then((data) => {
-			if(idx === attractionUris.length - 1) bindToMap(map);
+			if (idx === attractionUris.length - 1) bindToMap(map);
 		});
 	});
 }
@@ -510,19 +525,19 @@ function loadAttractions(map) {
 /*Function to enter user's location as the starting position for a route*/
 function locateUser() {
 	map.locate({ setView: true, maxZoom: 14 })
-		.on('locationfound', function(e){
+		.on('locationfound', function (e) {
 			var tempMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: true }).addEventListener('dragend', onDrag);
-			if(markersArray.length != 0) {
+			if (markersArray.length != 0) {
 				markersArray[0].setLatLng([e.latlng.lat, e.latlng.lng]);
 			}
-			else{
+			else {
 				markersArray.push(tempMarker.addTo(map));
 			}
 			getPointAddress(markersArray[0]);
 			getRoute();
 			console.log("Location found");
 		})
-		.on('locationerror', function(e) {
+		.on('locationerror', function (e) {
 			console.log("Location not found");
 		});
 }
