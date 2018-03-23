@@ -39,6 +39,7 @@ window.onload = function () {
 	}).addTo(map);
 
 	loadAttractions(map);
+	document.getElementById('search-img-container').onclick = onSearchButtonClick;
 
 	createAutocomplete();
 	function onMapRightClick(e) {
