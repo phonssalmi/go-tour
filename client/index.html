@@ -98,11 +98,6 @@
 					<i class="fas fa-map-marker"></i>
 					Locate Me
 				</button>
-				<!-- track user button -->
-				<button class="btn btn-primary btn-sm buttonMargin" id="special-button" onclick="trackUser()">
-					<i class="fas fa-map-marker"></i>
-					Track Me
-				</button>
 
 			</div>
 			<p>Southwest Finland Routing.</p>
@@ -155,6 +150,12 @@
 			<a class="leaflet-control-zoom-out" href="#" title="Zoom out" onclick="zoomOut()">-</a>
 		</div>
 	</div>
+
+	<div id="tracking-notification">
+		<div id="close-tracking-notification">x</div>
+		This website will use your location data<a class="trackingConsentOk">That's OK</a>
+	</div>
+
 </body>
 
 </html>

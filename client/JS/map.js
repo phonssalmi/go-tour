@@ -9,6 +9,7 @@ var startMarkerPlaced = false;
 var endMarkerPlaced = false;
 var isochroneMarker = false;
 var previousMarker;
+var userMarker = null;
 var markersArray = [];
 var inputsArray = [];
 var inputsDiv = 0;
@@ -67,6 +68,44 @@ window.onload = function () {
 		}
 	}
 	map.on('click', onMapClick);
+	
+	/*Notification on user tracking*/
+	$(document).ready(function(){   
+    setTimeout(function () {
+        $("#tracking-notification").fadeIn(200);
+     }, 1000);
+    $("#close-tracking-notification, .trackingConsentOk").click(function() {
+        $("#tracking-notification").fadeOut(200);
+    }); 
+}); 
+	
+	
+	/*Adding continuously updated user location icon to the map*/
+	map.on('locationfound', function(e){
+			console.log("LocationFound called");
+			var userIcon = L.icon({
+								iconUrl: 'markers_icons/user_img.png',
+								iconSize: [ 17, 17 ],
+								iconAnchor: [ 9, 9 ],
+							});
+			if(userMarker == null) /*If no marker -> create one*/
+			{
+				userMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: false, icon: userIcon });
+				userMarker.addTo(map);
+				//var circle = L.circle([e.latlng.lat, e.latlng.lng], {radius: e.accuracy / 2}).addTo(map);
+				console.log("User tracking marker added");
+			}
+			else	/*If marker -> move it to new location*/
+			{
+				userMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
+				console.log("User location tracking success");	
+			}
+				
+		});
+	map.on('locationerror', function(e) {
+				console.log("User location tracking failure");
+		});
+	map.locate({watch: true, timeout: 1000});
 }
 function removeMarkers() {
 	markersArray.forEach(marker => {
@@ -486,46 +525,4 @@ function locateUser() {
 		.on('locationerror', function(e) {
 			console.log("Location not found");
 		});
-}
-
-/*Function to show users location on the map*/
-/*Proper functionality needs to be tested: Does it update the position if the user moves?*/
-var trackingOn = 0;
-var userMarker = null;
-function trackUser() {
-	if(trackingOn == 0) /*Turn on tracking*/
-	{	
-		trackingOn = 1;
-		map.on('locationfound', function(e){
-			console.log("LocationFound called");
-			var userIcon = L.icon({
-								iconUrl: 'markers_icons/user_img.png',
-								iconSize: [ 17, 17 ],
-								iconAnchor: [ 8, 8 ],
-							});
-			if(userMarker == null) /*If no marker -> create one*/
-			{
-				userMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: false, icon: userIcon });
-				userMarker.addTo(map);
-				console.log("User tracking marker added");
-			}
-			else	/*If marker -> move it to new location*/
-			{
-				userMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
-				console.log("User location tracking success");	
-			}
-				
-		});
-		map.on('locationerror', function(e) {
-				console.log("User location tracking failure");
-		});
-		map.locate({watch: true, timeout: 1000});
-	}
-	else /*Stop tracking and remove the marker*/
-	{
-		trackingOn = 0;
-		map.stopLocate();
-		userMarker.remove();
-		userMarker = null;
-	}
 }
