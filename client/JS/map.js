@@ -21,6 +21,8 @@ var inputStringHTML = "<div class=\"leaflet-routing-geocoder\">" +
 var orsKey = "58d904a497c67e00015b45fce7820addba544082bfb751a87dd60ca8";
 
 window.onload = function () {
+	var cookieHandler = getCookieHandler();
+
 	/*Map creation*/
 	map = L.map('mapid', {
 		center: [60.4500, 22.2667],
@@ -29,6 +31,8 @@ window.onload = function () {
 		scaleControl: false,
 		minZoom: 4
 	});
+
+	cookieHandler.load();
 
 	document.getElementById("car").style.backgroundColor = "blue";
 
@@ -71,15 +75,25 @@ window.onload = function () {
 	map.on('click', onMapClick);
 	
 	/*Notification on user tracking*/
-	$(document).ready(function(){   
-    setTimeout(function () {
-        $("#tracking-notification").fadeIn(200);
-     }, 1000);
-    $("#close-tracking-notification, .trackingConsentOk").click(function() {
-        $("#tracking-notification").fadeOut(200);
-    }); 
-}); 
-	
+	if(cookieHandler.get('locok') === null) {
+		$(document).ready(function(){
+			setTimeout(function () {
+				$("#tracking-notification").fadeIn(200);
+			}, 1000);
+			$("#close-tracking-notification, .trackingConsentOk").click(trackOnClick);
+		});
+
+	} else {
+		document.getElementById('tracking-notification').style.display = 'none';
+	}
+
+	function trackOnClick() {
+		$("#tracking-notification").fadeOut(200);
+		cookieHandler.set('locok', 'ok');
+		console.log(cookieHandler.get('locok'));
+		console.log(document.cookie);
+	}
+
 	
 	/*Adding continuously updated user location icon to the map*/
 	map.on('locationfound', function(e){
