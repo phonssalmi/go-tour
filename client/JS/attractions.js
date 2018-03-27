@@ -306,3 +306,19 @@ function searchInputEventHandlerWrapper(inElement) {
 	}
 }
 
+/*Currently moves map to markers location on successful search*/
+/*TODO: Show the attraction information side bar*/
+function onSearchSubmit() {
+	toggleLayerByName('restaurant');
+	console.log("submit called");
+	var inputValue = document.getElementById('search-in').value;
+	var searchResults = searchByString(inputValue);
+	
+	console.log(inputValue);
+	console.log(searchResults[0].name);
+	if(inputValue.toLowerCase() === searchResults[0].name.toLowerCase()) {
+		console.log("Match found");
+		map.flyTo([searchResults[0].data.lat, searchResults[0].data.lng]);
+	}
+	
+}
