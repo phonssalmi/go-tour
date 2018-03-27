@@ -118,17 +118,3 @@
     background-color: blue;
 }
 /*tracking Consent End*/
-
-#search-suggestive {
-	z-index: 60;
-	background-color: transparent;
-}
-
-#search-in {
-	z-index: 61;
-	background-color: transparent;
-}
-
-.search-input{
-	position: relative;
-}
