@@ -31,6 +31,7 @@ window.onload = function () {
 		scaleControl: false,
 		minZoom: 4
 	});
+	recreateInputs();
 
 	cookieHandler.load();
 
@@ -499,10 +500,10 @@ function onRangeChange() {
 	interval.value = Math.max(interval.min, interval.value);
 	document.getElementById("rangeMin").innerHTML = "Min:" + range.min;
 	document.getElementById("rangeMax").innerHTML = "Max:" + range.max;
-	document.getElementById("rangeCurrent").innerHTML = range.value + "min";
+	document.getElementById("rangeCurrent").innerHTML = range.value + " min";
 
 	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
-	document.getElementById("intervalCurrent").innerHTML = interval.value + "min";
+	document.getElementById("intervalCurrent").innerHTML = interval.value + " min";
 }
 
 function placeMarkers() {

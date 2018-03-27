@@ -259,5 +259,11 @@ button[aria-expanded=false] .fa-angle-up {
 	border: none;
 	border-radius: 0;
 	-webkit-appearance: none;
+	
+	position: relative;
 }
 
+#search-in{
+	z-index: 211;
+	background-color: transparent;
+}
