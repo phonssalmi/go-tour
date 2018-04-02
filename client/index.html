@@ -57,6 +57,12 @@
 				<i class="fas fa-angle-up"></i>
 				<i class="fas fa-angle-down"></i>
 			</button>
+			<button class="btn btn-primary btn-sm buttonMargin" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
+			 data-target="#sidebar">
+				<i class="fas fa-angle-up"></i>
+				<i class="fas fa-angle-down"></i>
+				Sidebar
+			</button>
 		</div>
 		<div class="leaflet-routing-container col-12 leaflet-control">
 			<div id="transportType" class="routing collapse show">
@@ -125,14 +131,29 @@
 				<span id="intervalMin">Min: 1</span>
 				<span id="intervalMax">Max: 60</span>
 			</div>
-			<div id="directions" class="leaflet-routing-geocoder  routing collapse show">
+			<div id="directions" class="leaflet-routing-geocoder routing collapse show">
 				<hr>
 				<p id="totalDistance"></p>
 				<p id="totalTime"></p>
 				<div id="directionsTable" class="table-striped table directions-table"></div>
 			</div>
 		</div>
-
+		
+		<div id="sidebar" class="leaflet-top col-xl-3 col-lg-4 col-md-12 collapse">
+			<button class="btn btn-primary btn-sm buttonMargin sidebarButton" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
+			 data-target="#sidebar">
+				<i class="fas fa-angle-up"></i>
+				<i class="fas fa-angle-down"></i>
+				Close
+			</button>
+			<div id="sidebar-inner">
+				<div id="sidebar-text">
+					<p>This is a sidebar test</p>
+					<p>Inside here would be settings and/or controls</p>
+				</div>
+			</div>
+		</div>
+		
 	</div>
 
 	<div id="attraction-menu-container" class="leaflet-bottom leaflet-left" style="display: none">
