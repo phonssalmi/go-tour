@@ -34,6 +34,7 @@ window.onload = function () {
 	recreateInputs();
 
 	cookieHandler.load();
+	setContainers(document.getElementById('menu-main-container'));
 
 	document.getElementById("car").style.backgroundColor = "blue";
 
