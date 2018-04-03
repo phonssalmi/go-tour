@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="JS/simple-cookies.js"></script>
 	<script type="text/javascript" src="JS/routeRequest.js"></script>
 	<script type="text/javascript" src="JS/attractions.js"></script>
+	<script type="text/javascript" src="JS/containerHandler.js"></script>
 	<script type="text/javascript" src="JS/map.js"></script>
 	<script type="text/javascript" src="JS/Polyline.encoded.js"></script>
 
@@ -50,140 +51,141 @@
 
 <body>
 	<div id="mapid"></div>
-	<div id="routing-menu" class="leaflet-top col-xl-3 col-lg-4 col-md-12">
-		<div class="leaflet-control">
-			<button class="btn btn-primary btn-sm buttonMargin" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
-			 data-target=".routing">
-				<i class="fas fa-angle-up"></i>
-				<i class="fas fa-angle-down"></i>
-			</button>
-			<button class="btn btn-primary btn-sm buttonMargin" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
-			 data-target="#sidebar">
-				<i class="fas fa-angle-up"></i>
-				<i class="fas fa-angle-down"></i>
-				Sidebar
-			</button>
-		</div>
-		<div class="leaflet-routing-container col-12 leaflet-control">
-			<div id="transportType" class="routing collapse show">
-				<button id="walk" class="btn btn-primary btn-sm buttonMargin" value="foot-walking" onclick="getTransportType(value,this)">Walk
-					<i class="fas fa-male"></i>
+	
+	<div id="menu-main-container" class="leaflet-left">
+		<div id="routing-menu" class="leaflet-top col-xl-3 col-lg-4 col-md-12">
+			<div class="leaflet-control">
+				<button class="btn btn-primary btn-sm buttonMargin" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing" data-target=".routing">
+					<i class="fas fa-angle-up"></i>
+					<i class="fas fa-angle-down"></i>
 				</button>
-				<button id="bike" class="btn btn-primary btn-sm buttonMargin" value="cycling-regular" onclick="getTransportType(value,this)">Bicycle
-					<i class="fas fa-bicycle"></i>
-				</button>
-				<button id="car" class="btn btn-primary btn-sm buttonMargin" value="driving-car" onclick="getTransportType(value,this)">Car
-					<i class="fas fa-car"></i>
-				</button>
-				<button id="bus" class="btn btn-primary btn-sm buttonMargin" value="bus" onclick="getTransportType(value,this)">Bus
-					<i class="fas fa-bus"></i>
+				<button class="btn btn-primary btn-sm buttonMargin" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing" data-target="#sidebar">
+					<i class="fas fa-angle-up"></i>
+					<i class="fas fa-angle-down"></i>
+					Sidebar
 				</button>
 			</div>
-			<div id="inputs-form" class="leaflet-routing-geocoders routing collapse show">
-				<div>
-					<div class="leaflet-routing-geocoder">
-						<input placeholder="Start" class="input-fields">
-						<i class="fas fa-times remove-icon" onclick="removeInput(this.parentNode.parentNode)"></i>
+			<div class="leaflet-routing-container col-12 leaflet-control">
+				<div id="transportType" class="routing collapse show">
+					<button id="walk" class="btn btn-primary btn-sm buttonMargin" value="foot-walking" onclick="getTransportType(value,this)">Walk
+						<i class="fas fa-male"></i>
+					</button>
+					<button id="bike" class="btn btn-primary btn-sm buttonMargin" value="cycling-regular" onclick="getTransportType(value,this)">Bicycle
+						<i class="fas fa-bicycle"></i>
+					</button>
+					<button id="car" class="btn btn-primary btn-sm buttonMargin" value="driving-car" onclick="getTransportType(value,this)">Car
+						<i class="fas fa-car"></i>
+					</button>
+					<button id="bus" class="btn btn-primary btn-sm buttonMargin" value="bus" onclick="getTransportType(value,this)">Bus
+						<i class="fas fa-bus"></i>
+					</button>
+				</div>
+				<div id="inputs-form" class="leaflet-routing-geocoders routing collapse show">
+					<div>
+						<div class="leaflet-routing-geocoder">
+							<input placeholder="Start" class="input-fields">
+							<i class="fas fa-times remove-icon" onclick="removeInput(this.parentNode.parentNode)"></i>
+						</div>
+					</div>
+					<div>
+						<div class="leaflet-routing-geocoder">
+							<input placeholder="End" class="input-fields">
+							<i class="fas fa-times remove-icon" onclick="removeInput(this.parentNode.parentNode)"></i>
+						</div>
 					</div>
 				</div>
-				<div>
-					<div class="leaflet-routing-geocoder">
-						<input placeholder="End" class="input-fields">
-						<i class="fas fa-times remove-icon" onclick="removeInput(this.parentNode.parentNode)"></i>
-					</div>
-				</div>
-			</div>
-			<hr>
-			<div id="button-list">
-				<button class="btn btn-primary btn-sm buttonMargin" id="special-button" onclick="enableIsochrones()">
-					<i class="far fa-clock"></i>
-					Place Isochrones
-				</button>
-				<button class="btn btn-primary btn-sm buttonMargin" id="special-button" onclick="placeMarkers()">
-					<i class="fas fa-map-marker"></i>
-					Place Markers
-				</button>
-				<!-- Locate user button -->
-				<button class="btn btn-primary btn-sm buttonMargin" id="special-button" onclick="locateUser()">
-					<i class="fas fa-map-marker"></i>
-					Locate Me
-				</button>
-
-			</div>
-			<div id="isochrones">
-				<button value="isochrones" class=" btn btn-sm btn-primary" onclick="getIsochrones()">Generate Isochrones</button>
-				<p>
-					Isochrones Range:
-					<p>
-						<input type="range" min="5" max=200 step="5" value="30" id="isochrones_range" oninput="onRangeChange()">
-					</p>
-					<span id="rangeCurrent">30 min</span>
-				</p>
-				<span id="rangeMin">Min: 5</span>
-				<span id="rangeMax">Max: 200</span>
-				<p>
-					Isochrones Interval:
-					<p>
-						<input type="range" min="3" max="60" step="1" value="5" id="isochrones_interval" oninput="onIntervalChange()">
-					</p>
-					<span id="intervalCurrent">5 min</span>
-				</p>
-				<span id="intervalMin">Min: 1</span>
-				<span id="intervalMax">Max: 60</span>
-			</div>
-			<div id="directions" class="leaflet-routing-geocoder routing collapse show">
+				
 				<hr>
-				<p id="totalDistance"></p>
-				<p id="totalTime"></p>
-				<div id="directionsTable" class="table-striped table directions-table"></div>
+				<div id="button-list">
+					<button class="btn btn-primary btn-sm buttonMargin" id="special-button" onclick="enableIsochrones()">
+						<i class="far fa-clock"></i>
+						Place Isochrones
+					</button>
+					<button class="btn btn-primary btn-sm buttonMargin" id="special-button" onclick="placeMarkers()">
+						<i class="fas fa-map-marker"></i>
+						Place Markers
+					</button>
+					<!-- Locate user button -->
+					<button class="btn btn-primary btn-sm buttonMargin" id="special-button" onclick="locateUser()">
+						<i class="fas fa-map-marker"></i>
+						Locate Me
+					</button>
+				</div>
+
+				<div id="isochrones">
+					<button value="isochrones" class=" btn btn-sm btn-primary" onclick="getIsochrones()">Generate Isochrones</button>
+					<p>
+						Isochrones Range:
+						<p>
+							<input type="range" min="5" max=200 step="5" value="30" id="isochrones_range" oninput="onRangeChange()">
+						</p>
+						<span id="rangeCurrent">30 min</span>
+					</p>
+					<span id="rangeMin">Min: 5</span>
+					<span id="rangeMax">Max: 200</span>
+					<p>
+						Isochrones Interval:
+						<p>
+							<input type="range" min="3" max="60" step="1" value="5" id="isochrones_interval" oninput="onIntervalChange()">
+						</p>
+						<span id="intervalCurrent">5 min</span>
+					</p>
+					<span id="intervalMin">Min: 1</span>
+					<span id="intervalMax">Max: 60</span>
+				</div>
+
+				<div id="directions" class="leaflet-routing-geocoder routing collapse show">
+					<hr>
+					<p id="totalDistance"></p>
+					<p id="totalTime"></p>
+					<div id="directionsTable" class="table-striped table directions-table"></div>
+				</div>
 			</div>
-		</div>
 		
-		<div id="sidebar" class="leaflet-top col-xl-3 col-lg-4 col-md-12 collapse">
-			<button class="btn btn-primary btn-sm buttonMargin sidebarButton" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
-			 data-target="#sidebar">
-				<i class="fas fa-angle-up"></i>
-				<i class="fas fa-angle-down"></i>
-				Close
-			</button>
-			<div id="sidebar-inner">
-				<div id="sidebar-text">
-					<p>This is a sidebar test</p>
-					<p>Inside here would be settings and/or controls</p>
+			<div id="sidebar" class="leaflet-top col-xl-3 col-lg-4 col-md-12 collapse">
+				<button class="btn btn-primary btn-sm buttonMargin sidebarButton" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing" data-target="#sidebar">
+					<i class="fas fa-angle-up"></i>
+					<i class="fas fa-angle-down"></i>
+					Close
+				</button>
+				<div id="sidebar-inner">
+					<div id="sidebar-text">
+						<p>This is a sidebar test</p>
+						<p>Inside here would be settings and/or controls</p>
+					</div>
 				</div>
 			</div>
 		</div>
-		
-	</div>
 
-	<div id="attraction-menu-container" class="leaflet-bottom leaflet-left" style="display: none">
-		<div class="leaflet-routing-container leaflet-bar leaflet-control">
-			<div id="attraction-panel">
-
+		<div id="attraction-menu-container" class="leaflet-bottom leaflet-left" style="display: none">
+			<div class="leaflet-routing-container leaflet-bar leaflet-control">
+				<div id="attraction-panel">
+	
+				</div>
 			</div>
-		</div>
-	</div>
-
-	<div id="attraction-search-container" class="leaflet-bottom leaflet-left">
-		<div id="search-container" class="leaflet-control">
-			<div id="search-img-container">
-				<a href="#">
-					<div id="search-image">
-						<img src="CSS/images/magnifyingglass.png"></img>
+			
+			<div id="attraction-search-container" class="leaflet-bottom leaflet-left">
+				<div id="search-container" class="leaflet-control">
+					<div id="search-img-container">
+						<a href="#">
+							<div id="search-image">
+								<img src="CSS/images/magnifyingglass.png"></img>
+							</div>
+						</a>
 					</div>
-				</a>
+					<div id="search-bar">
+						<output type="text" id="search-suggestive" class="search-input"></output>
+						<input type="text" id="search-in" class="search-input" placeholder="Search.." />
+					</div>
+				</div>
 			</div>
-			<div id="search-bar">
-				<output type="text" id="search-suggestive" class="search-input"></output>
 
-				<input type="text" id="search-in" class="search-input" placeholder="Search.." />
-			</div>
 		</div>
-	</div>
 
-
-	<div class="leaflet-right leaflet-top" style="position:absolute;z-index:50;">
-		<div id="transit-itineraries" class="leaflet-bar leaflet-control">
+		<div id="bus-transit-container">
+			<div class="leaflet-right leaflet-top" style="position:absolute;z-index:50;">
+				<div id="transit-itineraries" class="leaflet-bar leaflet-control"></div>
+			</div>
 		</div>
 	</div>
 
