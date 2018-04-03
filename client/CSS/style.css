@@ -276,8 +276,12 @@ button[aria-expanded=false] .fa-angle-up {
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	display: none;
 	height: 100vh;
+}
+
+#attraction-panel p {
+	color: black;
+	font-size: 14px;
 }
 
 /* ------------------------------Sidebar ---------------	*/

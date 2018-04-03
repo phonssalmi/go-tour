@@ -247,7 +247,22 @@ function clickEventWrapper(attrDataPanel, attrDataContainer, attrData) {
 }
 
 function updateAttrPanel(attrData, attrDataPanel) {
-	attrDataPanel.innerHTML = '<div style="width: 200px;padding: 5px;background-color: #FFFFFF"><h4 style="margin: 0">' + attrData.name + '</h4><h3 style="margin: 5px 0 0 0">' + attrData.class + '</h3><div>';
+	document.getElementById('attrName').innerHTML = attrData.name;
+	document.getElementById('attrClass').innerHTML = attrData.class;
+	document.getElementById('attrAddress').innerHTML = attrData.address;
+	document.getElementById('attrWebsite').innerHTML = attrData.website;
+	document.getElementById('attrWebsite').href = attrData.website;
+	
+	document.getElementById('attrMonday').innerHTML = attrData.monday;
+	document.getElementById('attrTuesday').innerHTML = attrData.tuesday;
+	document.getElementById('attrWednesday').innerHTML = attrData.wednesday;
+	document.getElementById('attrThursday').innerHTML = attrData.thursday;
+	document.getElementById('attrFriday').innerHTML = attrData.friday;
+	document.getElementById('attrSaturday').innerHTML = attrData.saturday;
+	document.getElementById('attrSunday').innerHTML = attrData.sunday;
+	
+	document.getElementById('attrDescription').innerHTML = attrData.description;
+	
 }
 
 function searchByString(str) {
@@ -338,7 +353,7 @@ function toggleAttractionContainer(attrDataContainer, attrData) {
 		attrDataContainer.style.display = 'none';
 	}	
 	else if(attrDataContainer.style.display === 'none') {
-		attrDataContainer.style.display = 'inherit';
+		attrDataContainer.style.display = 'block';
 	} 
 	else if(currentlyShownAttr === attrData) {
 		attrDataContainer.style.display = 'none';
