@@ -54,7 +54,7 @@
 
 #routing-menu{
     z-index:100; 
-    position:absolute;
+    position:relative;
 }
 
 #button-list{
