@@ -213,7 +213,7 @@ function hideLayer(layerData) {
 }
 
 function hideAttractionMarker(attrData) {
-	if(attrData.lMarker)
+	if(attrData.lMarker) attrData.lMarker.remove();
 }
 
 var attractionPanel = null;
@@ -324,9 +324,11 @@ function onSearchSubmit() {
 	if(inputValue.toLowerCase() === searchResults[0].name.toLowerCase()) { /*Complete match found*/
 		console.log("Match found");
 		map.flyTo([searchResults[0].data.lat, searchResults[0].data.lng]);
-	} else if(searchResults[0].name.length != 0){
+		showAttractionMarker(searchResults[0].data);
+	} else if(searchResults[0].name.length != 0){ /*Partial match found*/
 		console.log("Partial match found");
 		map.flyTo([searchResults[0].data.lat, searchResults[0].data.lng]);
+		showAttractionMarker(searchResults[0].data);
 	}
 }
 
