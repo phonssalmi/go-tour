@@ -253,12 +253,26 @@ function clearMarkerArray() {
 
 function getRouteN() {
 	if (markersArray.length < 2) return;
-	var startlat = markersArray[0]._latlng.lat;
+	/*var startlat = markersArray[0]._latlng.lat;
 	var startlng = markersArray[0]._latlng.lng;
 	var endlat = markersArray[1]._latlng.lat;
-	var endlng = markersArray[1]._latlng.lng;
+	var endlng = markersArray[1]._latlng.lng;*/
 
-	requestRoute(startlat, startlng, endlat, endlng).then((data) => {
+	var start = markersArray[0]._latlng;
+	var end = markersArray[markersArray.length - 1]._latlng;
+	var stops = [];
+	var otpOpts = {};
+
+	if(markersArray.length > 2) {
+		for(var i = 1; i < markersArray.length -1; i++) {
+			stops.push(markersArray[i]._latlng);
+		}
+		otpOpts.showIntermediateStops = true;
+		otpOpts.intermediatePlacesOrdered = true;
+	}
+	
+
+	requestOtpRoute(start, end, otpOpts, stops).then((data) => {
 		if (typeof data === 'string') {
 			console.log(data);
 			return;

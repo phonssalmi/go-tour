@@ -267,3 +267,23 @@ button[aria-expanded=false] .fa-angle-up {
 	z-index: 211;
 	background-color: transparent;
 }
+
+/* ------------------------------Sidebar ---------------	*/
+#sidebar {
+	position: fixed;
+	left: 0px;
+	z-index: 900;
+	pointer-events: auto;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+
+}
+#sidebar-inner {
+	height:100vh;
+	padding: 10px;
+}
+.sidebarButton {
+	float: right;
+	margin: 0;
+}

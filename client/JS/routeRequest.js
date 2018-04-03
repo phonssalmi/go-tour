@@ -16,6 +16,30 @@ const routingConfig = {
 	protocol: 'http://'
 }
 
+function requestOtpRoute(from, to, opts = {}, intermediateStops = []) {
+	const requestParams = Object.assign({}, DEFAULT_OPTS, {
+		fromPlace: getPositionStr(from.lat, from.lng),
+		toPlace: getPositionStr(to.lat, to.lng),
+		date: getDate(new Date()),
+		time: getTime(new Date()),
+		intermediatePlaces: getStopsList(intermediateStops)
+
+	}, opts);
+
+	const requestOpts = {
+		method: 'GET',
+		credentials: 'same-origin',
+		headers: {
+			'Accept': 'application/json'
+		}
+	};
+
+	return fetch(buildRoute(requestParams), requestOpts).then((res) => {
+		if(!res.ok) return res.text();
+		return res.json();
+	});
+}
+
 
 function requestRoute(fromLat, fromLng, toLat, toLng, opts = {}) {
 	const requestParams = Object.assign({}, DEFAULT_OPTS, opts, {
@@ -43,12 +67,29 @@ function getPositionStr(lat, lng) {
 	return lat + ',' + lng;
 }
 
+function getStopsList(posList) {
+	var nList = [];
+	for(var i = 0; i < posList.length; i++) {
+		nList.push(getPositionStr(posList[i].lat, posList[i].lng));
+	}
+	return nList;
+}
+
 function buildRoute(params) {
 	let rt = routingConfig.protocol + routingConfig.host + routingConfig.route;
 	
 	Object.keys(params).forEach((key, i) => {
-		rt += (i === 0 ? '?' : '&');
-		rt += key + '=' + params[key];
+		if(Array.isArray(params[key])) {
+			for(var i = 0; i < params[key].length; i++) {
+				rt += (i === 0 ? '?' : '&');
+				rt += key + '=' + params[key][i];
+			}
+
+		} else {
+			rt += (i === 0 ? '?' : '&');
+			rt += key + '=' + params[key];
+		}
+
 	});
 	console.log(rt);
 	return rt;
