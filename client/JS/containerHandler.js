@@ -1,10 +1,11 @@
-function getContainterHandler(parentElem) {
+function getContainerHandler(parentElem) {
 	if(!parentElem || !parentElem.children || parentElem.children.length === 0) throw 'Invalid parent element';
 
 	var availableContainers = [];
-	parentElem.children.forEach((elem) => {
-		availableContainers.push(elem);
-	});
+	for(var i = 0; i < parentElem.children.length; i++) {
+		if(!parentElem.children[i].classList.contains('cnthndl-ignore'))
+			availableContainers.push(parentElem.children[i]);
+	}
 
 	function focusContainerById(id) {
 		for(var i = 0; i < availableContainers.length; i++) {
@@ -31,13 +32,19 @@ function getContainterHandler(parentElem) {
 		elem.style.display = 'none';
 	}
 
-	function defaultOnclickHandlers()
+	function defaultOnclickHandlers(idSuffix) {
+		availableContainers.forEach((container, i) => {
+			var clickElem = document.getElementById(container.id + idSuffix);
+
+			clickElem.onclick = focusContainerByIndex(i);
+		});		
+	}
 
 	return {
 		focusContainerById: focusContainerById,
 		focusContainerByIndex: focusContainerByIndex,
 		focusContainerDirect: focusContainer,
 		unfocusContainerDirect: unfocusContainer,
-		setDefaultOnclickEvents: defaultOnclickHandlers
+		setOnclickEventsHandler: defaultOnclickHandlers
 	}
 }
