@@ -52,8 +52,12 @@
 <body>
 	<div id="mapid"></div>
 	
-	<div id="menu-main-container" class="leaflet-left">
-		<div id="routing-menu" class="leaflet-top col-xl-3 col-lg-4 col-md-12">
+	<div id="menu-main-container" class="leaflet-left leaflet-top col-xl-3 col-lg-4 col-md-12">
+		<div class="cnthndl-ignore leaflet-control" id="container-handler-buttons">
+			<div class="handlerc-button" id="routing-menu-cnt-button">Routing</div><div class="handlerc-spacer"></div><div class="handlerc-button" id="attraction-menu-container-cnt-button">Attractions</div><div class="handlerc-spacer"></div><div class="handlerc-button" id="bus-transit-container-cnt-button">Transit</div>
+		</div>
+
+		<div id="routing-menu" class="leaflet-control">
 			<div class="leaflet-control">
 				<button class="btn btn-primary btn-sm buttonMargin" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing" data-target=".routing">
 					<i class="fas fa-angle-up"></i>
@@ -142,7 +146,7 @@
 				</div>
 			</div>
 		
-			<div id="sidebar" class="leaflet-top col-xl-3 col-lg-4 col-md-12 collapse">
+			<div id="sidebar" style="display:none">
 				<button class="btn btn-primary btn-sm buttonMargin sidebarButton" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing" data-target="#sidebar">
 					<i class="fas fa-angle-up"></i>
 					<i class="fas fa-angle-down"></i>
@@ -157,14 +161,14 @@
 			</div>
 		</div>
 
-		<div id="attraction-menu-container" class="leaflet-bottom leaflet-left" style="display: none">
-			<div class="leaflet-routing-container leaflet-bar leaflet-control">
+		<div id="attraction-menu-container" class="leaflet-routing-container leaflet-bar leaflet-control">
+			<div>
 				<div id="attraction-panel">
 	
 				</div>
 			</div>
 			
-			<div id="attraction-search-container" class="leaflet-bottom leaflet-left">
+			<div id="attraction-search-container">
 				<div id="search-container" class="leaflet-control">
 					<div id="search-img-container">
 						<a href="#">
