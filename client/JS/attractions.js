@@ -184,12 +184,18 @@ function showLayer(layerData) {
 
 	if(layerData.isEnabled) return;
 	for(var i = 0; i < layerData.data.length; i++) {
-		var curr = layerData.data[i];
-		if(!curr.lMarker) curr.lMarker = makeMarker(curr.lat, curr.lng, curr);
-		curr.lMarker.addTo(boundMap);
+		showAttractionMarker(layerData.data[i]);
+		//var curr = layerData.data[i];
+		//if(!curr.lMarker) curr.lMarker = makeMarker(curr.lat, curr.lng, curr);
+		//curr.lMarker.addTo(boundMap);
 	}
 	
 	layerData.isEnabled = true;
+}
+
+function showAttractionMarker(attrData) {
+	if(!attrData.lMarker) attrData.lMarker = makeMarker(attrData.lat, attrData.lng, attrData);
+	attrData.lMarker.addTo(boundMap);
 }
 
 function hideLayer(layerData) {
@@ -200,10 +206,14 @@ function hideLayer(layerData) {
 
 	if(!layerData.isEnabled) return;
 	for(var i = 0; i < layerData.data.length; i++) {
-		if(layerData.data[i].lMarker) layerData.data[i].lMarker.remove();
+		hideAttractionMarker(layerData.data[i]);
 	}
 
 	layerData.isEnabled = false;
+}
+
+function hideAttractionMarker(attrData) {
+	if(attrData.lMarker)
 }
 
 var attractionPanel = null;
