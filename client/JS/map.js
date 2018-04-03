@@ -122,6 +122,15 @@ window.onload = function () {
 				console.log("User location tracking failure");
 		});
 	map.locate({watch: true, timeout: 1000});
+	
+	/*Detect enter press in attraction search input*/
+	document.getElementById('search-in').onkeypress = function(event) {
+    var keyCode = event.keyCode || event.which;
+    if (keyCode === 13){
+		console.log("enter pressed");
+		onSearchSubmit();
+    }
+}
 }
 function removeMarkers() {
 	markersArray.forEach(marker => {
