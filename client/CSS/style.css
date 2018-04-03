@@ -268,6 +268,18 @@ button[aria-expanded=false] .fa-angle-up {
 	background-color: transparent;
 }
 
+#attraction-menu-container{
+	position: fixed;
+	left: 0px;
+	z-index: 900;
+	pointer-events: auto;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	display: none;
+	height: 100vh;
+}
+
 /* ------------------------------Sidebar ---------------	*/
 #sidebar {
 	position: fixed;
