@@ -34,7 +34,9 @@ window.onload = function () {
 	recreateInputs();
 
 	cookieHandler.load();
-	setContainers(document.getElementById('menu-main-container'));
+	var cntHandler = getContainerHandler(document.getElementById('menu-main-container'));
+	cntHandler.setOnclickEventsHandler('-cnt-button');
+	cntHandler.focusContainerById('routing-menu');
 
 	document.getElementById("car").style.backgroundColor = "blue";
 
