@@ -326,16 +326,38 @@ function searchInputEventHandlerWrapper(inElement) {
 	}
 }
 
-/*Currently moves map to markers location on successful search*/
-/*TODO: Show the attraction information side bar*/
+/*Move to marker location, show the marker if it is hidden. Show attraction information in the sidebar*/
 function onSearchSubmit() {
 	console.log("submit called");
 	var inputValue = document.getElementById('search-in').value;
 	var searchResults = searchByString(inputValue);
 	
 	console.log(inputValue);
-	console.log(searchResults[0].name);
+	//console.log(searchResults[0].name);
+	console.log(searchResults[0]);
 	
+	/*Check for attraction types*/
+	if(searchResults[0] != null) { /*Check from the autofill*/
+		if(searchResults[0].name.toLowerCase() === 'restaurant') {
+			toggleLayerByName('restaurant');
+			return;
+		}
+		if(searchResults[0].name.toLowerCase() === 'museum') {
+			toggleLayerByName('museum');
+			return;
+		}
+	}
+	/*Check from the user input (To get the plural)*/
+	if(inputValue.toLowerCase() == 'restaurants') {
+		toggleLayerByName('restaurant');
+		return;
+	}
+	if(inputValue.toLowerCase() == 'museums') {
+		toggleLayerByName('museum');
+		return;
+	}
+	
+	/*Check for a specific attraction*/
 	if(inputValue.toLowerCase() === searchResults[0].name.toLowerCase()) { /*Complete match found*/
 		console.log("Match found");
 		map.flyTo([searchResults[0].data.lat, searchResults[0].data.lng]);
