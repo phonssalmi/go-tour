@@ -74,10 +74,10 @@ window.onload = function () {
 		}
 	}
 	map.on('click', onMapClick);
-	
+
 	/*Notification on user tracking*/
-	if(cookieHandler.get('locok') === null) {
-		$(document).ready(function(){
+	if (cookieHandler.get('locok') === null) {
+		$(document).ready(function () {
 			setTimeout(function () {
 				$("#tracking-notification").fadeIn(200);
 			}, 1000);
@@ -95,42 +95,40 @@ window.onload = function () {
 		console.log(document.cookie);
 	}
 
-	
+
 	/*Adding continuously updated user location icon to the map*/
-	map.on('locationfound', function(e){
-			console.log("LocationFound called");
-			var userIcon = L.icon({
-								iconUrl: 'markers_icons/user_img.png',
-								iconSize: [ 17, 17 ],
-								iconAnchor: [ 9, 9 ],
-							});
-			if(userMarker == null) /*If no marker -> create one*/
-			{
-				userMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: false, icon: userIcon });
-				userMarker.addTo(map);
-				//var circle = L.circle([e.latlng.lat, e.latlng.lng], {radius: e.accuracy / 2}).addTo(map);
-				console.log("User tracking marker added");
-			}
-			else	/*If marker -> move it to new location*/
-			{
-				userMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
-				console.log("User location tracking success");	
-			}
-				
+	map.on('locationfound', function (e) {
+		console.log("LocationFound called");
+		var userIcon = L.icon({
+			iconUrl: 'markers_icons/user_img.png',
+			iconSize: [17, 17],
+			iconAnchor: [9, 9],
 		});
-	map.on('locationerror', function(e) {
-				console.log("User location tracking failure");
-		});
-	map.locate({watch: true, timeout: 1000});
-	
+		if (userMarker == null) /*If no marker -> create one*/ {
+			userMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: false, icon: userIcon });
+			userMarker.addTo(map);
+			//var circle = L.circle([e.latlng.lat, e.latlng.lng], {radius: e.accuracy / 2}).addTo(map);
+			console.log("User tracking marker added");
+		}
+		else	/*If marker -> move it to new location*/ {
+			userMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
+			console.log("User location tracking success");
+		}
+
+	});
+	map.on('locationerror', function (e) {
+		console.log("User location tracking failure");
+	});
+	map.locate({ watch: true, timeout: 1000 });
+
 	/*Detect enter press in attraction search input*/
-	document.getElementById('search-in').onkeypress = function(event) {
-    var keyCode = event.keyCode || event.which;
-    if (keyCode === 13){
-		console.log("enter pressed");
-		onSearchSubmit();
-    }
-}
+	document.getElementById('search-in').onkeypress = function (event) {
+		var keyCode = event.keyCode || event.which;
+		if (keyCode === 13) {
+			console.log("enter pressed");
+			onSearchSubmit();
+		}
+	}
 }
 function removeMarkers() {
 	markersArray.forEach(marker => {
@@ -263,14 +261,14 @@ function getRouteN() {
 	var stops = [];
 	var otpOpts = {};
 
-	if(markersArray.length > 2) {
-		for(var i = 1; i < markersArray.length -1; i++) {
+	if (markersArray.length > 2) {
+		for (var i = 1; i < markersArray.length - 1; i++) {
 			stops.push(markersArray[i]._latlng);
 		}
 		otpOpts.showIntermediateStops = true;
 		otpOpts.intermediatePlacesOrdered = true;
 	}
-	
+
 
 	requestOtpRoute(start, end, otpOpts, stops).then((data) => {
 		if (typeof data === 'string') {
@@ -493,26 +491,18 @@ function checkMarkers(marker) {
 	}
 }
 
-function onIntervalChange() {
-	var interval = document.getElementById("isochrones_interval");
-	var range = document.getElementById("isochrones_range");
-
-	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
-	document.getElementById("intervalMax").innerHTML = "Max:" + interval.max;
-	document.getElementById("intervalCurrent").innerHTML = interval.value;
-}
-
-function onRangeChange() {
+function onRangeOrIntervalChange() {
 	var interval = document.getElementById("isochrones_interval");
 	var range = document.getElementById("isochrones_range");
 	interval.min = Math.ceil(range.value / 10);
 	interval.value = Math.max(interval.min, interval.value);
+	range.min = Math.ceil(interval.value / 5) * 5; //rounds the interval value up to next multiple of 5
+	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
+	document.getElementById("intervalMax").innerHTML = "Max:" + interval.max;
+	document.getElementById("intervalCurrent").innerHTML = interval.value + " min";
 	document.getElementById("rangeMin").innerHTML = "Min:" + range.min;
 	document.getElementById("rangeMax").innerHTML = "Max:" + range.max;
 	document.getElementById("rangeCurrent").innerHTML = range.value + " min";
-
-	document.getElementById("intervalMin").innerHTML = "Min:" + interval.min;
-	document.getElementById("intervalCurrent").innerHTML = interval.value + " min";
 }
 
 function placeMarkers() {
