@@ -340,20 +340,24 @@ function onSearchSubmit() {
 	if(searchResults[0] != null) { /*Check from the autofill*/
 		if(searchResults[0].name.toLowerCase() === 'restaurant') {
 			toggleLayerByName('restaurant');
+			document.getElementsByName('restaurant')[0].checked = !(document.getElementsByName('restaurant')[0].checked);
 			return;
 		}
 		if(searchResults[0].name.toLowerCase() === 'museum') {
 			toggleLayerByName('museum');
+			document.getElementsByName('museum')[0].checked = !(document.getElementsByName('museum')[0].checked);
 			return;
 		}
 	}
 	/*Check from the user input (To get the plural)*/
 	if(inputValue.toLowerCase() == 'restaurants') {
 		toggleLayerByName('restaurant');
+		document.getElementsByName('restaurant')[0].checked = !(document.getElementsByName('restaurant')[0].checked);
 		return;
 	}
 	if(inputValue.toLowerCase() == 'museums') {
 		toggleLayerByName('museum');
+		document.getElementsByName('museum')[0].checked = !(document.getElementsByName('museum')[0].checked);
 		return;
 	}
 	
