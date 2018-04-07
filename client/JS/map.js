@@ -553,20 +553,35 @@ function loadAttractions(map) {
 
 /*Function to enter user's location as the starting position for a route*/
 function locateUser() {
-	map.locate({ setView: true, maxZoom: 14 })
-		.on('locationfound', function (e) {
-			var tempMarker = L.marker([e.latlng.lat, e.latlng.lng], { draggable: true }).addEventListener('dragend', onDrag);
-			if (markersArray.length != 0) {
-				markersArray[0].setLatLng([e.latlng.lat, e.latlng.lng]);
+	map.locate({ setView: true, maxZoom: 14, watch: false});
+	map.addEventListener('locationfound', locateOnce );
+	
+}
+
+function locateOnce(event){
+	var tempMarker = L.marker([event.latlng.lat, event.latlng.lng], { draggable: true }).addEventListener('dragend', onDrag);
+	
+	if (markersArray.length != 0) { // If there is a first marker: replace it
+		console.log(inputsArray.length);
+		if(inputsArray[0].value == '' ) { // If the marker isn't on the first input field, swap the marker placements
+			console.log("Empty");
+			markersArray[1] = markersArray[0];
+			markersArray[0] = tempMarker.addTo(map);
+			if(inputsArray.length === 2) {
+				createEmptyInput(markersArray[1]);
 			}
-			else {
-				markersArray.push(tempMarker.addTo(map));
-			}
-			getPointAddress(markersArray[0]);
-			getRoute();
-			console.log("Location found");
-		})
-		.on('locationerror', function (e) {
-			console.log("Location not found");
-		});
+			
+		} else {	// If not, move the marker to the user location
+			markersArray[0].setLatLng([event.latlng.lat, event.latlng.lng]);
+		}
+	}
+	else { // if not: just push
+		markersArray[0] = tempMarker.addTo(map);
+	}
+	getPointAddress(markersArray[0]);
+	getRoute();
+	console.log("User's current location found");
+	
+	map.removeEventListener('locationfound', locateOnce); // Remove the listener to not update the marker without user command.
+	map.locate({ watch: true, timeout: 1000 }); // Continuous location tracking must be called again, to clear the maxZoom option
 }
