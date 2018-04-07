@@ -112,22 +112,17 @@
 			</div>
 			<div id="isochrones">
 				<button value="isochrones" class=" btn btn-sm btn-primary" onclick="getIsochrones()">Generate Isochrones</button>
-				<p>
-					Isochrones Range:
-					<p>
-						<input type="range" min="5" max=200 step="5" value="30" id="isochrones_range" oninput="onRangeOrIntervalChange()">
-					</p>
-					<span id="rangeCurrent">30 min</span>
-				</p>
+				<p>Isochrones Range:</p>
+				<p><input type="range" min="5" max=200 step="5" value="30" id="isochrones_range" oninput="onRangeOrIntervalChange()"></p>
+				<span id="rangeCurrent">30 min</span>
+				
 				<span id="rangeMin">Min: 5</span>
 				<span id="rangeMax">Max: 200</span>
-				<p>
-					Isochrones Interval:
-					<p>
-						<input type="range" min="3" max="60" step="1" value="5" id="isochrones_interval" oninput="onRangeOrIntervalChange()">
-					</p>
-					<span id="intervalCurrent">5 min</span>
-				</p>
+				
+				<p>Isochrones Interval:</p>
+				<p><input type="range" min="3" max="60" step="1" value="5" id="isochrones_interval" oninput="onRangeOrIntervalChange()"></p>
+				<span id="intervalCurrent">5 min</span>
+				
 				<span id="intervalMin">Min: 1</span>
 				<span id="intervalMax">Max: 60</span>
 			</div>
@@ -150,6 +145,8 @@
 				<div id="sidebar-text">
 					<p>This is a sidebar test</p>
 					<p>Inside here would be settings and/or controls</p>
+					<input type="checkbox" onclick="toggleLayerByName(this.name)" class="attractionTypeCheckbox" name="restaurant"> Restaurants<br/>
+					<input type="checkbox" onclick="toggleLayerByName(this.name)" class="attractionTypeCheckbox" name="museum"> Museums
 				</div>
 			</div>
 		</div>
@@ -186,7 +183,7 @@
 			<div id="search-img-container">
 				<a href="#">
 					<div id="search-image">
-						<img src="CSS/images/magnifyingglass.png"></img>
+						<img src="CSS/images/magnifyingglass.png">
 					</div>
 				</a>
 			</div>
