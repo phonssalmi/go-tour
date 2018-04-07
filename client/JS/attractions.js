@@ -362,10 +362,20 @@ function onSearchSubmit() {
 		console.log("Match found");
 		map.flyTo([searchResults[0].data.lat, searchResults[0].data.lng]);
 		showAttractionMarker(searchResults[0].data);
+		
+		// Toggle attraction information panel
+		toggleAttractionContainer(document.getElementById('attraction-menu-container'), searchResults[0].data);
+		currentlyShownAttr = searchResults[0].data;
+		updateAttrPanel(searchResults[0].data, document.getElementById('attraction-panel'));
 	} else if(searchResults[0].name.length != 0){ /*Partial match found*/
 		console.log("Partial match found");
 		map.flyTo([searchResults[0].data.lat, searchResults[0].data.lng]);
 		showAttractionMarker(searchResults[0].data);
+		
+		// Toggle attraction information panel
+		toggleAttractionContainer(document.getElementById('attraction-menu-container'), searchResults[0].data);
+		currentlyShownAttr = searchResults[0].data;
+		updateAttrPanel(searchResults[0].data, document.getElementById('attraction-panel'));
 	}
 }
 
