@@ -263,6 +263,8 @@ function updateAttrPanel(attrData, attrDataPanel) {
 	
 	document.getElementById('attrDescription').innerHTML = attrData.description;
 	
+	document.getElementById('attrDestination').value = JSON.stringify({ lat: attrData.lat, lng: attrData.lng});
+	
 }
 
 function searchByString(str) {

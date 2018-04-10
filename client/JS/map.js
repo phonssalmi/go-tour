@@ -585,3 +585,27 @@ function locateOnce(event){
 	map.removeEventListener('locationfound', locateOnce); // Remove the listener to not update the marker without user command.
 	map.locate({ watch: true, timeout: 1000 }); // Continuous location tracking must be called again, to clear the maxZoom option
 }
+
+function useAttrAsDestination(value) {
+	console.log(value);
+	console.log("test");
+	var attrLocation = JSON.parse(value);
+	console.log(attrLocation.lat);
+	console.log(attrLocation.lng);
+	var tempMarker = L.marker([attrLocation.lat, attrLocation.lng], { draggable: true }).addEventListener('dragend', onDrag);
+	
+	if (markersArray.length != 0) { // If there is already a marker, just push it
+		markersArray.push(tempMarker.addTo(map));
+		getPointAddress(tempMarker);
+	}
+	else if (userMarker != null){ // This part needs a check for if the user location fails
+		locateUser();
+		markersArray.push(tempMarker.addTo(map));
+		getPointAddress(tempMarker);
+	}
+	else {
+		window.alert("Please input a starting point first");
+	}
+	
+	getRoute();
+}
