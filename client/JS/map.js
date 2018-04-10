@@ -349,6 +349,7 @@ function removeInput(node) {
 	inputsDiv = document.getElementById("inputs-form");
 	var index = Array.prototype.indexOf.call(inputsDiv.children, node);
 	if (inputsArray.length < 3 || index == inputsDiv.children.length - 1) {
+		node.childNodes[0].childNodes[0].value = ""; // clears the input text without removing the input
 		return;
 	}
 	inputsDiv.removeChild(node);
@@ -553,24 +554,24 @@ function loadAttractions(map) {
 
 /*Function to enter user's location as the starting position for a route*/
 function locateUser() {
-	map.locate({ setView: true, maxZoom: 14, watch: false});
-	map.addEventListener('locationfound', locateOnce );
-	
+	map.locate({ setView: true, maxZoom: 14, watch: false });
+	map.addEventListener('locationfound', locateOnce);
+
 }
 
-function locateOnce(event){
+function locateOnce(event) {
 	var tempMarker = L.marker([event.latlng.lat, event.latlng.lng], { draggable: true }).addEventListener('dragend', onDrag);
-	
+
 	if (markersArray.length != 0) { // If there is a first marker: replace it
 		console.log(inputsArray.length);
-		if(inputsArray[0].value == '' ) { // If the marker isn't on the first input field, swap the marker placements
+		if (inputsArray[0].value == '') { // If the marker isn't on the first input field, swap the marker placements
 			console.log("Empty");
 			markersArray[1] = markersArray[0];
 			markersArray[0] = tempMarker.addTo(map);
-			if(inputsArray.length === 2) {
+			if (inputsArray.length === 2) {
 				createEmptyInput(markersArray[1]);
 			}
-			
+
 		} else {	// If not, move the marker to the user location
 			markersArray[0].setLatLng([event.latlng.lat, event.latlng.lng]);
 		}
@@ -581,7 +582,7 @@ function locateOnce(event){
 	getPointAddress(markersArray[0]);
 	getRoute();
 	console.log("User's current location found");
-	
+
 	map.removeEventListener('locationfound', locateOnce); // Remove the listener to not update the marker without user command.
 	map.locate({ watch: true, timeout: 1000 }); // Continuous location tracking must be called again, to clear the maxZoom option
 }
