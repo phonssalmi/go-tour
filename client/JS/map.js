@@ -231,14 +231,14 @@ function createOneInput() {
 }
 function recreateInputs() {
 	inputsDiv = document.getElementById("inputs-form");
-	inputsDiv.innerHTML = '<div class="leaflet-routing-geocoder">' +
+	inputsDiv.innerHTML = '<div><div class="leaflet-routing-geocoder">' +
 		'<input placeholder="Start" class="input-fields extra-input">' +
 		'<i class=\"fas fa-times remove-icon\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
-		'</div>' +
-		'<div class="leaflet-routing-geocoder">' +
+		'</div></div>' +
+		'<div><div class="leaflet-routing-geocoder">' +
 		'<input placeholder="End" class="input-fields extra-input">' +
 		'<i class=\"fas fa-times remove-icon\" onclick="removeInput(this.parentNode.parentNode)"></i>' +
-		'</div>' +
+		'</div></div>' +
 		'<button class="leaflet-routing-add-waypoint" type="button"></button>';
 	createAutocomplete();
 }
