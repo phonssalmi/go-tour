@@ -80,7 +80,9 @@ var testData = {
 				class: 'museum',
 				name: 'test-place1'
 			},
-			coordinates: [ 60.44422270611994, 22.274436950683597 ]
+			geometry: {
+				coordinates: [ 60.44422270611994, 22.274436950683597 ]
+			}
 		},
 		{
 			type: 'feature',
@@ -89,7 +91,9 @@ var testData = {
 				class: 'museum',
 				name: 'test-place2'
 			},
-			coordinates: [ 60.44926050852973, 22.286281585693363 ]
+			geometry: {
+				coordinates: [ 60.44926050852973, 22.286281585693363 ]
+			}
 		},
 		{
 			type: 'feature',
@@ -98,7 +102,9 @@ var testData = {
 				class: 'restaurant',
 				name: 'test-place3'
 			},
-			coordinates: [ 60.451292342179464, 22.255983352661133 ]
+			geometry: {
+				coordinates: [ 60.451292342179464, 22.255983352661133 ]
+			}
 		}
 	]
 };
