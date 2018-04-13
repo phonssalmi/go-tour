@@ -250,7 +250,7 @@ function updateAttrPanel(attrData, attrDataPanel) {
 	document.getElementById('attrName').innerHTML = attrData.name;
 	document.getElementById('attrClass').innerHTML = attrData.class;
 	document.getElementById('attrAddress').innerHTML = attrData.address;
-	document.getElementById('attrWebsite').innerHTML = attrData.website;
+	document.getElementById('attrWebsite').innerHTML = 'Home page';
 	document.getElementById('attrWebsite').href = attrData.website;
 	
 	document.getElementById('attrMonday').innerHTML = attrData.monday;

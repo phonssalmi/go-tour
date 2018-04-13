@@ -155,23 +155,75 @@
 			<button class="btn btn-primary btn-sm buttonMargin sidebarButton" type="button" onclick="toggleAttractionContainer(null, null)">
 				Close
 			</button>
-			<div class="leaflet-routing-container leaflet-bar leaflet-control">
 				<div id="attraction-panel">
-					<button id="attrDestination" class="btn btn-primary" onclick="useAttrAsDestination(this.value)" value="">
-						<i class="fas fa-location-arrow"></i>  Go here
-					</button>
-					<h1 id="attrName"></h1>
-					<h2 id="attrClass"></h2>
-					<p id="attrAddress"></p>
-					<a id="attrWebsite" href=""></a>
-					<h2>Opening times:</h2>
-					<p id="attrMonday"></p>
-					<p id="attrTuesday"></p>
-					<p id="attrWednesday"></p>
-					<p id="attrThursday"></p>
-					<p id="attrFriday"></p>
-					<p id="attrSaturday"></p>
-					<p id="attrSunday"></p>
+					<div class="attraction-panel-header">
+						<button id="attrDestination" class="btn btn-primary" onclick="useAttrAsDestination(this.value)" value="">
+								<i class="fas fa-location-arrow"></i>  Go here
+						</button>
+						<h1 id="attrName"></h1>
+						<h2 id="attrClass"></h2>
+						<p id="attrAddress"></p>
+						<a id="attrWebsite" href=""></i></a>
+					</div>
+						<h2>Opening hours</h2>
+					<div class="attraction-panel-openingtimes">
+						<div class="tableRow">
+							<div class="tableCell">
+								<li>Monday</li>
+							</div>
+							<div class="tableCell">
+								<div id="attrMonday"></div>
+							</div>
+						</div>
+						<div class="tableRow">
+							<div class="tableCell">
+								<li>Tuesday</li>
+							</div>
+							<div class="tableCell">
+								<div id="attrTuesday"></div>
+							</div>
+						</div>
+						<div class="tableRow">
+							<div class="tableCell">
+								<li>Wednesday</li>
+							</div>
+							<div class="tableCell">
+								<div id="attrWednesday"></div>
+							</div>
+						</div>
+						<div class="tableRow">
+							<div class="tableCell">
+								<li>Thursday</li>
+							</div>
+							<div class="tableCell">
+								<div id="attrThursday"></div>
+							</div>
+						</div>
+						<div class="tableRow">
+							<div class="tableCell">
+								<li>Friday</li>
+							</div>
+							<div class="tableCell">
+								<div id="attrFriday"></div>
+							</div>
+						</div>
+						<div class="tableRow">
+							<div class="tableCell">
+								<li>Saturday</li>
+							</div>
+							<div class="tableCell">
+								<div id="attrSaturday"></div>
+							</div>
+						</div>
+						<div class="tableRow">
+							<div class="tableCell">
+								<li>Sunday</li>
+							</div>
+							<div class="tableCell">
+								<div id="attrSunday"></div>
+							</div>
+						</div>
+					</div>
 					<p id="attrDescription"></p>
 				</div>
 			</div>
