@@ -200,14 +200,22 @@ function getRoute() {
 				}
 			}
 			var displaySteps = "<table style='width:100%'>";
-			for (var i = 0; i < steps.length; i++) {
-				displaySteps += "<tr>";
-				displaySteps += "<td colspan ='2'>" + steps[i].instruction + "</td>";
-				displaySteps += "</tr>";
-				displaySteps += "<tr>";
-				displaySteps += "<td>" + parseDistance(steps[i].distance) + "</td>";
-				displaySteps += "<td>" + parseTime(steps[i].duration) + "</td>";
-				displaySteps += "</tr>";
+			for (var i = 0; i < steps.length; i++) { 
+				if (steps[i].distance == 0 || steps[i].duration == 0) { // if the step is the final step of a given segment of the route, do not display distance and duration
+					displaySteps += "<tr style='background-color: #007bff;color: white;'>";
+					displaySteps += "<td colspan ='2'>" + steps[i].instruction + "</td>";
+					displaySteps += "</tr>";
+					continue;
+				}
+				else {
+					displaySteps += "<tr>";
+					displaySteps += "<td colspan ='2'>" + steps[i].instruction + "</td>";
+					displaySteps += "</tr>";
+					displaySteps += "<tr>";
+					displaySteps += "<td>" + parseDistance(steps[i].distance) + "</td>";
+					displaySteps += "<td>" + parseTime(steps[i].duration) + "</td>";
+					displaySteps += "</tr>";
+				}
 			}
 			displaySteps += "</table>";
 			document.getElementById("directionsTable").innerHTML = displaySteps;
@@ -350,6 +358,9 @@ function removeInput(node) {
 	var index = Array.prototype.indexOf.call(inputsDiv.children, node);
 	if (inputsArray.length < 3 || index == inputsDiv.children.length - 1) {
 		node.childNodes[0].childNodes[0].value = ""; // clears the input text without removing the input
+		map.removeLayer(markersArray[index]);
+		markersArray.splice(index, 1);
+		getRoute();
 		return;
 	}
 	inputsDiv.removeChild(node);
@@ -594,12 +605,12 @@ function useAttrAsDestination(value) {
 	console.log(attrLocation.lat);
 	console.log(attrLocation.lng);
 	var tempMarker = L.marker([attrLocation.lat, attrLocation.lng], { draggable: true }).addEventListener('dragend', onDrag);
-	
+
 	if (markersArray.length != 0) { // If there is already a marker, just push it
 		markersArray.push(tempMarker.addTo(map));
 		getPointAddress(tempMarker);
 	}
-	else if (userMarker != null){ // This part needs a check for if the user location fails
+	else if (userMarker != null) { // This part needs a check for if the user location fails
 		locateUser();
 		markersArray.push(tempMarker.addTo(map));
 		getPointAddress(tempMarker);
@@ -607,6 +618,6 @@ function useAttrAsDestination(value) {
 	else {
 		window.alert("Please input a starting point first");
 	}
-	
+
 	getRoute();
 }
