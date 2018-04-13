@@ -37,7 +37,17 @@ window.onload = function () {
 	var cntHandler = getContainerHandler(document.getElementById('menu-main-container'));
 	cntHandler.setOnclickEventsHandler('-cnt-button');
 	cntHandler.focusContainerById('routing-menu');
-
+	
+	document.getElementById('routing-menu-cnt-button').onclick = () => {
+		cntHandler.focusContainerById('routing-menu');
+	};
+	document.getElementById('attraction-menu-container-cnt-button').onclick = () => {
+		cntHandler.focusContainerById('attraction-menu-container');
+	};
+	document.getElementById('bus-transit-container-cnt-button').onclick = () => {
+		cntHandler.focusContainerById('bus-transit-container');
+	};
+	
 	document.getElementById("car").style.backgroundColor = "blue";
 
 	inputsArray = document.getElementsByClassName("input-fields");
