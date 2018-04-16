@@ -56,10 +56,9 @@
 				<i class="fas fa-angle-up"></i><span class="fa-angle-up"> Hide</span>
 				<i class="fas fa-angle-down"></i><span class="fa-angle-down"> Show</span>
 			</button>
-			<button class="btn btn-primary btn-sm buttonMargin" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
+			<button class="btn btn-primary btn-sm buttonMargin sidebarShowButton" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
 			 data-target="#sidebar">
-				<i class="fas fa-angle-up"></i>
-				<i class="fas fa-angle-down"></i>
+				<i class="fas fa-bars"></i>
 				Sidebar
 			</button>
 		</div>
@@ -134,18 +133,28 @@
 		</div>
 		
 		<div id="sidebar" class="leaflet-top col-xl-3 col-lg-4 col-md-12 collapse">
-			<button class="btn btn-primary btn-sm buttonMargin sidebarButton" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
+			<button class="btn btn-primary btn-sm buttonMargin sidebarCloseButton" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
 			 data-target="#sidebar">
-				<i class="fas fa-angle-up"></i>
-				<i class="fas fa-angle-down"></i>
+				<i class="fas fa-times-circle"></i>
 				Close
 			</button>
 			<div id="sidebar-inner">
 				<div id="sidebar-text">
-					<p>This is a sidebar test</p>
-					<p>Inside here would be settings and/or controls</p>
+					</br>
+					<h4>Select attraction types to show:</h4>
 					<input type="checkbox" onclick="toggleLayerByName(this.name)" class="attractionTypeCheckbox" name="restaurant"> Restaurants<br/>
 					<input type="checkbox" onclick="toggleLayerByName(this.name)" class="attractionTypeCheckbox" name="museum"> Museums
+					<div>
+						</br>
+						</br>
+						<p> Hey. This is the work in progress website called GoTour. </p>
+						<p> We are focusing on creating a routing website aimed for tourists and giving them more tools to better plan their day. </p>
+						<p> The "Time cycles" (Aka Isochrones) show an area from a selected center, in which a person can move in the specified time frame.
+						The edge of the area is the furthest point that they can move to. The interval can be set to show smaller areas within the total area </p>
+						<p> On the live website, the user location can not be currently tracked, because the school server this is hosted on does not have the required security protocol </p>
+						
+						<p> If you are interested, here is a link to our older video pitch: <a href="https://www.youtube.com/watch?v=o6bA-Dr8j5g">GoTour Pitch</a> </p> 
+					</div>
 				</div>
 			</div>
 		</div>

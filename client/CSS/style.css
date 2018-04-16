@@ -95,6 +95,10 @@ button[aria-expanded=false] .fa-angle-up {
     border-radius: 10px;
     width: 95%;
     }
+	
+.leaflet-control {
+	width: 100%;
+}
 /*the cross button*/
 .leaflet-routing-remove-waypoint::after {
     background: red;
@@ -361,7 +365,16 @@ button[aria-expanded=false] .fa-angle-up {
 	height:100vh;
 	padding: 10px;
 }
-.sidebarButton {
+.sidebarCloseButton {
 	float: right;
 	margin: 0;
+}
+
+.sidebarShowButton {
+	float: right;
+}
+
+.attractionTypeCheckbox {
+	margin-left: 10px;
+	margin-right: 2px;
 }
