@@ -359,15 +359,17 @@ button[aria-expanded=false] .fa-angle-up {
 	width: 100%;
 	margin: 0;
 	padding: 0;
+	overflow: auto;
 
 }
 #sidebar-inner {
 	height:100vh;
 	padding: 10px;
+	height: max-height;
 }
 .sidebarCloseButton {
 	float: right;
-	margin: 0;
+	margin: 15px;
 }
 
 .sidebarShowButton {
@@ -377,4 +379,9 @@ button[aria-expanded=false] .fa-angle-up {
 .attractionTypeCheckbox {
 	margin-left: 10px;
 	margin-right: 2px;
+}
+
+#sidebar-infofield{
+	height: max-height;
+	padding: 10px;
 }
