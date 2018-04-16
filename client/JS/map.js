@@ -580,7 +580,7 @@ function locateOnce(event) {
 			markersArray[1] = markersArray[0];
 			markersArray[0] = tempMarker.addTo(map);
 			if (inputsArray.length === 2) {
-				createEmptyInput(markersArray[1]);
+				createEmptyInput(markersArray[1], true);
 			}
 
 		} else {	// If not, move the marker to the user location
@@ -608,12 +608,12 @@ function useAttrAsDestination(value) {
 
 	if (markersArray.length != 0) { // If there is already a marker, just push it
 		markersArray.push(tempMarker.addTo(map));
-		getPointAddress(tempMarker);
+		getPointAddress(tempMarker, true, true);
 	}
 	else if (userMarker != null) { // This part needs a check for if the user location fails
 		locateUser();
 		markersArray.push(tempMarker.addTo(map));
-		getPointAddress(tempMarker);
+		getPointAddress(tempMarker, true, true);
 	}
 	else {
 		window.alert("Please input a starting point first");
