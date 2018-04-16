@@ -53,8 +53,8 @@
 		<div class="leaflet-control">
 			<button class="btn btn-primary btn-sm buttonMargin" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
 			 data-target=".routing">
-				<i class="fas fa-angle-up"></i>
-				<i class="fas fa-angle-down"></i>
+				<i class="fas fa-angle-up"></i><span class="fa-angle-up"> Hide</span>
+				<i class="fas fa-angle-down"></i><span class="fa-angle-down"> Show</span>
 			</button>
 			<button class="btn btn-primary btn-sm buttonMargin" type="button" data-toggle="collapse" aria-expanded="true" aria-controls="routing"
 			 data-target="#sidebar">
@@ -63,7 +63,7 @@
 				Sidebar
 			</button>
 		</div>
-		<div class="leaflet-routing-container col-12 leaflet-control">
+		<div class="leaflet-routing-container col-12 leaflet-control routing collapse show">
 			<div id="transportType" class="routing collapse show">
 				<button id="walk" class="btn btn-primary btn-sm buttonMargin" value="foot-walking" onclick="getTransportType(value,this)">Walk
 					<i class="fas fa-male"></i>
