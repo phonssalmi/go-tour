@@ -55,6 +55,7 @@
 #routing-menu{
     z-index:100; 
     position:absolute;
+	pointer-events: auto;
 }
 
 #button-list{
