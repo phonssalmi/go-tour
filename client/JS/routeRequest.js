@@ -1,4 +1,20 @@
-///http://localhost:8080/otp/routers/default/plan?fromPlace=60.442529151721295,22.288427352905273&toPlace=60.451123027562986,22.267313003540036&time=11:15am&date=01-26-2018&mode=TRANSIT,WALK&maxWalkDistance=804.672&arriveBy=false&wheelchair=false&locale=en
+/**
+ *	This file is part of GoTour.
+ *
+ *	GoTour is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	GoTour is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with GoTour.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 
 const DEFAULT_OPTS = {
 	mode: 'TRANSIT,WALK',
